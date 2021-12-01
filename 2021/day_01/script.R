@@ -1,6 +1,8 @@
+# Part 1
 measurements <- scan("2021/day_01/input.txt")
-sum(diff(measurements) > 0)
+sum(measurements[-1] > measurements[-length(measurements)])
 
+# Part 2
 rollSums <- function(x) {
   N <- length(x)
   ids <- outer(seq_len(N - 2), 0:2, `+`)
@@ -8,3 +10,12 @@ rollSums <- function(x) {
 }
 
 sum(diff(rollSums(measurements)) > 0)
+
+# Part 2 - Vectorised
+rollSums2 <- function(x) {
+  N <- length(x)
+  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >
+    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]
+}
+
+sum(rollSums2(measurements))
