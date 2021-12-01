@@ -14,8 +14,14 @@ sum(diff(rollSums(measurements)) > 0)
 # Part 2 - Vectorised
 rollSums2 <- function(x) {
   N <- length(x)
+  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]
+}
+sum(diff(rollSums2(measurements)) > 0)
+
+rollIncrease <- function(x) {
+  N <- length(x)
   x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >
     x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]
 }
 
-sum(rollSums2(measurements))
+sum(rollIncrease(measurements))
