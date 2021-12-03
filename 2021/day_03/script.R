@@ -1,12 +1,11 @@
 input <- readLines("2021/day_03/input.txt")
 reports <- Reduce(rbind, lapply(strsplit(input, ""), as.numeric))
+bin2dec <- function(x) strtoi(paste(x, collapse = ""), base = 2)
 
 # Part 1
 most_common_value <- round(apply(reports, 2, mean))
 least_common_value <- round(apply(1 - reports, 2, mean))
-
-strtoi(paste(most_common_value, collapse = ""), base = 2) *
-  strtoi(paste(least_common_value, collapse = ""), base = 2)
+bin2dec(most_common_value) * bin2dec(least_common_value)
 
 # Part 2
 oxygen_report <- co2_report <- reports
@@ -22,12 +21,10 @@ for (i in 1:12) {
     ]
   }
 }
-
-strtoi(paste(oxygen_report, collapse = ""), base = 2) *
-  strtoi(paste(co2_report, collapse = ""), base = 2)
+bin2dec(oxygen_report) * bin2dec(co2_report)
 
 # Part 2 Improved
-findReport <- function(reports, report_type = c("oxygen", "co2"), i = 1) {
+findRating <- function(reports, report_type = c("oxygen", "co2"), i = 1) {
   report_type <- match.arg(report_type)
 
   needed_value <- round(mean(reports[, i] + .Machine$double.eps))
@@ -35,12 +32,10 @@ findReport <- function(reports, report_type = c("oxygen", "co2"), i = 1) {
   reports <- reports[reports[, i] == needed_value, , drop = FALSE]
 
   if (nrow(reports) == 1) {
-    strtoi(paste(reports, collapse = ""), base = 2)
+    bin2dec(reports)
   } else {
     findReport(reports, report_type = report_type, i = i + 1)
   }
 }
 
-oxygen_report <- findReport(reports)
-co2_report <- findReport(reports, "co2")
-oxygen_report * co2_report
+findRating(reports, "oxygen") * findReport(reports, "co2")
