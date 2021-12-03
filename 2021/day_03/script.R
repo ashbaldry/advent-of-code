@@ -1,10 +1,10 @@
 input <- readLines("2021/day_03/input.txt")
-reports <- Reduce(rbind, lapply(strsplit(input, ""), as.numeric))
+reports <- t(sapply(strsplit(input, ""), as.numeric))
 bin2dec <- function(x) strtoi(paste(x, collapse = ""), base = 2)
 
 # Part 1
-most_common_value <- round(apply(reports, 2, mean))
-least_common_value <- round(apply(1 - reports, 2, mean))
+most_common_value <- round(apply(reports, 2, mean) + .Machine$double.eps)
+least_common_value <- 1 - most_common_value
 bin2dec(most_common_value) * bin2dec(least_common_value)
 
 # Part 2
@@ -34,7 +34,7 @@ findRating <- function(reports, report_type = c("oxygen", "co2"), i = 1) {
   if (nrow(reports) == 1) {
     bin2dec(reports)
   } else {
-    findReport(reports, report_type = report_type, i = i + 1)
+    findRating(reports, report_type = report_type, i = i + 1)
   }
 }
 
