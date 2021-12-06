@@ -1,5 +1,6 @@
 fish <- as.integer(strsplit(readLines("2021/day_06/input.txt"), ",")[[1]])
 
+# Part 1
 findNFish <- function(fish, i = 1, n = 80) {
   new_fish <- sum(fish == 0)
   fish <- fish - 1
@@ -12,8 +13,8 @@ findNFish <- function(fish, i = 1, n = 80) {
   }
 }
 
-# Part 1
 findNFish(fish)
+
 # Part 2
 findNewFish <- function(fish_table, i = 1, n = 80) {
   fish_table$days <- fish_table$days - 1
@@ -42,3 +43,17 @@ findNFish <- function(fish, n = 80) {
 }
 
 findNFish(fish, n = 256)
+
+# Part 2 Attempt 2
+periods <- 0:8
+fish <- factor(scan("2021/day_06/input.txt", what = numeric(), sep = ",", quiet = TRUE), periods)
+fish_cnt <- unclass(table(fish))
+
+n <- 256
+for (i in seq(0, n %/% 7)) {
+  days <- min(7, n - i * 7)
+  tmp_fish_cnt <- setNames(fish_cnt, (periods - days) %% 9)
+  fish_cnt[periods >= days] <- 0
+  fish_cnt <- fish_cnt + tmp_fish_cnt[as.character(periods)]
+}
+sum(fish_cnt)
