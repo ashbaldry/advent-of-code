@@ -18,17 +18,10 @@ findNFish(fish)
 findNewFish <- function(fish_table, i = 1, n = 80) {
   fish_table$days <- fish_table$days - 1
   if (-1 %in% fish_table$days) {
-    fish_table <- rbind(
-      fish_table[!fish_table$days %in% c(-1, 6), ],
-      data.frame(
-        days = 6,
-        freq = sum(subset(fish_table, days %in% c(6, -1))$freq)
-      ),
-      data.frame(
-        days = 8,
-        freq = fish_table$freq[fish_table$days == -1]
-      )
+    fish_table$freq[fish_table$days == 6] <- sum(
+      subset(fish_table, days %in% c(6, -1))$freq
     )
+    fish_table$days[fish_table$days == -1] <- 8
   }
 
   if (i < n) {
