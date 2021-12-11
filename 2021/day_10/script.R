@@ -1,16 +1,18 @@
 commands <- readLines("2021/day_10/input.txt")
 
 # Part 1
-error_sizes <- c(")" = 3, "]" = 57, "}" = 1197, ">" = 25137)
+sub_commands <- commands
 matching_regex <- "\\(\\)|\\[\\]|\\{\\}|<>"
 
-sub_commands <- commands
-while (!identical(gsub(matching_regex, "", sub_commands), sub_commands)) {
+while (any(grepl(matching_regex, sub_commands))) {
   sub_commands <- gsub(matching_regex, "", sub_commands)
 }
 
+# First invalid closing bracket
 invalid_commands <- substr(gsub("\\(|\\[|\\{|<", "", sub_commands), 1, 1)
 invalid_commands <- invalid_commands[invalid_commands != ""]
+
+error_sizes <- c(")" = 3, "]" = 57, "}" = 1197, ">" = 25137)
 sum(table(invalid_commands) * error_sizes)
 
 # Part 2
