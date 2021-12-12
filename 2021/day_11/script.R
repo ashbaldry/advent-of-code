@@ -39,7 +39,7 @@ findSurroundingOctopi <- function(x) {
 countNFlashes(octopi)
 
 # Part 2
-countAllFlashes <- function(octopi, i = 1) {
+findAllFlashes <- function(octopi, i = 1) {
   octopi <- octopi + 1
 
   new_flashing_octopi <- flashing_octopi <- octopi > 9
@@ -60,8 +60,8 @@ countAllFlashes <- function(octopi, i = 1) {
   if (all(flashing_octopi)) {
     i
   } else {
-    countAllFlashes(octopi, i + 1)
+    findAllFlashes(octopi, i + 1)
   }
 }
 
-countAllFlashes(octopi)
+findAllFlashes(octopi)
