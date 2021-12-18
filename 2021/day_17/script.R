@@ -19,8 +19,11 @@ potential_veloctiy <- cbind(
   y = rep(min_y:max_y, times = max_x - min_x + 1)
 )
 
-apply(potential_veloctiy[1:3, ], 1, \(velocity) {
+sum(apply(potential_veloctiy, 1, \(velocity) {
   x_pos <- cumsum(pmax(velocity["x"] - 0:280, 0))
   y_pos <- cumsum(velocity["y"] - 0:280)
-  any(x_pos >= edges["x1"] & x_pos <= edges["x2"] & y_pos >= edges["y1"] & y_pos <= edges["y2"])
-})
+  any(
+    x_pos >= edges["x1"] & x_pos <= edges["x2"] &
+      y_pos >= edges["y1"] & y_pos <= edges["y2"]
+  )
+}))
