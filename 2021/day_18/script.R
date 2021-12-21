@@ -1,29 +1,15 @@
 snailfish <- readLines("2021/day_18/input.txt")
-# snailfish <- paste0("[", 1:6, ",", 1:6, "]")
-# snailfish <- readLines("2021/day_18/example.txt")
-
-reduce <- function(x) {
-  reduce_info <- findReduction(x)
-
-  while (reduce_info$reducible) {
-    locations <- reduce_info$location
-    x <- get(reduce_info$type)(x, locations[1])
-    reduce_info <- findReduction(x)
-  }
-
-  x
-}
 
 findReduction <- function(x) {
   explode_loc <- findExplodeLocations(x)
   split_loc <- findSplitLocations(x)
 
   if (length(explode_loc) > 0) {
-    list(reducible = TRUE, type = "explodePair", location = explode_loc)
+    explodePair(x, explode_loc[1])
   } else if (length(split_loc) > 0) {
-    list(reducible = TRUE, type = "splitPair", location = split_loc)
+    splitPair(x, split_loc[1])
   } else {
-    list(reducible = FALSE)
+    x
   }
 }
 
@@ -53,16 +39,7 @@ explodePair <- function(x, pair_loc, recurse = TRUE) {
     end_str <- sub("\\d+", num2, end_str)
   }
 
-  x_new <- paste0(init_str, 0, end_str)
-  # cat("Explode:", x_new, "\n")
-
-  explode_loc <- findExplodeLocations(x_new)
-  split_loc <- findSplitLocations(x_new)
-  if (length(explode_loc) > 0) {
-    x_new <- explodePair(x_new, explode_loc[1])
-  }
-
-  x_new
+  findReduction(paste0(init_str, 0, end_str))
 }
 
 splitPair <- function(x, number_loc, recurse = TRUE) {
@@ -70,20 +47,7 @@ splitPair <- function(x, number_loc, recurse = TRUE) {
   end_str <- substr(x, number_loc + 2, nchar(x))
   number <- as.numeric(substr(x, number_loc, number_loc + 1))
 
-  x_new <- paste0(init_str, "[", floor(number / 2), ",", ceiling(number / 2), "]", end_str)
-  # cat("Split:  ", x_new, "\n")
-
-  explode_loc <- findExplodeLocations(x_new)
-  if (length(explode_loc) > 0) {
-    x_new <- explodePair(x_new, explode_loc[1])
-  }
-
-  split_loc <- findSplitLocations(x_new)
-  if (length(split_loc) > 0) {
-    x_new <- splitPair(x_new, split_loc[1])
-  }
-
-  x_new
+  findReduction(paste0(init_str, "[", floor(number / 2), ",", ceiling(number / 2), "]", end_str))
 }
 
 sumFish <- function(x) {
@@ -96,10 +60,12 @@ sumFish <- function(x) {
   as.numeric(new_x)
 }
 
+snailfish <- readLines("2021/day_18/input.txt")
+
 # Part 1
 fish_sum <- snailfish[1]
 for (i in seq_along(snailfish)[-1]) {
-  fish_sum <- reduce(paste0("[", fish_sum, ",", snailfish[i], "]"))
+  fish_sum <- findReduction(paste0("[", fish_sum, ",", snailfish[i], "]"))
 }
 sumFish(fish_sum)
 
@@ -109,5 +75,5 @@ combinations <- cbind(rep(snailfish, each = 100), rep(snailfish, times = 100))
 combinations <- combinations[combinations[, 1] != combinations[, 2], ]
 combinations_str <- paste0("[", combinations[, 1], ",", combinations[, 2], "]")
 
-differences <- sapply(combinations_str, \(x) sumFish(reduce(x)))
+differences <- sapply(combinations_str, \(x) sumFish(findReduction(x)))
 max(differences)
