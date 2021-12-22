@@ -20,24 +20,35 @@ addScore(start_positions$start[1], start_positions$start[2])
 
 # Part 2
 pot_scores <- expand.grid(1:3, 1:3, 1:3)
-pot_values <- table(rowSums(pot_scores))
+pot_values <- c(0, 0, table(rowSums(pot_scores)))
+cache <- list()
 
 addScore2 <- function(p1, p2, s1 = 0, s2 = 0, turn = 1, cnt = 1) {
-  rowSums(
-    sapply(3:9, \(x) {
-      if (turn == 1) {
-        p1 <- (p1 + x) %% 10; if (p1 == 0) p1 <- 10; s1 <- s1 + p1
-      } else {
-        p2 <- (p2 + x) %% 10; if (p2 == 0) p2 <- 10; s2 <- s2 + p2
-      }
+  cache_name <- paste(p1, p2, s1, s2, turn)
+  if (cache_name %in% names(cache)) {
+    cache[[cache_name]] * cnt
+  } else {
+    rowSums(
+      sapply(9:3, \(x) {
+        if (turn == 1) {
+          p1 <- (p1 + x) %% 10; if (p1 == 0) p1 <- 10; s1 <- s1 + p1
+        } else {
+          p2 <- (p2 + x) %% 10; if (p2 == 0) p2 <- 10; s2 <- s2 + p2
+        }
 
-      if (s1 >= 21 || s2 >= 21) {
-        cnt * pot_values[[as.character(x)]] * as.numeric(turn == c(1, 2))
-      } else  {
-        addScore2(p1, p2, s1, s2, 3 - turn, cnt * pot_values[[as.character(x)]])
-      }
-    })
-  )
+        if (s1 >= 21 || s2 >= 21) {
+          cnt * pot_values[[x]] * as.numeric(turn == c(1, 2))
+        } else  {
+          value <- addScore2(p1, p2, s1, s2, 3 - turn, cnt * pot_values[[x]])
+          cache_name <- paste(p1, p2, s1, s2, 3 - turn)
+          if (!cache_name %in% names(cache)) {
+            cache[[cache_name]] <<- value / cnt / pot_values[[x]]
+          }
+          value
+        }
+      })
+    )
+  }
 }
 
 addScore2(8, 2)
