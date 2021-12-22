@@ -24,16 +24,6 @@ for (i in mini_board) {
 sum(switches)
 
 # Part 2
-instructions <- readLines("2021/day_22/input.txt")
-inst <- as.data.frame(do.call(rbind, regmatches(instructions, gregexpr("on|off|(-|)\\d+", instructions))))
-names(inst) <- c("switch", "x1", "x2", "y1", "y2", "z1", "z2")
-inst[, -1] <- sapply(inst[, -1], as.numeric)
-inst[, -1] <- cbind(
-  x1 = pmin(inst$x1, inst$x2), x2 = pmax(inst$x1, inst$x2),
-  y1 = pmin(inst$y1, inst$y2), y2 = pmax(inst$y1, inst$y2),
-  z1 = pmin(inst$z1, inst$z2), z2 = pmax(inst$z1, inst$z2)
-)
-
 x <- sort(unique(c(inst$x1, inst$x2 + 1)))
 y <- sort(unique(c(inst$y1, inst$y2 + 1)))
 z <- sort(unique(c(inst$z1, inst$z2 + 1)))
