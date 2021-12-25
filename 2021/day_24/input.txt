@@ -1,0 +1,65 @@
+inp w
+ass x 1
+add z (w+15)
+inp w
+mul z 26
+add z (w+12)
+inp w
+mul z 26
+ass y (w+15)
+add z y
+inp w
+ass x (z%%26)-9
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+12)*x
+inp w
+ass x z%%26-7
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+15)*x
+inp w
+ass x 1
+mul z 26
+add z (w+2)*x
+inp w
+ass x z%%26-1
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+11)*x
+inp w
+ass x z%%26-16
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+15)*x
+inp w
+mul z 26
+add z (w+10)
+inp w
+ass x z%%26-15
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+2)*x
+inp w
+mul z 26
+add z w
+inp w
+mul z 26
+add z w
+inp w
+ass x z%%26-4
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+15)*x
+inp w
+ass x z%%26
+div z 26
+neql x w
+mul z (25*x+1)
+add z (w+15)*x
