@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Advent of Code – index</title>
+<title>Advent of Code - 2021 - Day 15</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -179,7 +179,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">2021 - Day 15</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
 
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
 
 <section id="set-up" class="level2">
 <h2 class="anchored" data-anchor-id="set-up">Set-Up</h2>
@@ -419,74 +433,75 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.fwf</span>(<span class="st">"input.txt"</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">100</span>), <span class="at">header =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(risk)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">### Helper Function</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{r function}</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>getRisk <span class="ot">&lt;-</span> <span class="cf">function</span>(risk) {</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  size <span class="ot">&lt;-</span> <span class="fu">nrow</span>(risk)</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  distance <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">Inf</span>, size, size)</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  distance[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  distance[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(risk[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  distance[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(risk[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># First iteration only looks at moving right/down (what I thought was all that happened...)</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>, size)) {</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (y <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>, size)) {</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      distance[x, y] <span class="ot">&lt;-</span> risk[x, y] <span class="sc">+</span> <span class="fu">min</span>(distance[<span class="fu">cbind</span>(<span class="fu">c</span>(x <span class="sc">-</span> <span class="dv">1</span>, x), <span class="fu">c</span>(y, y <span class="sc">-</span> <span class="dv">1</span>))])</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Checks if can move/left with lower risk</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  reducible <span class="ot">&lt;-</span> distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">rbind</span>(distance[<span class="dv">2</span><span class="sc">:</span>size, ], <span class="cn">Inf</span>) <span class="sc">|</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">cbind</span>(distance[, <span class="dv">2</span><span class="sc">:</span>size], <span class="cn">Inf</span>)</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">any</span>(reducible)) {</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (x <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, size)) {</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (y <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, size)) {</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Checks all 4 directions for lowest risk</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>        points <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">c</span>(x <span class="sc">-</span> <span class="dv">1</span>, x, x, x <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">c</span>(y, y <span class="sc">-</span> <span class="dv">1</span>, y <span class="sc">+</span> <span class="dv">1</span>, y))</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        points <span class="ot">&lt;-</span> points[points[, <span class="dv">1</span>] <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;</span> points[, <span class="dv">1</span>] <span class="sc">&lt;=</span> size <span class="sc">&amp;</span> points[, <span class="dv">2</span>] <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;</span> points[, <span class="dv">2</span>] <span class="sc">&lt;=</span> size, ]</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        distance[x, y] <span class="ot">&lt;-</span> <span class="fu">min</span>(distance[x, y], risk[x, y] <span class="sc">+</span> <span class="fu">min</span>(distance[points]))</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    reducible <span class="ot">&lt;-</span> distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">rbind</span>(distance[<span class="dv">2</span><span class="sc">:</span>size, ], <span class="cn">Inf</span>) <span class="sc">|</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>      distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">cbind</span>(distance[, <span class="dv">2</span><span class="sc">:</span>size], <span class="cn">Inf</span>)</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return bottom right element</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  distance[size, size]</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="fu">getRisk</span>(risk)</span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2, eval=FALSE}</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>risk2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(risk, risk <span class="sc">+</span> <span class="dv">1</span>, risk <span class="sc">+</span> <span class="dv">2</span>, risk <span class="sc">+</span> <span class="dv">3</span>, risk <span class="sc">+</span> <span class="dv">4</span>)</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>risk2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(risk2, risk2 <span class="sc">+</span> <span class="dv">1</span>, risk2 <span class="sc">+</span> <span class="dv">2</span>, risk2 <span class="sc">+</span> <span class="dv">3</span>, risk2 <span class="sc">+</span> <span class="dv">4</span>)</span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>risk2[risk2 <span class="sc">&gt;</span> <span class="dv">9</span>] <span class="ot">&lt;-</span> risk2[risk2 <span class="sc">&gt;</span> <span class="dv">9</span>] <span class="sc">%%</span> <span class="dv">10</span> <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="fu">getRisk</span>(risk2)</span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "2021 - Day 15"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.fwf</span>(<span class="st">"input.txt"</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">100</span>), <span class="at">header =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(risk)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">### Helper Function</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{r function}</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>getRisk <span class="ot">&lt;-</span> <span class="cf">function</span>(risk) {</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  size <span class="ot">&lt;-</span> <span class="fu">nrow</span>(risk)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  distance <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">Inf</span>, size, size)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  distance[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  distance[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(risk[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  distance[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(risk[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># First iteration only looks at moving right/down (what I thought was all that happened...)</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>, size)) {</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (y <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>, size)) {</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      distance[x, y] <span class="ot">&lt;-</span> risk[x, y] <span class="sc">+</span> <span class="fu">min</span>(distance[<span class="fu">cbind</span>(<span class="fu">c</span>(x <span class="sc">-</span> <span class="dv">1</span>, x), <span class="fu">c</span>(y, y <span class="sc">-</span> <span class="dv">1</span>))])</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Checks if can move/left with lower risk</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  reducible <span class="ot">&lt;-</span> distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">rbind</span>(distance[<span class="dv">2</span><span class="sc">:</span>size, ], <span class="cn">Inf</span>) <span class="sc">|</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">cbind</span>(distance[, <span class="dv">2</span><span class="sc">:</span>size], <span class="cn">Inf</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">any</span>(reducible)) {</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (x <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, size)) {</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (y <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, size)) {</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Checks all 4 directions for lowest risk</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        points <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">c</span>(x <span class="sc">-</span> <span class="dv">1</span>, x, x, x <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">c</span>(y, y <span class="sc">-</span> <span class="dv">1</span>, y <span class="sc">+</span> <span class="dv">1</span>, y))</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        points <span class="ot">&lt;-</span> points[points[, <span class="dv">1</span>] <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;</span> points[, <span class="dv">1</span>] <span class="sc">&lt;=</span> size <span class="sc">&amp;</span> points[, <span class="dv">2</span>] <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;</span> points[, <span class="dv">2</span>] <span class="sc">&lt;=</span> size, ]</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        distance[x, y] <span class="ot">&lt;-</span> <span class="fu">min</span>(distance[x, y], risk[x, y] <span class="sc">+</span> <span class="fu">min</span>(distance[points]))</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    reducible <span class="ot">&lt;-</span> distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">rbind</span>(distance[<span class="dv">2</span><span class="sc">:</span>size, ], <span class="cn">Inf</span>) <span class="sc">|</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>      distance <span class="sc">&gt;</span> risk <span class="sc">+</span> <span class="fu">cbind</span>(distance[, <span class="dv">2</span><span class="sc">:</span>size], <span class="cn">Inf</span>)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return bottom right element</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  distance[size, size]</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="fu">getRisk</span>(risk)</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2, eval=FALSE}</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>risk2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(risk, risk <span class="sc">+</span> <span class="dv">1</span>, risk <span class="sc">+</span> <span class="dv">2</span>, risk <span class="sc">+</span> <span class="dv">3</span>, risk <span class="sc">+</span> <span class="dv">4</span>)</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>risk2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(risk2, risk2 <span class="sc">+</span> <span class="dv">1</span>, risk2 <span class="sc">+</span> <span class="dv">2</span>, risk2 <span class="sc">+</span> <span class="dv">3</span>, risk2 <span class="sc">+</span> <span class="dv">4</span>)</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>risk2[risk2 <span class="sc">&gt;</span> <span class="dv">9</span>] <span class="ot">&lt;-</span> risk2[risk2 <span class="sc">&gt;</span> <span class="dv">9</span>] <span class="sc">%%</span> <span class="dv">10</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="fu">getRisk</span>(risk2)</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

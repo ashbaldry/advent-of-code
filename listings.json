@@ -26,5 +26,9 @@
   {
     "listing": "/year_xxx/index.html",
     "items": []
+  },
+  {
+    "listing": "/year_xxxx/index.html",
+    "items": []
   }
 ]
