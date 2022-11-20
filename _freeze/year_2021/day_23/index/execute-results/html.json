@@ -1,7 +1,7 @@
 {
-  "hash": "2749c68bf94fca3a2079f93412436abd",
+  "hash": "723b2d2cd79aefcc29f0c9d7ef483bdf",
   "result": {
-    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning in (function (..., deparse.level = 1) : number of columns of result is\nnot a multiple of vector length (arg 1)\n```\n:::\n\n```{.r .cell-code}\nstr(seats)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n```\n:::\n\n```{.r .cell-code}\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n```\n:::\n\n\nThis was done with a piece of paper rather than coding...\n",
+    "markdown": "---\ntitle: \"2021 - Day 23\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning in (function (..., deparse.level = 1) : number of columns of result is\nnot a multiple of vector length (arg 1)\n```\n:::\n\n```{.r .cell-code}\nstr(seats)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n```\n:::\n\n```{.r .cell-code}\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n```\n:::\n\n\nThis was done with a piece of paper rather than coding...\n",
     "supporting": [
       "index_files"
     ],

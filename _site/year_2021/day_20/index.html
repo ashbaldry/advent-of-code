@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Advent of Code – index</title>
+<title>Advent of Code - 2021 - Day 20</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,7 +167,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#set-up" id="toc-set-up" class="nav-link active" data-scroll-target="#set-up">Set-Up</a></li>
+  <li><a href="#set-up" id="toc-set-up" class="nav-link active" data-scroll-target="#set-up">Set-Up</a>
+  <ul class="collapse">
+  <li><a href="#helper-function" id="toc-helper-function" class="nav-link" data-scroll-target="#helper-function">Helper Function</a></li>
+  </ul></li>
   <li><a href="#part-1" id="toc-part-1" class="nav-link" data-scroll-target="#part-1">Part 1</a></li>
   <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
   </ul>
@@ -176,24 +179,204 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">2021 - Day 20</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
 
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
 
 <section id="set-up" class="level2">
 <h2 class="anchored" data-anchor-id="set-up">Set-Up</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>algorithm <span class="ot">&lt;-</span> <span class="fu">scan</span>(<span class="st">"input.txt"</span>, <span class="at">n =</span> <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">""</span>, <span class="at">what =</span> <span class="fu">character</span>())</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>algorithm <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">strsplit</span>(algorithm, <span class="st">""</span>)[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">"#"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(algorithm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> num [1:512] 1 1 0 1 1 0 1 0 1 1 ...</code></pre>
 </div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>image <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>image <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">strsplit</span>(image, <span class="st">""</span>), \(x) <span class="fu">ifelse</span>(x <span class="sc">==</span> <span class="st">"#"</span>, <span class="dv">1</span>, <span class="dv">0</span>)))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> num [1:100, 1:100] 0 0 0 0 1 1 0 0 0 1 ...</code></pre>
+</div>
+</div>
+<section id="helper-function" class="level3">
+<h3 class="anchored" data-anchor-id="helper-function">Helper Function</h3>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>enhanceImage <span class="ot">&lt;-</span> <span class="cf">function</span>(image, <span class="at">void =</span> <span class="dv">0</span>) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Padding</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  image_pad <span class="ot">&lt;-</span> <span class="fu">cbind</span>(void, void, <span class="fu">rbind</span>(void, void, image, void, void), void, void)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  new_image <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(image_pad), <span class="fu">ncol</span>(image_pad))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  inner_box <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span>(<span class="fu">ncol</span>(image_pad) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> inner_box) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> inner_box) {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      bin_number <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">t</span>(image_pad[(i <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span>(i <span class="sc">+</span> <span class="dv">1</span>), (j <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span>(j <span class="sc">+</span> <span class="dv">1</span>)]), <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      new_image[i, j] <span class="ot">&lt;-</span> algorithm[<span class="fu">strtoi</span>(bin_number, 2L) <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  new_image[inner_box, inner_box]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
 </section>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>image1 <span class="ot">&lt;-</span> <span class="fu">enhanceImage</span>(image, <span class="dv">0</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>image2 <span class="ot">&lt;-</span> <span class="fu">enhanceImage</span>(image1, image1[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(image2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5391</code></pre>
+</div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">nrow</span>(image2))) <span class="fu">cat</span>(<span class="fu">ifelse</span>(image2[i, ], <span class="st">"#"</span>, <span class="st">"."</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>....##.....##...#..#......##...##.###..#......##..##...#...##..##...##..##.........#..........###.#..##.
+....##..##..###.#..#####.####...#..###.##.##..###..###.##...####.####.########.####.#....##...##..#####.
+...#....##.#..#####...##.#.###.###.###.###.#..###.#..#.####.###..##..#.###.#.#..#.#####...####..#..#.###
+..#......###..#..#.......###.###.#...#.#.#....##...###...##.#....###..###.###...#..#..####.##.#..#.#.###
+.#..##..#.######..#######.##..#.....##.###..#.#......#...#..#..###...###..#....#.....####.#.....#.###..#
+.#.###.###.#####.....#.#.#.......#..#.#.##...##.#.#.####...#...##...#####.###.#.#.#...####..#.##.....##.
+.####.#..#.#.#..#...###.#.#.###..#....#....#.#...#.##...###..########...####.###.#.#######.#..#.###.##..
+.#..#.##.#...#.#..#.######..##..#..#..#..#.#.###........#....#.##..#.########..#..##.#.#.#..#..#####.#.#
+.##.#.#..######..#.#..#...#...#.#.###.#.#..#.###..#####....###..#.....##.##..#.#.#.####..#.#######..#.##
+.##..#..#.#..###.#####.#..#..#...###.##..###.#..##.#.#...##..#....#..##..#..#.....###...######..##.#.#..
+....#.####...#...##.#.##..##.#.###.#....########....###...##...#.##.#...#.#.##.#.#####.#.#..##.####...#.
+.....##.#.#..####.#..####..##..##..##.#.#....###...#.#..#.#.#.####...###.##....#.#.##...#.##..##..#..###
+.##.###..##..#.#.##.##......#.###.###.....###...#......####..##.###.##....###..#.##..#...##....#.#...###
+##.#.##...#.##.##.......#.#..#..###..##.#.#..##..##...####......##.##.#.#..#.####.###..#...#...#..##.##.
+#.####...###.##.#...#...###.#####..##..#...###...#.#.#...#....#..#..#.##...#.#####.##..#..#...#..##.#...
+...#.###....###.##..#..#..##......#...##..######...##..#..####.#.#.##.###.#.#....##.#...###.#.#.##..####
+##...###...#.#....#.######..#.##.#..##.#..##.#..#..#.#..#.#.#...##....####...###...####.#...#..####.####
+#..###.#...####.#.#...#.####.#.##.###.....##..#..###.#.###.#.#....####..##.##.##..##...##..#.##..#...##.
+#.###.###.#.##.##.###.#.##...##.#.###.#..#####.###...#....###.####.###.#####.#.......#.#.#.#...###.#.#..
+#.#..#.#####..#..#...#.#.#####.###..#.#..#.##..####.##...#..##..#.##..#####.#..##.#..#..##.#.#....#.##.#
+..###....#...#...#.###...###.#.#.#.##..##...#.#####.#.###..#...##.#..#....#.#....##.##.##.#.#.###.#####.
+..#.#.#...#..##.#.#..####.#...#.#.###.#####.##.##.##..###..######...#.###.....#....#.###..#....####..###
+..##....#...#..###.###.#.#.....####...###....###.#.#####.###....#..#.###.###..#.##.##.#...#....##.###...
+.###.....#.#.....#....###.##.#....###..##..####.#..#.#...#...##.#...#...##...#...#..#.##.#...#.##..#....
+.#..#.#.#..#.##...###.#...#..##.##....#.#.....###..####..#...##......##.###..#..##..#..###.#..##..##...#
+..######...#.....#.#....#.##.##..#..#.######.##...##.#..#....#.#...####.####...#.#.#.##...#.##.#.###.#..
+.###.#.#.#..#....##.#.##..#.##.#.#.##...##..#.#.######.##.#.####..##...#.#.###.###..###.###...#.......#.
+###..#...#.#.#.#..#....##.#.###...###.#.#.#.#..#..#.#..##....#..########.#......#.##..#.#..#..#..#.#####
+#.##.#.#.#.#..####.###...##...#.#.#....###.#.#...##.#.#.#.#.##.##...##.......###..#.##.####.##.#..#..###
+.#.#.##...#..##..#####.##..#.###.#.#.#..#..###..#....##..##..#.....#..#....#.###.#........#.#..#.###..#.
+.###.###.#.#..##.###..#..#...#..#....##.#.#..#....###.##..##.#..#...####.#...#....##.......####...#..#..
+.#..##.#..####.#.#.#####...#..#...#.##....#....####.##.#.###.#.....#.##..#...##..##.#.#.......###...##.#
+...##..###.....#..###.#...##...###..###.#..#.##....#...###.#..###.............#...#.#####..##......##..#
+...#....##...##...##......#######..####..#..#########.###.#...#.#...#.##....##.#.#.##.....###.##..####.#
+###.#.###.#.#########....#.##.....##...##.#..#...#....##.####..###..##.###....#.####.#####..##...#...##.
+#.#..#..##.#.#..#.#####.#...##.###.#..#..#.###.#...#.#.#.######.#..#..####.##.####..##.#.##.#....#..###.
+...##..#..#...#.#..###....#..#.#.####......#.#.#..##..#.##.#.###.###....##.##...#.####.##.##.##.#.#####.
+...............#..#.#.#.#...##.#....#.#..####..#.###.##.###.##.##..###..####.#######.###..#.#####.#####.
+...#...##...#.#.#.#...##..#....#.##...#.#...#..##..#.#....##.###.#..####......#..#.#.#...#.###..#.#...#.
+.###.#.#...##...#.##...#.######.....#.#.#..##.#...#.###.##....#.##.#..#...#.#.#.#.###.##.##....#.######.
+..##..#..#.#.#.###..#...##.###.#..###..#.#.#..###..###.##..###.##..#####..###.###.#.#####....##..#.##..#
+#######.#.#.#.#..#....#....#.......#.##....#####.##....#.###.###...#..###...#####.#.....####.#.#..###.##
+###.#.#..#.#..#...####.##.##.#...###.#.##.#..#.##...#......#.######.####..#...#.#..##....##...####.#.#..
+.##.##..####.####..##.##..#..###.##.####..#.##....##.#..#..##.##.###...#...##..#.#..####..##.#..##.#####
+.##..#.#...#....####..#...######.##..#.####..#.#.##.#.##...#.#.#..##.#.##.###...#.##.....##..##.##......
+..####.###.#..#.#...#####.#####...##.#.###....##.####.##.#.###.#.#.###......####.#..##.....#..###...#...
+.##...#.#.#.#.#...#.#######.##.#..#.##.####..##.#.###.###.#..#.#.##..#..####..####.#.....#.###..#...#..#
+..####.....#.#.#.#.##.####..#........#.#..##.#.#...#.##...#...########........##.####..#.####....#...#..
+##....#..#.#.#..########.#.#...#.#.#####....#..#..###.##.#.#.#...###..###....##...##..##.#..##.##.###..#
+#....##.#..............#.##.##.#.#...#..##.##.#...#....#..#..#.##.##.#....###.#.##.##.####.#.#.#.....##.
+#...##.....#.#.######........#...#.##.##.....##.##.....##.#.#.####..#...####.###.#.##.##.##.##.#########
+###..##.#......#.#..##..###.....###.########..#.#.#.#.####...####..##.#####....###.#....#.###.######....
+##..###....##.#.##.......###..#.##..###.#...#..###.##...##.#..#..####.#...#.#..#..###.#.#....##........#
+#.#####.#.##.##..######.....#.##.#.....###...#...#####.###.##...#.####...##....##..#######.#.#.##.#.###.
+.#####.#..##.#..##.#.##...#..##.###..#####..##.##...#.#.####..##.#..##.##...###.###.####...#...#..###.#.
+.#.##.###..#.#.##.#########......#####..###...##...#.##.#####.#...#.##.....##.##...#.###..##.#.#####.###
+.#.#########.....#..............##....#.#...##..#...#.......#####....##..##.#.#..#...##.####..###...#..#
+.#..#.#..#...#....#...##.#.#.##.#.#.#.#.##.#..##.##.##..##.####....##.#.#.##....#..######...######.#....
+.#.#.#..####.###..#..####..##..#.##.#..##..#.#..#......#.#.##.#..#####.#.#.#.#.#...#.#.#...##.#.###.###.
+#..##.#....#.#...#..#####....#.##.#....#..##..##..#.#.###..#.####..##...#...#.#...###....##..#.##..##.#.
+#.####.#.#....#...####.#...##.##.#..##..########.#.####.##...###....##.#.##..####...##.....#.#....##.#..
+##########......##.#...#.##.###.#.#.#...######.###.###.##...##..##...#...###.###.#....###...#..###.###..
+#..#.#.#..##.#.###..##..##..#.###.#.....##..#.#.##..#...#..#.#.##..#.#.#..#.###.##.###...#...#....#.#...
+#..##.#..####..#..###.#..#..#..##.###.##.#..#..#..##.###...##..#######..#.###.#....#.###.##.#..#.#..##..
+#.###.....#..#.##.##.####.#.######...#.#..###.#######.#.......#.#...##..###.#..###.##.###..#.##..###.#..
+##...##.##.###.###..##.#.#.#.####.#.#.#.###....##.....##.#.#...#...##..##..#.###.#.#.##..#...###########
+###.###...##..##..#.##.####...###..#.#.##..####..#######..#.##..##.....#.##.###.#.#...#.#..#..###..#.###
+.#..###..#..#.###.##..#.#..#.#...#....###..#.##.#.##..##.###....##..#.##....#..#..##.#.#.#.###..#.......
+#....##.##..#..##...#...#.##..#.###.#...###.#.#####...###.####.#.#..##....###..###.##..##.###.#####...#.
+#.#....#.#.##.###.##....###..#..#..#..##..##..#..#....#.###...####.#.......#..##.#.##.#...##.#####.#.###
+#.###....#.#.#...#.#.#.#...#..####...#..#...#..##.#..####.#....###.##..###.#.#...#....#...#....###.....#
+#.#.#.#...#.#.####.....#....#..####.#.##......#.#..###.....####..##...#.##.#####.......#..#.#.####.####.
+..#.###...##....###.##.##.#...#.##.##.###.#.######.#####....######....#.##.#####.#..###.#####.##..#....#
+..#.##...#######..#..#..##..##...#....####.##.#.....###.#.###.##.#..####..##...#..##..#.#.#..###.#.#.#..
+..#.....#.##.#.###..#.##.#.##.#####.#...########.......##.#....#...#.#.##.###.####.#.#.#.####...##.#.###
+....#...#.#...#.#.##.#..#..#...########.##..#..#.#.#...#.#..######...#.##.###.#.#...#####.#########.####
+.####.#.#..#.#..#...#...#.##.#.......#..#..####.####.#.###.#.##..##.#..##.##.##....##...###.#..#.#..##..
+####.##...##..#####.###.###.#.#...#..#.####.#.#.#.##.....###.#.###.#.#..#.######..###..#...##.#.#.#.##..
+#.###.##...#..#.#...###...####.#.###.#.##....#..#.#.#...#.#..##.#.#.#.##..#.#.#....#######..#....#..#.##
+##.##.#.#........#....###.##.#.#..##.....##.#...#.####.#..#..#.##.#..#.....#.#...#.###.#..#.#..#...#.##.
+#..###.#.####..###..#.###.....##..#...#.##..#.######.#.#..##....###..###..###.###.#####......#...#.#####
+....#.#...###.##....##..#.#..#.##..#..#.##.##.#..###.#.#.#.#..#.#..##.#......###..#..###...#...####..#.#
+.############..#.##.##..#....##..#...##.#...##..#..#.####..#...##...#...#...##.##..#.###.####.#.#...#...
+.#..#.#...##.###...#.#..##.##.##.#..##.#.##.##.##.##.##..##..##.#...#.....####.###.#.#####.##.....#.##..
+.###.#..#..##.#..#..#....#.#...##..#.#.#..#..##...##..#.#.###.#.....#...#.....#.###.#.##....#.#.#.##.###
+.#.#..#.#.#.###....#...##.#.#..##.###..##.#.#.####.#######...###.##.##.......#.##...#.##.#...###.##.#.#.
+....#..#.###..##.#####.##.#..##....###.##..#.#.##.##..##..#..##.#.###.#..#.#...##...##....#####..#.#...#
+.#...#.#.##.#..#.####.#.#.##..##..##..#####..####......##.......###.##..#.#.#.#.#..###...#.#.#.##.#.####
+.###.#...##...###.#...##.###...#..#####.#.##.##.#.#.##.#.##...##.##.....###.#..#.#.#....##..##.#.#.##.##
+..####...###.#..#.##.#.###.#.##...#.#######..#..####..##.....###..#...##.###..#.#......#....#.#..#####..
+...##...#..#.##.#...##..##..#.#...######.#..##..#####....#...##...######......###.##.....##.#.#####...##
+............#..#..#..#..#..#.#.#..#.#...#.###..##..#..#.#.####...##..#.###...##.#..#..###...##.#.##.#..#
+.####.####.##.#..#...###.#.#.#.#....#.#.#.....##....##..#####.##..##.#..####..##.....#.#...##.#####..###
+.#.#.###..####..##.####...#.####.#..###.#.##..##.....#..#..##.#...###.##.#.#.###.#.####......#####....#.
+..#.##.#.##....#.....#.#.#...###....#.##.#.#...##.########.....#.#.#.#.#.#...######...######..##.#.####.
+..###.#...#.##.##.###.###..#...######...###.#....##########..#####..#####.#...#####....#..#.##.......#..
+...#.##..########.####..##...##..#.######.#.#####.##....#.#.###.##.#.##.##...####..##.###..###..##..#...
+.#..##...##.#...##....#.#.##.##...##..##.#.#.......##..#..#...####.....#.#.#.#.##.....#..#.####.#.#.###.
+#..#..#..#....#.###..#.#.#..#.######..#.###...#..##.#.###..##......#.##.#.#######..#.#....##..#.#......#
+#.##......#..##..#####....#.#.....#.##.##.##.#.......##.##..##..###.##.#.#.#...###.###.##.#..#.#.##..###
+###.##.##..##...#.####..#......#.#.#.#.###.#..##.#.#..###..#..##..#..##.##..#####..#...#.####..##...#..#
+#.####.#..##.#.#.#..#..####...#....##.##.###.####.##.#....####.###...#.....#.#####...##########.#..#.###
+..##..#..#.#.####..###..#.###..#.#.#.#..#.#.##..#..#.####...#.#.#.##.#.##.....##..###.###......#.#######
+..#.#...#.#....#.#.#.#.....#.#......#.#....#.#....#.#.#.#.............#.#.....#.##.#..#.#............#.#</code></pre>
+</div>
 </div>
 </section>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>imagex <span class="ot">&lt;-</span> image</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) imagex <span class="ot">&lt;-</span> <span class="fu">enhanceImage</span>(imagex, imagex[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(imagex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16383</code></pre>
+</div>
 </div>
 
 
@@ -351,29 +534,65 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "2021 - Day 20"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>algorithm <span class="ot">&lt;-</span> <span class="fu">scan</span>(<span class="st">"input.txt"</span>, <span class="at">n =</span> <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">""</span>, <span class="at">what =</span> <span class="fu">character</span>())</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>algorithm <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">strsplit</span>(algorithm, <span class="st">""</span>)[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">"#"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(algorithm)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>image <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>]</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>image <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">strsplit</span>(image, <span class="st">""</span>), \(x) <span class="fu">ifelse</span>(x <span class="sc">==</span> <span class="st">"#"</span>, <span class="dv">1</span>, <span class="dv">0</span>)))</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(image)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="fu">### Helper Function</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="in">```{r function}</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>enhanceImage <span class="ot">&lt;-</span> <span class="cf">function</span>(image, <span class="at">void =</span> <span class="dv">0</span>) {</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Padding</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  image_pad <span class="ot">&lt;-</span> <span class="fu">cbind</span>(void, void, <span class="fu">rbind</span>(void, void, image, void, void), void, void)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  new_image <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(image_pad), <span class="fu">ncol</span>(image_pad))</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  inner_box <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span>(<span class="fu">ncol</span>(image_pad) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> inner_box) {</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> inner_box) {</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>      bin_number <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">t</span>(image_pad[(i <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span>(i <span class="sc">+</span> <span class="dv">1</span>), (j <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span>(j <span class="sc">+</span> <span class="dv">1</span>)]), <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>      new_image[i, j] <span class="ot">&lt;-</span> algorithm[<span class="fu">strtoi</span>(bin_number, 2L) <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>  new_image[inner_box, inner_box]</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>image1 <span class="ot">&lt;-</span> <span class="fu">enhanceImage</span>(image, <span class="dv">0</span>)</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>image2 <span class="ot">&lt;-</span> <span class="fu">enhanceImage</span>(image1, image1[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(image2)</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">nrow</span>(image2))) <span class="fu">cat</span>(<span class="fu">ifelse</span>(image2[i, ], <span class="st">"#"</span>, <span class="st">"."</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>imagex <span class="ot">&lt;-</span> image</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) imagex <span class="ot">&lt;-</span> <span class="fu">enhanceImage</span>(imagex, imagex[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(imagex)</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

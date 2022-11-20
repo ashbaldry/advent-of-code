@@ -1,7 +1,7 @@
 {
-  "hash": "e752bfcf2a0200292227ab10b3cae7e7",
+  "hash": "f6503ec9664de347fe8a5f8a88f39101",
   "result": {
-    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
+    "markdown": "---\ntitle: \"2022 - Day 1\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
