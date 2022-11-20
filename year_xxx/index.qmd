@@ -1,0 +1,6 @@
+---
+title: "xxx"
+listing: 
+  template: ../_templates/days.ejs
+  contents: days.yml
+---
