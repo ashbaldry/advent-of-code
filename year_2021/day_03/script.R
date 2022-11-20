@@ -38,4 +38,4 @@ findRating <- function(reports, report_type = c("oxygen", "co2"), i = 1) {
   }
 }
 
-findRating(reports, "oxygen") * findReport(reports, "co2")
+findRating(reports, "oxygen") * findRating(reports, "co2")

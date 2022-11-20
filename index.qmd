@@ -43,7 +43,7 @@ reactable::reactable(
       } else {
         if (x > 0) {
           htmltools::a(
-            href = file.path(sprintf("year_%s", year), sprintf("day_%02d", i), "script.R"),
+            href = file.path(sprintf("year_%s", year), sprintf("day_%02d", i)),
             title = paste("Solution to day", i, "for", year),
             htmltools::span(class = "stars", paste(rep("*", x), collapse = "")), 
             paste(rep("*", 2 - x), collapse = "")

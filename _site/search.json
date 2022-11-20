@@ -1,0 +1,1143 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "This is a brain dump of my attempts of Advent of Code (adventofcode.com)"
+  },
+  {
+    "objectID": "year_2021/year_2021.html",
+    "href": "year_2021/year_2021.html",
+    "title": "2021",
+    "section": "",
+    "text": "01\n        **\n    \n    \n      02\n        **\n    \n    \n      03\n        **\n    \n    \n      04\n        **\n    \n    \n      05\n        **\n    \n    \n      06\n        **\n    \n    \n      07\n        **\n    \n    \n      08\n        **\n    \n    \n      09\n        **\n    \n    \n      10\n        **\n    \n    \n      11\n        **\n    \n    \n      12\n        **\n    \n    \n      13\n        **\n    \n    \n      14\n        **\n    \n    \n      15\n        **\n    \n    \n      16\n        **\n    \n    \n      17\n        **\n    \n    \n      18\n        **\n    \n    \n      19\n        **\n    \n    \n      20\n        **\n    \n    \n      21\n        **\n    \n    \n      22\n        **\n    \n    \n      23\n        **\n    \n    \n      24\n        **\n    \n    \n      25\n        **\n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "year_2022/year_2022.html",
+    "href": "year_2022/year_2022.html",
+    "title": "2022",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "year_2021.html",
+    "href": "year_2021.html",
+    "title": "2021",
+    "section": "",
+    "text": "01\n        **\n    \n    \n      02\n        **\n    \n    \n      03\n        **\n    \n    \n      04\n        **\n    \n    \n      05\n        **\n    \n    \n      06\n        **\n    \n    \n      07\n        **\n    \n    \n      08\n        **\n    \n    \n      09\n        **\n    \n    \n      10\n        **\n    \n    \n      11\n        **\n    \n    \n      12\n        **\n    \n    \n      13\n        **\n    \n    \n      14\n        **\n    \n    \n      15\n        **\n    \n    \n      16\n        **\n    \n    \n      17\n        **\n    \n    \n      18\n        **\n    \n    \n      19\n        **\n    \n    \n      20\n        **\n    \n    \n      21\n        **\n    \n    \n      22\n        **\n    \n    \n      23\n        **\n    \n    \n      24\n        **\n    \n    \n      25\n        **\n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "year_2022.html",
+    "href": "year_2022.html",
+    "title": "2022",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "year_2021/index.html",
+    "href": "year_2021/index.html",
+    "title": "2021",
+    "section": "",
+    "text": "01\n        **\n    \n    \n      02\n        **\n    \n    \n      03\n        **\n    \n    \n      04\n        **\n    \n    \n      05\n        **\n    \n    \n      06\n        **\n    \n    \n      07\n        **\n    \n    \n      08\n        **\n    \n    \n      09\n        **\n    \n    \n      10\n        **\n    \n    \n      11\n        **\n    \n    \n      12\n        **\n    \n    \n      13\n        **\n    \n    \n      14\n        **\n    \n    \n      15\n        **\n    \n    \n      16\n        **\n    \n    \n      17\n        **\n    \n    \n      18\n        **\n    \n    \n      19\n        **\n    \n    \n      20\n        **\n    \n    \n      21\n        **\n    \n    \n      22\n        **\n    \n    \n      23\n        **\n    \n    \n      24\n        **\n    \n    \n      25\n        **\n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "year_2021/day_01/index.html",
+    "href": "year_2021/day_01/index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "Code\nmeasurements <- scan(\"input.txt\")\nstr(measurements)\n\n\n num [1:2000] 159 158 174 196 197 194 209 213 214 222 ..."
+  },
+  {
+    "objectID": "year_2021/day_01/index.html#part-1",
+    "href": "year_2021/day_01/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1\n\n\nCode\nsum(measurements[-1] > measurements[-length(measurements)])\n\n\n[1] 1583"
+  },
+  {
+    "objectID": "year_2021/day_01/index.html#part-2",
+    "href": "year_2021/day_01/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2\n\n\nCode\nrollSums <- function(x) {\n  N <- length(x)\n  ids <- outer(seq_len(N - 2), 0:2, `+`)\n  apply(ids, 1, \\(y) sum(x[y]))\n}\n\nsum(diff(rollSums(measurements)) > 0)\n\n\n[1] 1627\n\n\n\nVectorised\n\n\nCode\nrollSums2 <- function(x) {\n  N <- length(x)\n  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]\n}\nsum(diff(rollSums2(measurements)) > 0)\n\n\n[1] 1627\n\n\nCode\nrollIncrease <- function(x) {\n  N <- length(x)\n  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >\n    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]\n}\n\nsum(rollIncrease(measurements))\n\n\n[1] 1627"
+  },
+  {
+    "objectID": "year_2021/day_01/index.html#part-2---vectorised",
+    "href": "year_2021/day_01/index.html#part-2---vectorised",
+    "title": "Advent of Code",
+    "section": "Part 2 - Vectorised",
+    "text": "Part 2 - Vectorised\n\nrollSums2 <- function(x) {\n  N <- length(x)\n  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]\n}\nsum(diff(rollSums2(measurements)) > 0)\n\n[1] 1627\n\nrollIncrease <- function(x) {\n  N <- length(x)\n  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >\n    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]\n}\n\nsum(rollIncrease(measurements))\n\n[1] 1627"
+  },
+  {
+    "objectID": "year_2021/day_03/index.html",
+    "href": "year_2021/day_03/index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:1000] \"001001100101\" \"010100011100\" \"100000110001\" \"001111110101\" ...\n\n\nCode\nreports <- t(sapply(strsplit(input, \"\"), as.numeric))\nbin2dec <- function(x) strtoi(paste(x, collapse = \"\"), base = 2)"
+  },
+  {
+    "objectID": "year_2021/day_03/index.html#part-1",
+    "href": "year_2021/day_03/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1\n\n\nCode\nmost_common_value <- round(apply(reports, 2, mean) + .Machine$double.eps)\nleast_common_value <- 1 - most_common_value\nbin2dec(most_common_value) * bin2dec(least_common_value)\n\n\n[1] 3901196"
+  },
+  {
+    "objectID": "year_2021/day_03/index.html#part-2",
+    "href": "year_2021/day_03/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2\n\n\nCode\noxygen_report <- co2_report <- reports\nfor (i in 1:12) {\n  if (nrow(oxygen_report) > 1 && is.matrix(oxygen_report)) {\n    oxygen_report <- oxygen_report[\n      oxygen_report[, i] == round(mean(oxygen_report[, i]) + .Machine$double.eps),\n    ]\n  }\n  if (nrow(co2_report) > 1 && is.matrix(co2_report)) {\n    co2_report <- co2_report[\n      co2_report[, i] == 1 - round(mean(co2_report[, i]) + .Machine$double.eps),\n    ]\n  }\n}\nbin2dec(oxygen_report) * bin2dec(co2_report)\n\n\n[1] 4412188\n\n\n\nImproved\n\n\nCode\nfindRating <- function(reports, report_type = c(\"oxygen\", \"co2\"), i = 1) {\n  report_type <- match.arg(report_type)\n\n  needed_value <- round(mean(reports[, i] + .Machine$double.eps))\n  if (report_type == \"co2\") needed_value <- 1 - needed_value\n  reports <- reports[reports[, i] == needed_value, , drop = FALSE]\n\n  if (nrow(reports) == 1) {\n    bin2dec(reports)\n  } else {\n    findRating(reports, report_type = report_type, i = i + 1)\n  }\n}\n\nfindRating(reports, \"oxygen\") * findRating(reports, \"co2\")\n\n\n[1] 4412188"
+  },
+  {
+    "objectID": "year_2021/day_04/index.html",
+    "href": "year_2021/day_04/index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "Code\nbingo_calls <- readLines(\"calls.txt\")\nbingo_calls <- as.numeric(strsplit(bingo_calls, \",\")[[1]])\n\nstr(bingo_calls)\n\n\n num [1:100] 37 60 87 13 34 72 45 49 61 27 ...\n\n\nCode\nbingo_input <- readLines(\"input.txt\")\nbingo_input <- bingo_input[bingo_input != \"\"]\n\nstr(bingo_input)\n\n\n chr [1:500] \"66 78  7 45 92\" \"39 38 62 81 77\" \" 9 73 25 97 99\" ...\n\n\nCode\nbingo_boards <- sapply(split(bingo_input, (seq_along(bingo_input) - 1) %/% 5), \\(x) {\n  do.call(rbind, lapply(strsplit(trimws(x), \" +\"), as.numeric))\n})\nbingo_boards <- array(bingo_boards, dim = c(5, 5, 100))"
+  },
+  {
+    "objectID": "year_2021/day_04/index.html#part-1",
+    "href": "year_2021/day_04/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1\n\n\nCode\nfindBingoWinner <- function(bingo_boards, bingo_calls, \n                            bingo_match = array(FALSE, dim = dim(bingo_boards)), i = 1) {\n  bingo_match <- bingo_match | bingo_boards == bingo_calls[i]\n\n  full_column <- which(apply(apply(bingo_match, 2, colSums), 1, \\(x) any(x == 5)))\n  full_row <- which(apply(apply(bingo_match, 1, colSums), 1, \\(x) any(x == 5)))\n  if (length(full_column) > 0 | length(full_row) > 0) {\n    index <- unique(c(full_column, full_row))\n    list(board = bingo_boards[, , index], calls = bingo_match[, , index], last_call = bingo_calls[i])\n  } else {\n    findBingoWinner(bingo_boards, bingo_calls, bingo_match, i = i + 1)\n  }\n}\n\nwinning_board <- findBingoWinner(bingo_boards, bingo_calls)\nsum(winning_board$board[!winning_board$calls]) * winning_board$last_call\n\n\n[1] 34506"
+  },
+  {
+    "objectID": "year_2021/day_04/index.html#part-2",
+    "href": "year_2021/day_04/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2\n\n\nCode\nfindBingoLoser <- function(bingo_boards, bingo_calls, \n                           bingo_match = array(FALSE, dim = dim(bingo_boards)), i = 1) {\n  bingo_match_input <- bingo_match\n  bingo_match <- bingo_match | bingo_boards == bingo_calls[i]\n\n  full_column <- sum(apply(apply(bingo_match, 2, colSums), 1, \\(x) any(x == 5)))\n  full_row <- sum(apply(apply(bingo_match, 1, colSums), 1, \\(x) any(x == 5)))\n\n  if (full_column == 100) {\n    index <- which(apply(apply(bingo_match_input, 2, colSums), 1, \\(x) all(x != 5)))\n    list(board = bingo_boards[, , index], calls = bingo_match[, , index], last_call = bingo_calls[i])\n  } else if (full_row == 100) {\n    index <- which(apply(apply(bingo_match_input, 1, colSums), 1, \\(x) all(x != 5)))\n    list(board = bingo_boards[, , index], calls = bingo_match[, , index], last_call = bingo_calls[i])\n  } else {\n    findBingoLoser(bingo_boards, bingo_calls, bingo_match, i = i + 1)\n  }\n}\n\nlosing_board <- findBingoLoser(bingo_boards, bingo_calls)\nsum(losing_board$board[!losing_board$calls]) * losing_board$last_call\n\n\n[1] 7686"
+  },
+  {
+    "objectID": "year_2021/day_05/index.html",
+    "href": "year_2021/day_05/index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:500] \"593,10 -> 593,98\" \"777,236 -> 964,236\" \"650,575 -> 476,575\" ...\n\n\n\n\nCode\ngetNDuplicatedPoints <- function(lines, include_diagonals = FALSE) {\n  all_positions <- lapply(lines, \\(x) {\n    # x1, y1, x2, y2\n    line <- as.integer(strsplit(x, \",| -> \")[[1]])\n    if (line[1] == line[3] || line[2] == line[4] || include_diagonals) {\n      data.frame(x = seq(line[1], line[3]), y = seq(line[2], line[4]))\n    } else {\n      data.frame(x = integer(0), y = integer(0))\n    }\n  })\n\n  all_positions_combined <- do.call(rbind, all_positions)\n  nrow(unique(all_positions_combined[duplicated(all_positions_combined), ]))\n}"
+  },
+  {
+    "objectID": "year_2021/day_05/index.html#part-1",
+    "href": "year_2021/day_05/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1\n\n\nCode\ngetNDuplicatedPoints(input)\n\n\n[1] 7468"
+  },
+  {
+    "objectID": "year_2021/day_05/index.html#part-2",
+    "href": "year_2021/day_05/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2\n\n\nCode\ngetNDuplicatedPoints(input, include_diagonals = TRUE)\n\n\n[1] 22364"
+  },
+  {
+    "objectID": "year_2021/day_06/index.html",
+    "href": "year_2021/day_06/index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "Code\nfish <- as.integer(strsplit(readLines(\"input.txt\"), \",\")[[1]])\nstr(fish)\n\n\n int [1:300] 4 1 4 1 3 3 1 4 3 3 ..."
+  },
+  {
+    "objectID": "year_2021/day_06/index.html#part-1",
+    "href": "year_2021/day_06/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1\n\n\nCode\nfindNFish <- function(fish, i = 1, n = 80) {\n  new_fish <- sum(fish == 0)\n  fish <- fish - 1\n  fish[fish == -1] <- 6\n  fish <- append(fish, rep(8, new_fish))\n  if (i < n) {\n    findNFish(fish, i + 1, n)\n  } else {\n    length(fish)\n  }\n}\n\nfindNFish(fish)\n\n\n[1] 350149"
+  },
+  {
+    "objectID": "year_2021/day_06/index.html#part-2",
+    "href": "year_2021/day_06/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2\n\n\nCode\nfindNewFish <- function(fish_table, i = 1, n = 80) {\n  fish_table$days <- fish_table$days - 1\n  if (-1 %in% fish_table$days) {\n    fish_table$freq[fish_table$days == 6] <- sum(\n      subset(fish_table, days %in% c(6, -1))$freq\n    )\n    fish_table$days[fish_table$days == -1] <- 8\n  }\n\n  if (i < n) {\n    findNewFish(fish_table, i + 1, n)\n  } else {\n    fish_table\n  }\n}\n\nfindNFish <- function(fish, n = 80) {\n  fish_table <- table(fish)\n  fish_df <- data.frame(\n    days = as.integer(names(fish_table)),\n    freq = as.numeric(fish_table)\n  )\n  fish_df <- findNewFish(fish_df, n = n)\n  sum(fish_df$freq)\n}\n\nfindNFish(fish, n = 256)"
+  },
+  {
+    "objectID": "year_2021/day_06/index.html#part-2-attempt-2",
+    "href": "year_2021/day_06/index.html#part-2-attempt-2",
+    "title": "Advent of Code",
+    "section": "Part 2 Attempt 2",
+    "text": "Part 2 Attempt 2\n\n\nCode\nperiods <- 0:8\nfish <- factor(scan(\"input.txt\", what = numeric(), sep = \",\", quiet = TRUE), periods)\nfish_cnt <- unclass(table(fish))\n\nn <- 256\nfor (i in seq(0, n %/% 7)) {\n  days <- min(7, n - i * 7)\n  tmp_fish_cnt <- setNames(fish_cnt, (periods - days) %% 9)\n  fish_cnt[periods >= days] <- 0\n  fish_cnt <- fish_cnt + tmp_fish_cnt[as.character(periods)]\n}\nsum(fish_cnt)\n\n\n[1] 1.590328e+12"
+  },
+  {
+    "objectID": "year_2021/day_07/index.html#part-1",
+    "href": "year_2021/day_07/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_07/index.html#part-2",
+    "href": "year_2021/day_07/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_08/index.html#part-1",
+    "href": "year_2021/day_08/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_08/index.html#part-2",
+    "href": "year_2021/day_08/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_09/index.html#part-1",
+    "href": "year_2021/day_09/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_09/index.html#part-2",
+    "href": "year_2021/day_09/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_10/index.html#part-1",
+    "href": "year_2021/day_10/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_10/index.html#part-2",
+    "href": "year_2021/day_10/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_11/index.html#part-1",
+    "href": "year_2021/day_11/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_11/index.html#part-2",
+    "href": "year_2021/day_11/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_12/index.html#part-1",
+    "href": "year_2021/day_12/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_12/index.html#part-2",
+    "href": "year_2021/day_12/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_13/index.html#part-1",
+    "href": "year_2021/day_13/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_13/index.html#part-2",
+    "href": "year_2021/day_13/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_14/index.html#part-1",
+    "href": "year_2021/day_14/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_14/index.html#part-2",
+    "href": "year_2021/day_14/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_15/index.html#part-1",
+    "href": "year_2021/day_15/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_15/index.html#part-2",
+    "href": "year_2021/day_15/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_16/index.html#part-1",
+    "href": "year_2021/day_16/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_16/index.html#part-2",
+    "href": "year_2021/day_16/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_17/index.html#part-1",
+    "href": "year_2021/day_17/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_17/index.html#part-2",
+    "href": "year_2021/day_17/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_18/index.html#part-1",
+    "href": "year_2021/day_18/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_18/index.html#part-2",
+    "href": "year_2021/day_18/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_19/index.html#part-1",
+    "href": "year_2021/day_19/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_19/index.html#part-2",
+    "href": "year_2021/day_19/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_20/index.html#part-1",
+    "href": "year_2021/day_20/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_20/index.html#part-2",
+    "href": "year_2021/day_20/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_21/index.html#part-1",
+    "href": "year_2021/day_21/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_21/index.html#part-2",
+    "href": "year_2021/day_21/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_22/index.html#part-1",
+    "href": "year_2021/day_22/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_22/index.html#part-2",
+    "href": "year_2021/day_22/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_23/index.html#part-1",
+    "href": "year_2021/day_23/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_23/index.html#part-2",
+    "href": "year_2021/day_23/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_24/index.html#part-1",
+    "href": "year_2021/day_24/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_24/index.html#part-2",
+    "href": "year_2021/day_24/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2021/day_25/index.html#part-1",
+    "href": "year_2021/day_25/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2021/day_25/index.html#part-2",
+    "href": "year_2021/day_25/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_01/index.html#part-1",
+    "href": "year_2022/day_01/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_01/index.html#part-2",
+    "href": "year_2022/day_01/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_02/index.html#part-1",
+    "href": "year_2022/day_02/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_02/index.html#part-2",
+    "href": "year_2022/day_02/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_03/index.html#part-1",
+    "href": "year_2022/day_03/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_03/index.html#part-2",
+    "href": "year_2022/day_03/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_04/index.html#part-1",
+    "href": "year_2022/day_04/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_04/index.html#part-2",
+    "href": "year_2022/day_04/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_05/index.html#part-1",
+    "href": "year_2022/day_05/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_05/index.html#part-2",
+    "href": "year_2022/day_05/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_06/index.html#part-1",
+    "href": "year_2022/day_06/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_06/index.html#part-2",
+    "href": "year_2022/day_06/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_07/index.html#part-1",
+    "href": "year_2022/day_07/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_07/index.html#part-2",
+    "href": "year_2022/day_07/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_08/index.html#part-1",
+    "href": "year_2022/day_08/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_08/index.html#part-2",
+    "href": "year_2022/day_08/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_09/index.html#part-1",
+    "href": "year_2022/day_09/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_09/index.html#part-2",
+    "href": "year_2022/day_09/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_10/index.html#part-1",
+    "href": "year_2022/day_10/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_10/index.html#part-2",
+    "href": "year_2022/day_10/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_11/index.html#part-1",
+    "href": "year_2022/day_11/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_11/index.html#part-2",
+    "href": "year_2022/day_11/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_12/index.html#part-1",
+    "href": "year_2022/day_12/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_12/index.html#part-2",
+    "href": "year_2022/day_12/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_13/index.html#part-1",
+    "href": "year_2022/day_13/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_13/index.html#part-2",
+    "href": "year_2022/day_13/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_14/index.html#part-1",
+    "href": "year_2022/day_14/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_14/index.html#part-2",
+    "href": "year_2022/day_14/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_15/index.html#part-1",
+    "href": "year_2022/day_15/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_15/index.html#part-2",
+    "href": "year_2022/day_15/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_16/index.html#part-1",
+    "href": "year_2022/day_16/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_16/index.html#part-2",
+    "href": "year_2022/day_16/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_17/index.html#part-1",
+    "href": "year_2022/day_17/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_17/index.html#part-2",
+    "href": "year_2022/day_17/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_18/index.html#part-1",
+    "href": "year_2022/day_18/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_18/index.html#part-2",
+    "href": "year_2022/day_18/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_19/index.html#part-1",
+    "href": "year_2022/day_19/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_19/index.html#part-2",
+    "href": "year_2022/day_19/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_20/index.html#part-1",
+    "href": "year_2022/day_20/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_20/index.html#part-2",
+    "href": "year_2022/day_20/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_21/index.html#part-1",
+    "href": "year_2022/day_21/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_21/index.html#part-2",
+    "href": "year_2022/day_21/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_22/index.html#part-1",
+    "href": "year_2022/day_22/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_22/index.html#part-2",
+    "href": "year_2022/day_22/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_23/index.html#part-1",
+    "href": "year_2022/day_23/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_23/index.html#part-2",
+    "href": "year_2022/day_23/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_24/index.html#part-1",
+    "href": "year_2022/day_24/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_24/index.html#part-2",
+    "href": "year_2022/day_24/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/day_25/index.html#part-1",
+    "href": "year_2022/day_25/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2022/day_25/index.html#part-2",
+    "href": "year_2022/day_25/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2022/index.html",
+    "href": "year_2022/index.html",
+    "title": "2022",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "year_xxx/day_01/index.html#part-1",
+    "href": "year_xxx/day_01/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_01/index.html#part-2",
+    "href": "year_xxx/day_01/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_02/index.html#part-1",
+    "href": "year_xxx/day_02/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_02/index.html#part-2",
+    "href": "year_xxx/day_02/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_03/index.html#part-1",
+    "href": "year_xxx/day_03/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_03/index.html#part-2",
+    "href": "year_xxx/day_03/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_04/index.html#part-1",
+    "href": "year_xxx/day_04/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_04/index.html#part-2",
+    "href": "year_xxx/day_04/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_05/index.html#part-1",
+    "href": "year_xxx/day_05/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_05/index.html#part-2",
+    "href": "year_xxx/day_05/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_06/index.html#part-1",
+    "href": "year_xxx/day_06/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_06/index.html#part-2",
+    "href": "year_xxx/day_06/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_07/index.html#part-1",
+    "href": "year_xxx/day_07/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_07/index.html#part-2",
+    "href": "year_xxx/day_07/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_08/index.html#part-1",
+    "href": "year_xxx/day_08/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_08/index.html#part-2",
+    "href": "year_xxx/day_08/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_09/index.html#part-1",
+    "href": "year_xxx/day_09/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_09/index.html#part-2",
+    "href": "year_xxx/day_09/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_10/index.html#part-1",
+    "href": "year_xxx/day_10/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_10/index.html#part-2",
+    "href": "year_xxx/day_10/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_11/index.html#part-1",
+    "href": "year_xxx/day_11/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_11/index.html#part-2",
+    "href": "year_xxx/day_11/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_12/index.html#part-1",
+    "href": "year_xxx/day_12/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_12/index.html#part-2",
+    "href": "year_xxx/day_12/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_13/index.html#part-1",
+    "href": "year_xxx/day_13/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_13/index.html#part-2",
+    "href": "year_xxx/day_13/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_14/index.html#part-1",
+    "href": "year_xxx/day_14/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_14/index.html#part-2",
+    "href": "year_xxx/day_14/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_15/index.html#part-1",
+    "href": "year_xxx/day_15/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_15/index.html#part-2",
+    "href": "year_xxx/day_15/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_16/index.html#part-1",
+    "href": "year_xxx/day_16/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_16/index.html#part-2",
+    "href": "year_xxx/day_16/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_17/index.html#part-1",
+    "href": "year_xxx/day_17/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_17/index.html#part-2",
+    "href": "year_xxx/day_17/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_18/index.html#part-1",
+    "href": "year_xxx/day_18/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_18/index.html#part-2",
+    "href": "year_xxx/day_18/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_19/index.html#part-1",
+    "href": "year_xxx/day_19/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_19/index.html#part-2",
+    "href": "year_xxx/day_19/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_20/index.html#part-1",
+    "href": "year_xxx/day_20/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_20/index.html#part-2",
+    "href": "year_xxx/day_20/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_21/index.html#part-1",
+    "href": "year_xxx/day_21/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_21/index.html#part-2",
+    "href": "year_xxx/day_21/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_22/index.html#part-1",
+    "href": "year_xxx/day_22/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_22/index.html#part-2",
+    "href": "year_xxx/day_22/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_23/index.html#part-1",
+    "href": "year_xxx/day_23/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_23/index.html#part-2",
+    "href": "year_xxx/day_23/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_24/index.html#part-1",
+    "href": "year_xxx/day_24/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_24/index.html#part-2",
+    "href": "year_xxx/day_24/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/day_25/index.html#part-1",
+    "href": "year_xxx/day_25/index.html#part-1",
+    "title": "Advent of Code",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_xxx/day_25/index.html#part-2",
+    "href": "year_xxx/day_25/index.html#part-2",
+    "title": "Advent of Code",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxx/index.html",
+    "href": "year_xxx/index.html",
+    "title": "xxx",
+    "section": "",
+    "text": "No matching items"
+  }
+]

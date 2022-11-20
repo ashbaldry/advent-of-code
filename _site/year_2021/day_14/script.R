@@ -1,0 +1,49 @@
+string <- scan("2021/day_14/input.txt", 1, what = character(), sep = "")
+insertions <- read.delim("2021/day_14/input.txt", sep = " ", skip = 2, header = FALSE, col.names = c("a", "x", "b"))
+insertions <- insertions[order(insertions$a), ]
+insertions$ab <- paste0(substr(insertions$a, 1, 1), insertions$b)
+insertions$ba <- paste0(insertions$b, substr(insertions$a, 2, 2))
+
+# Part 1
+insertCharacters <- function(x, i = 1, n = 10) {
+  nchars <- nchar(x)
+  combs <- sapply(seq(nchars - 1), \(y) substr(x, y, y + 1))
+  combs2 <- sapply(combs, \(y) if (y %in% insertions$a) insertions$ab[insertions$a == y] else substr(y, 1, 1))
+  y <- paste0(c(combs2, substr(x, nchars, nchars)), collapse = "")
+
+  if (i == n) {
+    y
+  } else {
+    insertCharacters(y, i + 1, n)
+  }
+}
+
+full_string <- insertCharacters(string)
+string_count <- table(strsplit(full_string, "")[[1]])
+max(string_count) - min(string_count)
+
+# Part 2
+findCharacterCounts <- function(x, n = 10) {
+  nchars <- nchar(x)
+  combs <- sapply(seq(nchars - 1), \(y) substr(x, y, y + 1))
+  combs <- factor(combs, sort(insertions$a))
+  counts <- table(combs)
+
+  for (i in 1:n) counts <- addStrings(counts)
+
+  string_count <- sapply(
+    sort(unique(insertions$b)),
+    \(y) sum(counts[grepl(paste0(y, "$"), names(counts))]) + as.numeric(y == substr(x, 1, 1))
+  )
+  max(string_count) - min(string_count)
+}
+
+addStrings <- function(x) {
+  x <- tapply(rep(as.numeric(x), times = 2), c(insertions$ab, insertions$ba), sum)
+  x <- setNames(x[insertions$a], insertions$a)
+  x[is.na(x)] <- 0
+  x
+}
+
+findCharacterCounts(string)
+findCharacterCounts(string, 40)
