@@ -1,0 +1,21 @@
+project:
+  type: website
+
+website:
+  title: "Advent of Code"
+  favicon: favicon.png
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: year_2021/year_2021.qmd
+      - href: year_2022/year_2022.qmd
+
+format:
+  html:
+    theme: solar
+    css: styles.css
+    toc: true
+
+execute:
+  freeze: auto
