@@ -10,14 +10,52 @@ format:
 ## Set-Up
 
 ```{r setup}
+positions <- apply(do.call(rbind, strsplit(readLines("input.txt"), "")), 2, as.numeric)
 ```
 
 ## Part 1
 
 ```{r part_1}
+right <- positions < cbind(positions[, 2:100], 10)
+left <- positions < cbind(10, positions[, 1:99])
+up <- positions < rbind(10, positions[1:99, ])
+down <- positions < rbind(positions[2:100, ], 10)
+
+sum(positions[right & left & up & down] + 1)
 ```
 
 ## Part 2
 
 ```{r part_2}
+findBasinSize <- function(x) {
+  points <- findSurroundingPoints(t(x))
+  nrow(points)
+}
+
+findSurroundingPoints <- function(x) {
+  # Expanding all points left, right, up, down
+  y <- rbind(
+    x,
+    cbind(x[, "row"] - 1, x[, "col"]),
+    cbind(x[, "row"] + 1, x[, "col"]),
+    cbind(x[, "row"], x[, "col"] - 1),
+    cbind(x[, "row"], x[, "col"] + 1)
+  )
+
+  # Unique, within bounds, and value is not 9
+  y <- y[!duplicated(y), ]
+  y <- y[apply(y, 1, min) > 0 & apply(y, 1, max) <= 100, ]
+  y <- y[!positions[y] == 9, ]
+
+  # If no new points, return all points
+  if (nrow(x) != nrow(y)) {
+    findSurroundingPoints(y)
+  } else {
+    y
+  }
+}
+
+min_positions <- which(right & left & up & down, arr.ind = TRUE)
+basin_sizes <- apply(min_positions, 1, findBasinSize)
+prod(sort(basin_sizes, decreasing = TRUE)[1:3])
 ```

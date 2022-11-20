@@ -14,6 +14,8 @@ input <- readLines("input.txt")
 str(input)
 ```
 
+### Helper Function
+
 ```{r function}
 getNDuplicatedPoints <- function(lines, include_diagonals = FALSE) {
   all_positions <- lapply(lines, \(x) {

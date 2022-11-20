@@ -10,14 +10,27 @@ format:
 ## Set-Up
 
 ```{r setup}
+movements <- scan("input.txt", what = numeric(), sep = ",", quiet = TRUE)
+str(movements)
 ```
 
 ## Part 1
 
 ```{r part_1}
+min(vapply(
+  seq(min(movements), max(movements)), 
+  \(x) sum(abs(movements - x)), 
+  numeric(1)
+))
 ```
 
 ## Part 2
 
 ```{r part_2}
+triangle_numbers <- sapply(seq(min(movements), max(movements)), \(x) sum(seq(x)))
+triangle_numbers[1] <- 0
+min(sapply(
+  seq(min(movements), max(movements)), 
+  \(x) sum(triangle_numbers[abs(movements - x) + 1])
+))
 ```
