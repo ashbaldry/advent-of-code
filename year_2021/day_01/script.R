@@ -1,5 +1,6 @@
-# Part 1
 measurements <- scan("2021/day_01/input.txt")
+
+# Part 1
 sum(measurements[-1] > measurements[-length(measurements)])
 
 # Part 2
