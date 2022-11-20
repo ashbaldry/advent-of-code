@@ -10,42 +10,14 @@ format:
 ## Set-Up
 
 ```{r setup}
-measurements <- scan("input.txt")
-str(measurements)
 ```
 
 ## Part 1
 
-```{r}
-sum(measurements[-1] > measurements[-length(measurements)])
+```{r part_1}
 ```
 
 ## Part 2
 
-```{r}
-rollSums <- function(x) {
-  N <- length(x)
-  ids <- outer(seq_len(N - 2), 0:2, `+`)
-  apply(ids, 1, \(y) sum(x[y]))
-}
-
-sum(diff(rollSums(measurements)) > 0)
-```
-
-### Vectorised
-
-```{r}
-rollSums2 <- function(x) {
-  N <- length(x)
-  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]
-}
-sum(diff(rollSums2(measurements)) > 0)
-
-rollIncrease <- function(x) {
-  N <- length(x)
-  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >
-    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]
-}
-
-sum(rollIncrease(measurements))
+```{r part_2}
 ```
