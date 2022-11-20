@@ -1,6 +1,8 @@
 ---
 title: "2022"
-listing: 
-  template: ../_templates/days.ejs
-  contents: days.yml
 ---
+
+```{r, echo=FALSE, warning=FALSE}
+source("../_rhelp/aoc_table.R")
+create_aoc_star_table("days.yml", 2022)
+```

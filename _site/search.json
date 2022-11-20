@@ -7,172 +7,165 @@
     "text": "Click on any of the yellow stars to see my solution for that day."
   },
   {
-    "objectID": "year_2021/year_2021.html",
-    "href": "year_2021/year_2021.html",
-    "title": "2021",
-    "section": "",
-    "text": "01\n        **\n    \n    \n      02\n        **\n    \n    \n      03\n        **\n    \n    \n      04\n        **\n    \n    \n      05\n        **\n    \n    \n      06\n        **\n    \n    \n      07\n        **\n    \n    \n      08\n        **\n    \n    \n      09\n        **\n    \n    \n      10\n        **\n    \n    \n      11\n        **\n    \n    \n      12\n        **\n    \n    \n      13\n        **\n    \n    \n      14\n        **\n    \n    \n      15\n        **\n    \n    \n      16\n        **\n    \n    \n      17\n        **\n    \n    \n      18\n        **\n    \n    \n      19\n        **\n    \n    \n      20\n        **\n    \n    \n      21\n        **\n    \n    \n      22\n        **\n    \n    \n      23\n        **\n    \n    \n      24\n        **\n    \n    \n      25\n        **\n    \n\n\nNo matching items"
-  },
-  {
-    "objectID": "year_2022/year_2022.html",
-    "href": "year_2022/year_2022.html",
-    "title": "2022",
-    "section": "",
-    "text": "No matching items"
-  },
-  {
-    "objectID": "year_2021.html",
-    "href": "year_2021.html",
-    "title": "2021",
-    "section": "",
-    "text": "01\n        **\n    \n    \n      02\n        **\n    \n    \n      03\n        **\n    \n    \n      04\n        **\n    \n    \n      05\n        **\n    \n    \n      06\n        **\n    \n    \n      07\n        **\n    \n    \n      08\n        **\n    \n    \n      09\n        **\n    \n    \n      10\n        **\n    \n    \n      11\n        **\n    \n    \n      12\n        **\n    \n    \n      13\n        **\n    \n    \n      14\n        **\n    \n    \n      15\n        **\n    \n    \n      16\n        **\n    \n    \n      17\n        **\n    \n    \n      18\n        **\n    \n    \n      19\n        **\n    \n    \n      20\n        **\n    \n    \n      21\n        **\n    \n    \n      22\n        **\n    \n    \n      23\n        **\n    \n    \n      24\n        **\n    \n    \n      25\n        **\n    \n\n\nNo matching items"
-  },
-  {
-    "objectID": "year_2022.html",
-    "href": "year_2022.html",
-    "title": "2022",
-    "section": "",
-    "text": "No matching items"
-  },
-  {
-    "objectID": "year_2021/index.html",
-    "href": "year_2021/index.html",
-    "title": "2021",
-    "section": "",
-    "text": "01\n        **\n    \n    \n      02\n        **\n    \n    \n      03\n        **\n    \n    \n      04\n        **\n    \n    \n      05\n        **\n    \n    \n      06\n        **\n    \n    \n      07\n        **\n    \n    \n      08\n        **\n    \n    \n      09\n        **\n    \n    \n      10\n        **\n    \n    \n      11\n        **\n    \n    \n      12\n        **\n    \n    \n      13\n        **\n    \n    \n      14\n        **\n    \n    \n      15\n        **\n    \n    \n      16\n        **\n    \n    \n      17\n        **\n    \n    \n      18\n        **\n    \n    \n      19\n        **\n    \n    \n      20\n        **\n    \n    \n      21\n        **\n    \n    \n      22\n        **\n    \n    \n      23\n        **\n    \n    \n      24\n        **\n    \n    \n      25\n        **\n    \n\n\nNo matching items"
-  },
-  {
     "objectID": "year_2021/day_01/index.html",
     "href": "year_2021/day_01/index.html",
-    "title": "Advent of Code",
+    "title": "2021 - Day 1",
     "section": "",
     "text": "Code\nmeasurements <- scan(\"input.txt\")\nstr(measurements)\n\n\n num [1:2000] 159 158 174 196 197 194 209 213 214 222 ..."
   },
   {
     "objectID": "year_2021/day_01/index.html#part-1",
     "href": "year_2021/day_01/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 1",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\nsum(measurements[-1] > measurements[-length(measurements)])\n\n\n[1] 1583"
   },
   {
     "objectID": "year_2021/day_01/index.html#part-2",
     "href": "year_2021/day_01/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 1",
     "section": "Part 2",
     "text": "Part 2\n\n\nCode\nrollSums <- function(x) {\n  N <- length(x)\n  ids <- outer(seq_len(N - 2), 0:2, `+`)\n  apply(ids, 1, \\(y) sum(x[y]))\n}\n\nsum(diff(rollSums(measurements)) > 0)\n\n\n[1] 1627\n\n\n\nVectorised\n\n\nCode\nrollSums2 <- function(x) {\n  N <- length(x)\n  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]\n}\nsum(diff(rollSums2(measurements)) > 0)\n\n\n[1] 1627\n\n\nCode\nrollIncrease <- function(x) {\n  N <- length(x)\n  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >\n    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]\n}\n\nsum(rollIncrease(measurements))\n\n\n[1] 1627"
   },
   {
-    "objectID": "year_2021/day_01/index.html#part-2---vectorised",
-    "href": "year_2021/day_01/index.html#part-2---vectorised",
-    "title": "Advent of Code",
-    "section": "Part 2 - Vectorised",
-    "text": "Part 2 - Vectorised\n\nrollSums2 <- function(x) {\n  N <- length(x)\n  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]\n}\nsum(diff(rollSums2(measurements)) > 0)\n\n[1] 1627\n\nrollIncrease <- function(x) {\n  N <- length(x)\n  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >\n    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]\n}\n\nsum(rollIncrease(measurements))\n\n[1] 1627"
+    "objectID": "year_2021/day_02/index.html",
+    "href": "year_2021/day_02/index.html",
+    "title": "2021 - Day 2",
+    "section": "",
+    "text": "Code\ndirections <- read.delim(\n  \"input.txt\",\n  sep = \" \",\n  header = FALSE,\n  col.names = c(\"direction\", \"length\")\n)\nstr(directions)\n\n\n'data.frame':   1000 obs. of  2 variables:\n $ direction: chr  \"forward\" \"forward\" \"down\" \"forward\" ...\n $ length   : int  2 2 7 6 7 4 7 2 4 2 ..."
+  },
+  {
+    "objectID": "year_2021/day_02/index.html#part-1",
+    "href": "year_2021/day_02/index.html#part-1",
+    "title": "2021 - Day 2",
+    "section": "Part 1",
+    "text": "Part 1\n\n\nCode\nsum(directions$length[directions$direction == \"forward\"]) *\n  (sum(directions$length[directions$direction == \"down\"]) -\n        sum(directions$length[directions$direction == \"up\"]))\n\n\n[1] 1635930"
+  },
+  {
+    "objectID": "year_2021/day_02/index.html#part-2",
+    "href": "year_2021/day_02/index.html#part-2",
+    "title": "2021 - Day 2",
+    "section": "Part 2",
+    "text": "Part 2\n\n\nCode\nfindDepth <- function(directions, i = 1, n = nrow(directions), depth = 0, horizontal = 0, aim = 0) {\n  if (directions$direction[i] == \"forward\") {\n    horizontal <- horizontal + directions$length[i]\n    depth <- depth + aim * directions$length[i]\n  } else {\n    position <- if (directions$direction[i] == \"up\") -1 else 1\n    aim <- aim + directions$length[i] * position\n  }\n\n  if (i == n) {\n    horizontal * depth\n  } else {\n    findDepth(directions, i = i + 1, n = n, depth = depth, horizontal = horizontal, aim = aim)\n  }\n}\n\nfindDepth(directions)\n\n\n[1] 1781819478"
   },
   {
     "objectID": "year_2021/day_03/index.html",
     "href": "year_2021/day_03/index.html",
-    "title": "Advent of Code",
+    "title": "2021 - Day 3",
     "section": "",
     "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:1000] \"001001100101\" \"010100011100\" \"100000110001\" \"001111110101\" ...\n\n\nCode\nreports <- t(sapply(strsplit(input, \"\"), as.numeric))\nbin2dec <- function(x) strtoi(paste(x, collapse = \"\"), base = 2)"
   },
   {
     "objectID": "year_2021/day_03/index.html#part-1",
     "href": "year_2021/day_03/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 3",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\nmost_common_value <- round(apply(reports, 2, mean) + .Machine$double.eps)\nleast_common_value <- 1 - most_common_value\nbin2dec(most_common_value) * bin2dec(least_common_value)\n\n\n[1] 3901196"
   },
   {
     "objectID": "year_2021/day_03/index.html#part-2",
     "href": "year_2021/day_03/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 3",
     "section": "Part 2",
     "text": "Part 2\n\n\nCode\noxygen_report <- co2_report <- reports\nfor (i in 1:12) {\n  if (nrow(oxygen_report) > 1 && is.matrix(oxygen_report)) {\n    oxygen_report <- oxygen_report[\n      oxygen_report[, i] == round(mean(oxygen_report[, i]) + .Machine$double.eps),\n    ]\n  }\n  if (nrow(co2_report) > 1 && is.matrix(co2_report)) {\n    co2_report <- co2_report[\n      co2_report[, i] == 1 - round(mean(co2_report[, i]) + .Machine$double.eps),\n    ]\n  }\n}\nbin2dec(oxygen_report) * bin2dec(co2_report)\n\n\n[1] 4412188\n\n\n\nImproved\n\n\nCode\nfindRating <- function(reports, report_type = c(\"oxygen\", \"co2\"), i = 1) {\n  report_type <- match.arg(report_type)\n\n  needed_value <- round(mean(reports[, i] + .Machine$double.eps))\n  if (report_type == \"co2\") needed_value <- 1 - needed_value\n  reports <- reports[reports[, i] == needed_value, , drop = FALSE]\n\n  if (nrow(reports) == 1) {\n    bin2dec(reports)\n  } else {\n    findRating(reports, report_type = report_type, i = i + 1)\n  }\n}\n\nfindRating(reports, \"oxygen\") * findRating(reports, \"co2\")\n\n\n[1] 4412188"
   },
   {
     "objectID": "year_2021/day_04/index.html",
     "href": "year_2021/day_04/index.html",
-    "title": "Advent of Code",
+    "title": "2021 - Day 4",
     "section": "",
     "text": "Code\nbingo_calls <- readLines(\"calls.txt\")\nbingo_calls <- as.numeric(strsplit(bingo_calls, \",\")[[1]])\n\nstr(bingo_calls)\n\n\n num [1:100] 37 60 87 13 34 72 45 49 61 27 ...\n\n\nCode\nbingo_input <- readLines(\"input.txt\")\nbingo_input <- bingo_input[bingo_input != \"\"]\n\nstr(bingo_input)\n\n\n chr [1:500] \"66 78  7 45 92\" \"39 38 62 81 77\" \" 9 73 25 97 99\" ...\n\n\nCode\nbingo_boards <- sapply(split(bingo_input, (seq_along(bingo_input) - 1) %/% 5), \\(x) {\n  do.call(rbind, lapply(strsplit(trimws(x), \" +\"), as.numeric))\n})\nbingo_boards <- array(bingo_boards, dim = c(5, 5, 100))"
   },
   {
     "objectID": "year_2021/day_04/index.html#part-1",
     "href": "year_2021/day_04/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 4",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\nfindBingoWinner <- function(bingo_boards, bingo_calls, \n                            bingo_match = array(FALSE, dim = dim(bingo_boards)), i = 1) {\n  bingo_match <- bingo_match | bingo_boards == bingo_calls[i]\n\n  full_column <- which(apply(apply(bingo_match, 2, colSums), 1, \\(x) any(x == 5)))\n  full_row <- which(apply(apply(bingo_match, 1, colSums), 1, \\(x) any(x == 5)))\n  if (length(full_column) > 0 | length(full_row) > 0) {\n    index <- unique(c(full_column, full_row))\n    list(board = bingo_boards[, , index], calls = bingo_match[, , index], last_call = bingo_calls[i])\n  } else {\n    findBingoWinner(bingo_boards, bingo_calls, bingo_match, i = i + 1)\n  }\n}\n\nwinning_board <- findBingoWinner(bingo_boards, bingo_calls)\nsum(winning_board$board[!winning_board$calls]) * winning_board$last_call\n\n\n[1] 34506"
   },
   {
     "objectID": "year_2021/day_04/index.html#part-2",
     "href": "year_2021/day_04/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 4",
     "section": "Part 2",
     "text": "Part 2\n\n\nCode\nfindBingoLoser <- function(bingo_boards, bingo_calls, \n                           bingo_match = array(FALSE, dim = dim(bingo_boards)), i = 1) {\n  bingo_match_input <- bingo_match\n  bingo_match <- bingo_match | bingo_boards == bingo_calls[i]\n\n  full_column <- sum(apply(apply(bingo_match, 2, colSums), 1, \\(x) any(x == 5)))\n  full_row <- sum(apply(apply(bingo_match, 1, colSums), 1, \\(x) any(x == 5)))\n\n  if (full_column == 100) {\n    index <- which(apply(apply(bingo_match_input, 2, colSums), 1, \\(x) all(x != 5)))\n    list(board = bingo_boards[, , index], calls = bingo_match[, , index], last_call = bingo_calls[i])\n  } else if (full_row == 100) {\n    index <- which(apply(apply(bingo_match_input, 1, colSums), 1, \\(x) all(x != 5)))\n    list(board = bingo_boards[, , index], calls = bingo_match[, , index], last_call = bingo_calls[i])\n  } else {\n    findBingoLoser(bingo_boards, bingo_calls, bingo_match, i = i + 1)\n  }\n}\n\nlosing_board <- findBingoLoser(bingo_boards, bingo_calls)\nsum(losing_board$board[!losing_board$calls]) * losing_board$last_call\n\n\n[1] 7686"
   },
   {
     "objectID": "year_2021/day_05/index.html",
     "href": "year_2021/day_05/index.html",
-    "title": "Advent of Code",
+    "title": "2021 - Day 5",
     "section": "",
-    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:500] \"593,10 -> 593,98\" \"777,236 -> 964,236\" \"650,575 -> 476,575\" ...\n\n\n\n\nCode\ngetNDuplicatedPoints <- function(lines, include_diagonals = FALSE) {\n  all_positions <- lapply(lines, \\(x) {\n    # x1, y1, x2, y2\n    line <- as.integer(strsplit(x, \",| -> \")[[1]])\n    if (line[1] == line[3] || line[2] == line[4] || include_diagonals) {\n      data.frame(x = seq(line[1], line[3]), y = seq(line[2], line[4]))\n    } else {\n      data.frame(x = integer(0), y = integer(0))\n    }\n  })\n\n  all_positions_combined <- do.call(rbind, all_positions)\n  nrow(unique(all_positions_combined[duplicated(all_positions_combined), ]))\n}"
+    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:500] \"593,10 -> 593,98\" \"777,236 -> 964,236\" \"650,575 -> 476,575\" ...\n\n\n\n\n\n\nCode\ngetNDuplicatedPoints <- function(lines, include_diagonals = FALSE) {\n  all_positions <- lapply(lines, \\(x) {\n    # x1, y1, x2, y2\n    line <- as.integer(strsplit(x, \",| -> \")[[1]])\n    if (line[1] == line[3] || line[2] == line[4] || include_diagonals) {\n      data.frame(x = seq(line[1], line[3]), y = seq(line[2], line[4]))\n    } else {\n      data.frame(x = integer(0), y = integer(0))\n    }\n  })\n\n  all_positions_combined <- do.call(rbind, all_positions)\n  nrow(unique(all_positions_combined[duplicated(all_positions_combined), ]))\n}"
   },
   {
     "objectID": "year_2021/day_05/index.html#part-1",
     "href": "year_2021/day_05/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 5",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\ngetNDuplicatedPoints(input)\n\n\n[1] 7468"
   },
   {
     "objectID": "year_2021/day_05/index.html#part-2",
     "href": "year_2021/day_05/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 5",
     "section": "Part 2",
     "text": "Part 2\n\n\nCode\ngetNDuplicatedPoints(input, include_diagonals = TRUE)\n\n\n[1] 22364"
   },
   {
     "objectID": "year_2021/day_06/index.html",
     "href": "year_2021/day_06/index.html",
-    "title": "Advent of Code",
+    "title": "2021 - Day 6",
     "section": "",
     "text": "Code\nfish <- as.integer(strsplit(readLines(\"input.txt\"), \",\")[[1]])\nstr(fish)\n\n\n int [1:300] 4 1 4 1 3 3 1 4 3 3 ..."
   },
   {
     "objectID": "year_2021/day_06/index.html#part-1",
     "href": "year_2021/day_06/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 6",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\nfindNFish <- function(fish, i = 1, n = 80) {\n  new_fish <- sum(fish == 0)\n  fish <- fish - 1\n  fish[fish == -1] <- 6\n  fish <- append(fish, rep(8, new_fish))\n  if (i < n) {\n    findNFish(fish, i + 1, n)\n  } else {\n    length(fish)\n  }\n}\n\nfindNFish(fish)\n\n\n[1] 350149"
   },
   {
     "objectID": "year_2021/day_06/index.html#part-2",
     "href": "year_2021/day_06/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 6",
     "section": "Part 2",
     "text": "Part 2\n\n\nCode\nfindNewFish <- function(fish_table, i = 1, n = 80) {\n  fish_table$days <- fish_table$days - 1\n  if (-1 %in% fish_table$days) {\n    fish_table$freq[fish_table$days == 6] <- sum(\n      subset(fish_table, days %in% c(6, -1))$freq\n    )\n    fish_table$days[fish_table$days == -1] <- 8\n  }\n\n  if (i < n) {\n    findNewFish(fish_table, i + 1, n)\n  } else {\n    fish_table\n  }\n}\n\nfindNFish <- function(fish, n = 80) {\n  fish_table <- table(fish)\n  fish_df <- data.frame(\n    days = as.integer(names(fish_table)),\n    freq = as.numeric(fish_table)\n  )\n  fish_df <- findNewFish(fish_df, n = n)\n  sum(fish_df$freq)\n}\n\nfindNFish(fish, n = 256)"
   },
   {
     "objectID": "year_2021/day_06/index.html#part-2-attempt-2",
     "href": "year_2021/day_06/index.html#part-2-attempt-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 6",
     "section": "Part 2 Attempt 2",
     "text": "Part 2 Attempt 2\n\n\nCode\nperiods <- 0:8\nfish <- factor(scan(\"input.txt\", what = numeric(), sep = \",\", quiet = TRUE), periods)\nfish_cnt <- unclass(table(fish))\n\nn <- 256\nfor (i in seq(0, n %/% 7)) {\n  days <- min(7, n - i * 7)\n  tmp_fish_cnt <- setNames(fish_cnt, (periods - days) %% 9)\n  fish_cnt[periods >= days] <- 0\n  fish_cnt <- fish_cnt + tmp_fish_cnt[as.character(periods)]\n}\nsum(fish_cnt)\n\n\n[1] 1.590328e+12"
   },
   {
+    "objectID": "year_2021/day_07/index.html",
+    "href": "year_2021/day_07/index.html",
+    "title": "2021 - Day 7",
+    "section": "",
+    "text": "Code\nmovements <- scan(\"input.txt\", what = numeric(), sep = \",\", quiet = TRUE)\nstr(movements)\n\n\n num [1:1000] 1101 1 29 67 1102 ..."
+  },
+  {
     "objectID": "year_2021/day_07/index.html#part-1",
     "href": "year_2021/day_07/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 7",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nmin(vapply(\n  seq(min(movements), max(movements)), \n  \\(x) sum(abs(movements - x)), \n  numeric(1)\n))\n\n\n[1] 337488"
   },
   {
     "objectID": "year_2021/day_07/index.html#part-2",
     "href": "year_2021/day_07/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 7",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\ntriangle_numbers <- sapply(seq(min(movements), max(movements)), \\(x) sum(seq(x)))\ntriangle_numbers[1] <- 0\nmin(sapply(\n  seq(min(movements), max(movements)), \n  \\(x) sum(triangle_numbers[abs(movements - x) + 1])\n))\n\n\n[1] 89647695"
+  },
+  {
+    "objectID": "year_2021/day_08/index.html",
+    "href": "year_2021/day_08/index.html",
+    "title": "2021 - Day 8",
+    "section": "",
+    "text": "Code\ncol_names <- c(paste0(\"P\", 1:10), \"SEP\", paste0(\"I\", 1:4))\nnumbers <- read.delim(\"input.txt\", sep = \" \", header = FALSE, col.names = col_names)\nstr(numbers)\n\n\n'data.frame':   200 obs. of  15 variables:\n $ P1 : chr  \"afebd\" \"eabcdg\" \"fbeadcg\" \"adgcbe\" ...\n $ P2 : chr  \"ecdgfb\" \"fc\" \"fdcge\" \"bgaef\" ...\n $ P3 : chr  \"gacfed\" \"fbce\" \"deb\" \"cab\" ...\n $ P4 : chr  \"dgaeb\" \"dbfagc\" \"gcdeaf\" \"gbfadec\" ...\n $ P5 : chr  \"bf\" \"cagbdfe\" \"fdgb\" \"deacg\" ...\n $ P6 : chr  \"acefd\" \"cbdge\" \"bd\" \"bdcg\" ...\n $ P7 : chr  \"fgdabec\" \"fgc\" \"bedacg\" \"cfegad\" ...\n $ P8 : chr  \"bfd\" \"gfade\" \"cedbf\" \"gbcea\" ...\n $ P9 : chr  \"bedcaf\" \"ecdgfb\" \"feabc\" \"fbeadc\" ...\n $ P10: chr  \"bafc\" \"gfedc\" \"fcgdeb\" \"cb\" ...\n $ SEP: chr  \"|\" \"|\" \"|\" \"|\" ...\n $ I1 : chr  \"afcbed\" \"cf\" \"dbcfeg\" \"bgcd\" ...\n $ I2 : chr  \"fb\" \"fgbacd\" \"cbeagd\" \"gdcb\" ...\n $ I3 : chr  \"bfd\" \"fecb\" \"ebd\" \"acb\" ...\n $ I4 : chr  \"bdf\" \"becdg\" \"db\" \"gabced\" ..."
   },
   {
     "objectID": "year_2021/day_08/index.html#part-1",
@@ -189,228 +182,340 @@
     "text": "Part 2\n\n\nCode\ngetNumberOrder <- function(x) {\n  y <- setNames(character(10), paste0(\"N\", 0:9))\n  x <- x[order(nchar(x), x)]\n  # 1, 4, 7, 8\n  y[c(2, 8, 5, 9)] <- x[c(1, 2, 3, 10)]\n  # 2\n  y[3] <- x[4:6][sapply(strsplit(x[4:6], \"\"), \\(y) sum(y %in% strsplit(x[3], \"\")[[1]]) == 2)]\n  # 3\n  y[4] <- x[4:6][sapply(strsplit(x[4:6], \"\"), \\(y) all(strsplit(x[1], \"\")[[1]] %in% y))]\n  # 5\n  y[6] <- setdiff(x[4:6], y[3:4])\n  # 6\n  y[7] <- x[7:9][sapply(strsplit(x[7:9], \"\"), \\(y) !all(strsplit(x[2], \"\")[[1]] %in% y))]\n  # 9\n  y[10] <- x[7:9][sapply(strsplit(x[7:9], \"\"), \\(y) all(strsplit(x[3], \"\")[[1]] %in% y))]\n  # 0\n  y[1] <- setdiff(x[7:9], y[c(7, 10)])\n  y\n}\n\ngetNumber <- function(x) {\n  y <- match(x[paste0(\"I\", 1:4)], x[paste0(\"N\", 0:9)]) - 1\n  as.numeric(paste(y, collapse = \"\"))\n}\n\nnumbers <- sapply(numbers, \\(x) sapply(lapply(strsplit(x, \"\"), sort), paste0, collapse = \"\"))\nsorted_numbers <- t(apply(numbers[, paste0(\"P\", 1:10)], 1, getNumberOrder))\nnumbers <- cbind(numbers, sorted_numbers)\nsum(apply(numbers, 1, getNumber))\n\n\n[1] 990964"
   },
   {
+    "objectID": "year_2021/day_09/index.html",
+    "href": "year_2021/day_09/index.html",
+    "title": "2021 - Day 9",
+    "section": "",
+    "text": "Code\npositions <- apply(do.call(rbind, strsplit(readLines(\"input.txt\"), \"\")), 2, as.numeric)"
+  },
+  {
     "objectID": "year_2021/day_09/index.html#part-1",
     "href": "year_2021/day_09/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 9",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nright <- positions < cbind(positions[, 2:100], 10)\nleft <- positions < cbind(10, positions[, 1:99])\nup <- positions < rbind(10, positions[1:99, ])\ndown <- positions < rbind(positions[2:100, ], 10)\n\nsum(positions[right & left & up & down] + 1)\n\n\n[1] 444"
   },
   {
     "objectID": "year_2021/day_09/index.html#part-2",
     "href": "year_2021/day_09/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 9",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nfindBasinSize <- function(x) {\n  points <- findSurroundingPoints(t(x))\n  nrow(points)\n}\n\nfindSurroundingPoints <- function(x) {\n  # Expanding all points left, right, up, down\n  y <- rbind(\n    x,\n    cbind(x[, \"row\"] - 1, x[, \"col\"]),\n    cbind(x[, \"row\"] + 1, x[, \"col\"]),\n    cbind(x[, \"row\"], x[, \"col\"] - 1),\n    cbind(x[, \"row\"], x[, \"col\"] + 1)\n  )\n\n  # Unique, within bounds, and value is not 9\n  y <- y[!duplicated(y), ]\n  y <- y[apply(y, 1, min) > 0 & apply(y, 1, max) <= 100, ]\n  y <- y[!positions[y] == 9, ]\n\n  # If no new points, return all points\n  if (nrow(x) != nrow(y)) {\n    findSurroundingPoints(y)\n  } else {\n    y\n  }\n}\n\nmin_positions <- which(right & left & up & down, arr.ind = TRUE)\nbasin_sizes <- apply(min_positions, 1, findBasinSize)\nprod(sort(basin_sizes, decreasing = TRUE)[1:3])\n\n\n[1] 1168440"
+  },
+  {
+    "objectID": "year_2021/day_10/index.html",
+    "href": "year_2021/day_10/index.html",
+    "title": "2021 - Day 10",
+    "section": "",
+    "text": "Code\ncommands <- readLines(\"input.txt\")"
   },
   {
     "objectID": "year_2021/day_10/index.html#part-1",
     "href": "year_2021/day_10/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 10",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nsub_commands <- commands\nmatching_regex <- \"\\\\(\\\\)|\\\\[\\\\]|\\\\{\\\\}|<>\"\n\nwhile (any(grepl(matching_regex, sub_commands))) {\n  sub_commands <- gsub(matching_regex, \"\", sub_commands)\n}\n\n# First invalid closing bracket\ninvalid_commands <- substr(gsub(\"\\\\(|\\\\[|\\\\{|<\", \"\", sub_commands), 1, 1)\ninvalid_commands <- invalid_commands[invalid_commands != \"\"]\n\nerror_sizes <- c(\")\" = 3, \"]\" = 57, \"}\" = 1197, \">\" = 25137)\nsum(table(invalid_commands) * error_sizes)\n\n\n[1] 392367"
   },
   {
     "objectID": "year_2021/day_10/index.html#part-2",
     "href": "year_2021/day_10/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 10",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nincomplete_values <- c(\"(\", \"[\", \"{\", \"<\")\nincomplete_commands <- grep(\"\\\\)|\\\\}|\\\\]|>\", sub_commands, value = TRUE, invert = TRUE)\n\nincomplete_scores <- sapply(strsplit(incomplete_commands, \"\"), \\(x) {\n  scores <- rev(match(x, incomplete_values))\n  y <- 0\n  for (i in seq_along(scores)) y <- 5 * y + scores[i]\n  y\n})\nmedian(incomplete_scores)\n\n\n[1] 2192104158"
+  },
+  {
+    "objectID": "year_2021/day_11/index.html",
+    "href": "year_2021/day_11/index.html",
+    "title": "2021 - Day 11",
+    "section": "",
+    "text": "Code\noctopi <- read.fwf(\"input.txt\", widths = rep(1, 10))\noctopi <- as.matrix(octopi)\nstr(octopi)\n\n\n int [1:10, 1:10] 5 3 4 3 3 8 7 1 6 4 ...\n - attr(*, \"dimnames\")=List of 2\n  ..$ : NULL\n  ..$ : chr [1:10] \"V1\" \"V2\" \"V3\" \"V4\" ..."
   },
   {
     "objectID": "year_2021/day_11/index.html#part-1",
     "href": "year_2021/day_11/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 11",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\ncountNFlashes <- function(octopi, n = 100, i = 1, flashes = 0) {\n  octopi <- octopi + 1\n\n  new_flashing_octopi <- flashing_octopi <- octopi > 9\n  while (any(new_flashing_octopi)) {\n    new_locations <- which(new_flashing_octopi, arr.ind = TRUE)\n    updating_octopi <- apply(new_locations, 1, findSurroundingOctopi, simplify = FALSE)\n\n    for (j in seq_along(updating_octopi)) {\n      octopi[updating_octopi[[j]]] <- octopi[updating_octopi[[j]]] + 1\n    }\n\n    new_flashing_octopi <- octopi > 9 & !flashing_octopi\n    flashing_octopi <- octopi > 9\n  }\n\n  flashes <- flashes + sum(octopi > 9)\n  octopi[flashing_octopi] <- 0\n\n  if (i == n) {\n    flashes\n  } else {\n    countNFlashes(octopi, n, i + 1, flashes)\n  }\n}\n\nfindSurroundingOctopi <- function(x) {\n  # Getting box of locations\n  boxLocations <- \\(x) max(1, x - 1):min(10, x + 1)\n  rows <- boxLocations(x[1])\n  cols <- boxLocations(x[2])\n  cbind(row = rep(rows, times = length(cols)), col = rep(cols, each = length(rows)))\n}\n\ncountNFlashes(octopi)\n\n\n[1] 1785"
   },
   {
     "objectID": "year_2021/day_11/index.html#part-2",
     "href": "year_2021/day_11/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 11",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nfindAllFlashes <- function(octopi, i = 1) {\n  octopi <- octopi + 1\n\n  new_flashing_octopi <- flashing_octopi <- octopi > 9\n  while (any(new_flashing_octopi)) {\n    new_locations <- which(new_flashing_octopi, arr.ind = TRUE)\n    updating_octopi <- apply(new_locations, 1, findSurroundingOctopi, simplify = FALSE)\n\n    for (j in seq_along(updating_octopi)) {\n      octopi[updating_octopi[[j]]] <- octopi[updating_octopi[[j]]] + 1\n    }\n\n    new_flashing_octopi <- octopi > 9 & !flashing_octopi\n    flashing_octopi <- octopi > 9\n  }\n\n  octopi[flashing_octopi] <- 0\n\n  if (all(flashing_octopi)) {\n    i\n  } else {\n    findAllFlashes(octopi, i + 1)\n  }\n}\n\nfindAllFlashes(octopi)\n\n\n[1] 354"
+  },
+  {
+    "objectID": "year_2021/day_12/index.html",
+    "href": "year_2021/day_12/index.html",
+    "title": "2021 - Day 12",
+    "section": "",
+    "text": "Code\nlines <- read.delim(\"input.txt\", sep = \"-\", header = FALSE, col.names = c(\"a\", \"b\"))\nstr(lines)\n\n\n'data.frame':   21 obs. of  2 variables:\n $ a: chr  \"mx\" \"mx\" \"xq\" \"start\" ...\n $ b: chr  \"IQ\" \"HO\" \"start\" \"HO\" ...\n\n\nCode\npoints <- unique(unlist(lines))\nvalid_points <- setNames(rep(TRUE, length(points)), points)\nvisits <- setNames(rep(0, length(points)), points)\n\n\n\n\n\n\nCode\ngetNPaths <- function(lines, valid_points, visits, start = \"start\", finish = \"end\", max_visits = 1) {\n  # If at the end then can finish the path\n  if (start == finish) return(1)\n\n  # Cannot revisit lowercase points more than max_visits times\n  if (tolower(start) == start) {\n    if (start == \"start\") valid_points[start] <- FALSE\n    visits[start] <- visits[start] + 1\n    if (visits[start] == max_visits) {\n      valid_points[names(visits[visits >= 1])] <- FALSE\n    } else if (any(visits == max_visits)) {\n      valid_points[start] <- FALSE\n    }\n  }\n\n  next_vertices <- c(lines$a[lines$b == start], lines$b[lines$a == start])\n  next_vertices <- next_vertices[next_vertices %in% points[valid_points]]\n\n  if (length(next_vertices) == 0) {\n    0\n  } else {\n    sum(sapply(\n      next_vertices, getNPaths, lines = lines, visits = visits,\n      valid_points = valid_points, finish = finish, max_visits = max_visits\n    ))\n  }\n}"
   },
   {
     "objectID": "year_2021/day_12/index.html#part-1",
     "href": "year_2021/day_12/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 12",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\ngetNPaths(lines, valid_points, visits)\n\n\n[1] 4749"
   },
   {
     "objectID": "year_2021/day_12/index.html#part-2",
     "href": "year_2021/day_12/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 12",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\ngetNPaths(lines, valid_points, visits, max_visits = 2)\n\n\n[1] 123054"
+  },
+  {
+    "objectID": "year_2021/day_13/index.html",
+    "href": "year_2021/day_13/index.html",
+    "title": "2021 - Day 13",
+    "section": "",
+    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:852] \"43,593\" \"1139,385\" \"1178,51\" \"216,679\" \"743,185\" \"1241,250\" ...\n\n\nCode\ninput_space <- which(input == \"\")\ncoordinates <- do.call(rbind, lapply(strsplit(input[seq(input_space - 1)], \",\"), as.numeric)) + 1\nfolds <- input[-seq(input_space)]\n\npaper <- matrix(FALSE, nrow = max(coordinates[, 2]), ncol = max(coordinates[, 1]))\npaper[as.matrix(coordinates[, c(2, 1)])] <- TRUE"
   },
   {
     "objectID": "year_2021/day_13/index.html#part-1",
     "href": "year_2021/day_13/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 13",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nfoldPaper <- function(x, fold) {\n  position <- as.numeric(sub(\".*=\", \"\", fold)) + 1\n  if (grepl(\"x\", fold)) {\n    x[, seq(position - 1, 1)] | x[, seq(position + 1, ncol(x))]\n  } else {\n    x[seq(position - 1, 1), ] | x[seq(position + 1, nrow(x)), ]\n  }\n}\n\nsum(foldPaper(paper, folds[1]))\n\n\n[1] 704"
   },
   {
     "objectID": "year_2021/day_13/index.html#part-2",
     "href": "year_2021/day_13/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 13",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nfor (fold in folds) paper <- foldPaper(paper, fold)\nmatrix(rev(ifelse(paper, \"O\", \"\")), nrow = 6)\n\n\n     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]\n[1,] \"O\"  \"\"   \"\"   \"O\"  \"\"   \"\"   \"O\"  \"O\"  \"\"   \"\"    \"\"    \"O\"   \"O\"   \"\"   \n[2,] \"O\"  \"\"   \"\"   \"O\"  \"\"   \"O\"  \"\"   \"\"   \"O\"  \"\"    \"O\"   \"\"    \"\"    \"O\"  \n[3,] \"O\"  \"O\"  \"O\"  \"O\"  \"\"   \"O\"  \"\"   \"\"   \"\"   \"\"    \"O\"   \"\"    \"\"    \"O\"  \n[4,] \"O\"  \"\"   \"\"   \"O\"  \"\"   \"O\"  \"\"   \"O\"  \"O\"  \"\"    \"O\"   \"O\"   \"O\"   \"O\"  \n[5,] \"O\"  \"\"   \"\"   \"O\"  \"\"   \"O\"  \"\"   \"\"   \"O\"  \"\"    \"O\"   \"\"    \"\"    \"O\"  \n[6,] \"O\"  \"\"   \"\"   \"O\"  \"\"   \"\"   \"O\"  \"O\"  \"O\"  \"\"    \"O\"   \"\"    \"\"    \"O\"  \n     [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25] [,26]\n[1,] \"\"    \"\"    \"\"    \"O\"   \"O\"   \"\"    \"O\"   \"O\"   \"O\"   \"\"    \"\"    \"O\"  \n[2,] \"\"    \"\"    \"\"    \"\"    \"O\"   \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"  \n[3,] \"\"    \"\"    \"\"    \"\"    \"O\"   \"\"    \"O\"   \"O\"   \"O\"   \"\"    \"\"    \"O\"  \n[4,] \"\"    \"\"    \"\"    \"\"    \"O\"   \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"  \n[5,] \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"  \n[6,] \"\"    \"\"    \"O\"   \"O\"   \"\"    \"\"    \"O\"   \"O\"   \"O\"   \"\"    \"\"    \"O\"  \n     [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35] [,36] [,37] [,38]\n[1,] \"O\"   \"O\"   \"O\"   \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"\"    \"O\"   \"O\"  \n[2,] \"\"    \"\"    \"\"    \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"   \"\"    \"\"   \n[3,] \"O\"   \"O\"   \"\"    \"\"    \"O\"   \"O\"   \"O\"   \"O\"   \"\"    \"O\"   \"\"    \"\"   \n[4,] \"\"    \"\"    \"\"    \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"   \"\"    \"\"   \n[5,] \"\"    \"\"    \"\"    \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"O\"   \"\"    \"\"   \n[6,] \"O\"   \"O\"   \"O\"   \"\"    \"O\"   \"\"    \"\"    \"O\"   \"\"    \"\"    \"O\"   \"O\"  \n     [,39] [,40]\n[1,] \"\"    \"\"   \n[2,] \"O\"   \"\"   \n[3,] \"\"    \"\"   \n[4,] \"\"    \"\"   \n[5,] \"O\"   \"\"   \n[6,] \"\"    \"\"   \n\n\nCode\n# Nicer print\ncat(rev(t(cbind(\"\\n\", ifelse(paper, \"O\", \" \")))), sep = \"\")\n\n\nO  O  OO   OO    OO OOO  OOOO O  O  OO  \nO  O O  O O  O    O O  O O    O  O O  O \nOOOO O    O  O    O OOO  OOO  OOOO O    \nO  O O OO OOOO    O O  O O    O  O O    \nO  O O  O O  O O  O O  O O    O  O O  O \nO  O  OOO O  O  OO  OOO  OOOO O  O  OO"
+  },
+  {
+    "objectID": "year_2021/day_14/index.html",
+    "href": "year_2021/day_14/index.html",
+    "title": "2021 - Day 14",
+    "section": "",
+    "text": "Code\nstring <- scan(\"input.txt\", 1, what = character(), sep = \"\")\nstr(string)\n\n\n chr \"OHFNNCKCVOBHSSHONBNF\"\n\n\nCode\ninsertions <- read.delim(\n  \"input.txt\", \n  sep = \" \", \n  skip = 2, \n  header = FALSE, \n  col.names = c(\"a\", \"x\", \"b\")\n)\nstr(insertions)\n\n\n'data.frame':   100 obs. of  3 variables:\n $ a: chr  \"SV\" \"KP\" \"FP\" \"VP\" ...\n $ x: chr  \"->\" \"->\" \"->\" \"->\" ...\n $ b: chr  \"O\" \"H\" \"B\" \"V\" ...\n\n\nCode\ninsertions <- insertions[order(insertions$a), ]\ninsertions$ab <- paste0(substr(insertions$a, 1, 1), insertions$b)\ninsertions$ba <- paste0(insertions$b, substr(insertions$a, 2, 2))"
   },
   {
     "objectID": "year_2021/day_14/index.html#part-1",
     "href": "year_2021/day_14/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 14",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\ninsertCharacters <- function(x, i = 1, n = 10) {\n  nchars <- nchar(x)\n  combs <- sapply(seq(nchars - 1), \\(y) substr(x, y, y + 1))\n  combs2 <- sapply(combs, \\(y) if (y %in% insertions$a) insertions$ab[insertions$a == y] else substr(y, 1, 1))\n  y <- paste0(c(combs2, substr(x, nchars, nchars)), collapse = \"\")\n\n  if (i == n) {\n    y\n  } else {\n    insertCharacters(y, i + 1, n)\n  }\n}\n\nfull_string <- insertCharacters(string)\nstring_count <- table(strsplit(full_string, \"\")[[1]])\nmax(string_count) - min(string_count)\n\n\n[1] 2590"
   },
   {
     "objectID": "year_2021/day_14/index.html#part-2",
     "href": "year_2021/day_14/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 14",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nfindCharacterCounts <- function(x, n = 10) {\n  nchars <- nchar(x)\n  combs <- sapply(seq(nchars - 1), \\(y) substr(x, y, y + 1))\n  combs <- factor(combs, sort(insertions$a))\n  counts <- table(combs)\n\n  for (i in 1:n) counts <- addStrings(counts)\n\n  string_count <- sapply(\n    sort(unique(insertions$b)),\n    \\(y) sum(counts[grepl(paste0(y, \"$\"), names(counts))]) + as.numeric(y == substr(x, 1, 1))\n  )\n  max(string_count) - min(string_count)\n}\n\naddStrings <- function(x) {\n  x <- tapply(rep(as.numeric(x), times = 2), c(insertions$ab, insertions$ba), sum)\n  x <- setNames(x[insertions$a], insertions$a)\n  x[is.na(x)] <- 0\n  x\n}\n\nfindCharacterCounts(string)\n\n\n[1] 2590\n\n\nCode\nfindCharacterCounts(string, 40)\n\n\n[1] 2.875665e+12"
+  },
+  {
+    "objectID": "year_2021/day_15/index.html",
+    "href": "year_2021/day_15/index.html",
+    "title": "2021 - Day 15",
+    "section": "",
+    "text": "Code\nrisk <- as.matrix(read.fwf(\"input.txt\", rep(1, 100), header = FALSE))\nstr(risk)\n\n\n int [1:100, 1:100] 4 7 2 9 1 1 9 8 2 7 ...\n - attr(*, \"dimnames\")=List of 2\n  ..$ : NULL\n  ..$ : chr [1:100] \"V1\" \"V2\" \"V3\" \"V4\" ...\n\n\n\n\n\n\nCode\ngetRisk <- function(risk) {\n  size <- nrow(risk)\n  distance <- matrix(Inf, size, size)\n  distance[1, 1] <- 0\n  distance[-1, 1] <- cumsum(risk[-1, 1])\n  distance[1, -1] <- cumsum(risk[1, -1])\n\n  # First iteration only looks at moving right/down (what I thought was all that happened...)\n  for (x in seq(2, size)) {\n    for (y in seq(2, size)) {\n      distance[x, y] <- risk[x, y] + min(distance[cbind(c(x - 1, x), c(y, y - 1))])\n    }\n  }\n\n  # Checks if can move/left with lower risk\n  reducible <- distance > risk + rbind(distance[2:size, ], Inf) |\n    distance > risk + cbind(distance[, 2:size], Inf)\n\n  while (any(reducible)) {\n    for (x in seq(1, size)) {\n      for (y in seq(1, size)) {\n        # Checks all 4 directions for lowest risk\n        points <- cbind(c(x - 1, x, x, x + 1), c(y, y - 1, y + 1, y))\n        points <- points[points[, 1] >= 1 & points[, 1] <= size & points[, 2] >= 1 & points[, 2] <= size, ]\n        distance[x, y] <- min(distance[x, y], risk[x, y] + min(distance[points]))\n      }\n    }\n    reducible <- distance > risk + rbind(distance[2:size, ], Inf) |\n      distance > risk + cbind(distance[, 2:size], Inf)\n  }\n\n  # Return bottom right element\n  distance[size, size]\n}"
   },
   {
     "objectID": "year_2021/day_15/index.html#part-1",
     "href": "year_2021/day_15/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 15",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\ngetRisk(risk)\n\n\n[1] 527"
   },
   {
     "objectID": "year_2021/day_15/index.html#part-2",
     "href": "year_2021/day_15/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 15",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nrisk2 <- cbind(risk, risk + 1, risk + 2, risk + 3, risk + 4)\nrisk2 <- rbind(risk2, risk2 + 1, risk2 + 2, risk2 + 3, risk2 + 4)\nrisk2[risk2 > 9] <- risk2[risk2 > 9] %% 10 + 1\ngetRisk(risk2)"
+  },
+  {
+    "objectID": "year_2021/day_16/index.html",
+    "href": "year_2021/day_16/index.html",
+    "title": "2021 - Day 16",
+    "section": "",
+    "text": "Code\ntransmission <- strsplit(readLines(\"input.txt\"), \"\")[[1]]\nstr(transmission)\n\n\n chr [1:1344] \"C\" \"2\" \"0\" \"D\" \"7\" \"9\" \"0\" \"0\" \"A\" \"0\" \"1\" \"2\" \"F\" \"B\" \"9\" ...\n\n\nCode\ntransmission_bin <- strtoi(transmission, base = 16L)\nclass(transmission_bin) <- \"binmode\"\ntransmission_bin <- paste(as.character(transmission_bin), collapse = \"\")\n\n\n\n\n\n\nCode\nbinaryNumber <- function(number) {\n  x <- as.numeric(strsplit(number, \"\")[[1]])\n  sum(x * 2 ^ (seq(length(x) - 1, 0)))\n}\n\nfindPackets <- function(transmission_bin, type_1_run = 0, type_1_max = 1) {\n  version <- strtoi(substr(transmission_bin, 1, 3), 2L)\n  type_id <- strtoi(substr(transmission_bin, 4, 6), 2L)\n\n  if (isTRUE(type_id == 4)) {\n    i <- 7\n    number <- substr(transmission_bin, i + 1, i + 4)\n    while (substr(transmission_bin, i, i) == \"1\") {\n      i <- i + 5\n      number <- paste0(number, substr(transmission_bin, i + 1, i + 4))\n    }\n    i <- i + 5\n    number <- binaryNumber(number)\n    subpackages <- NULL\n  } else {\n    type_id_length <- substr(transmission_bin, 7, 7)\n\n    if (type_id_length == \"0\") {\n      length_subpackages <- strtoi(substr(transmission_bin, 8, 22), 2L)\n      subpackages <- findPackets(substr(transmission_bin, 23, 22 + length_subpackages))\n      i <- 23 + length_subpackages\n    } else {\n      n_subpackages <- strtoi(substr(transmission_bin, 8, 18), 2L)\n      subpackages <- findPackets(substr(transmission_bin, 19, nchar(transmission_bin)), 1, n_subpackages)\n      i <- nchar(transmission_bin) - subpackages[[n_subpackages]]$nchar + 1\n    }\n    number <- NULL\n  }\n\n  packet <- list(version = version, type = type_id, value = number, subpackages = subpackages)\n\n  remaining_transmission <- substr(transmission_bin, i, nchar(transmission_bin))\n  if (type_1_run == type_1_max) packet$nchar <- nchar(remaining_transmission)\n\n  if (length(remaining_transmission) > 0 && grepl(\"1\", remaining_transmission) && type_1_run != type_1_max) {\n    if (type_1_run > 0) type_1_run <- type_1_run + 1\n    c(list(packet), findPackets(remaining_transmission, type_1_run, type_1_max))\n  } else {\n    list(packet)\n  }\n}"
   },
   {
     "objectID": "year_2021/day_16/index.html#part-1",
     "href": "year_2021/day_16/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 16",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\npackets <- findPackets(transmission_bin)[[1]]\npackets_unlisted <- unlist(packets)\nsum(packets_unlisted[grepl(\"version\", names(packets_unlisted))])"
   },
   {
     "objectID": "year_2021/day_16/index.html#part-2",
     "href": "year_2021/day_16/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 16",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nfindPacketSum <- function(packet) {\n  if (packet$type == 0) {\n    sum(sapply(packet$subpackages, findPacketSum))\n  } else if (packet$type == 1) {\n    prod(sapply(packet$subpackages, findPacketSum))\n  } else if (packet$type == 2) {\n    min(sapply(packet$subpackages, findPacketSum))\n  } else if (packet$type == 3) {\n    max(sapply(packet$subpackages, findPacketSum))\n  } else if (packet$type == 4) {\n    packet$value\n  } else if (packet$type == 5) {\n    as.numeric(findPacketSum(packet$subpackages[[1]]) > findPacketSum(packet$subpackages[[2]]))\n  } else if (packet$type == 6) {\n    as.numeric(findPacketSum(packet$subpackages[[1]]) < findPacketSum(packet$subpackages[[2]]))\n  } else if (packet$type == 7) {\n    as.numeric(findPacketSum(packet$subpackages[[1]]) == findPacketSum(packet$subpackages[[2]]))\n  }\n}\nfindPacketSum(packets)"
+  },
+  {
+    "objectID": "year_2021/day_17/index.html",
+    "href": "year_2021/day_17/index.html",
+    "title": "2021 - Day 17",
+    "section": "",
+    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr \"target area: x=117..164, y=-140..-89\"\n\n\nCode\nedges <- setNames(\n  as.numeric(regmatches(input, gregexpr(\"(-|)\\\\d+\", input))[[1]]),\n  c(\"x1\", \"x2\", \"y1\", \"y2\")\n)"
   },
   {
     "objectID": "year_2021/day_17/index.html#part-1",
     "href": "year_2021/day_17/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 17",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nsum(seq(abs(edges[\"y1\"]) - 1))\n\n\n[1] 9730"
   },
   {
     "objectID": "year_2021/day_17/index.html#part-2",
     "href": "year_2021/day_17/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 17",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\ntriangle_numbers <- cumsum(seq(20))\nmin_x <- min(which(triangle_numbers >= edges[\"x1\"] & triangle_numbers <= edges[\"x2\"]))\nmax_x <- unname(edges[\"x2\"])\nmin_y <- unname(edges[\"y1\"])\nmax_y <- unname(abs(edges[\"y1\"]) - 1)\n\npotential_veloctiy <- cbind(\n  x = rep(min_x:max_x, each = max_y - min_y + 1),\n  y = rep(min_y:max_y, times = max_x - min_x + 1)\n)\n\nsum(apply(potential_veloctiy, 1, \\(velocity) {\n  x_pos <- cumsum(pmax(velocity[\"x\"] - 0:280, 0))\n  y_pos <- cumsum(velocity[\"y\"] - 0:280)\n  any(\n    x_pos >= edges[\"x1\"] & x_pos <= edges[\"x2\"] &\n      y_pos >= edges[\"y1\"] & y_pos <= edges[\"y2\"]\n  )\n}))\n\n\n[1] 4110"
+  },
+  {
+    "objectID": "year_2021/day_18/index.html",
+    "href": "year_2021/day_18/index.html",
+    "title": "2021 - Day 18",
+    "section": "",
+    "text": "Code\nsnailfish <- readLines(\"input.txt\")\nstr(snailfish)\n\n\n chr [1:100] \"[[6,[[9,4],[5,1]]],[[[6,5],[9,4]],2]]\" ...\n\n\n\n\n\n\nCode\nfindReduction <- function(x) {\n  explode_loc <- findExplodeLocations(x)\n  split_loc <- findSplitLocations(x)\n\n  if (length(explode_loc) > 0) {\n    explodePair(x, explode_loc[1])\n  } else if (length(split_loc) > 0) {\n    splitPair(x, split_loc[1])\n  } else {\n    x\n  }\n}\n\nfindExplodeLocations <- function(x, depth = 4) {\n  pairs <- gregexpr(\"\\\\[\\\\d+,\\\\d+\\\\]\", x)[[1]]\n  opens <- cumsum((strsplit(x, \"\")[[1]] == \"[\") - (strsplit(x, \"\")[[1]] == \"]\"))\n  pairs[opens[pairs] > depth]\n}\n\nfindSplitLocations <- function(x) setdiff(as.numeric(gregexpr(\"\\\\d{2}\", x)[[1]]), -1)\n\nexplodePair <- function(x, pair_loc, recurse = TRUE) {\n  num1 <- num2 <- 0\n  init_str <- substr(x, 1, pair_loc - 1)\n  pair_str <- sub(\"(.?\\\\]).*\", \"\\\\1\", substr(x, pair_loc, nchar(x)))\n  first_num <- as.numeric(sub(\"\\\\[(\\\\d+),.*\", \"\\\\1\", pair_str))\n  second_num <- as.numeric(sub(\"\\\\[.*,(\\\\d+)\\\\]\", \"\\\\1\", pair_str))\n  end_str <- sub(pair_str, \"\", fixed = TRUE, substr(x, pair_loc, nchar(x)))\n\n  if (grepl(\"\\\\d\", init_str)) {\n    num1 <- as.numeric(sub(\".*[^0-9](\\\\d+)(?=[^0-9]+$).*\", \"\\\\1\", init_str, perl = TRUE)) + first_num\n    init_str <- sub(\"(?!<[^0-9])(\\\\d+)(?=[^0-9]+$)\", num1, init_str, perl = TRUE)\n  }\n\n  if (grepl(\"\\\\d\", end_str)) {\n    num2 <- as.numeric(regmatches(end_str, regexpr(\"\\\\d+\", end_str))) + second_num\n    end_str <- sub(\"\\\\d+\", num2, end_str)\n  }\n\n  findReduction(paste0(init_str, 0, end_str))\n}\n\nsplitPair <- function(x, number_loc, recurse = TRUE) {\n  init_str <- substr(x, 1, number_loc - 1)\n  end_str <- substr(x, number_loc + 2, nchar(x))\n  number <- as.numeric(substr(x, number_loc, number_loc + 1))\n\n  findReduction(paste0(init_str, \"[\", floor(number / 2), \",\", ceiling(number / 2), \"]\", end_str))\n}\n\nsumFish <- function(x) {\n  pairs <- gregexpr(\"\\\\[\\\\d+,\\\\d+\\\\]\", x)\n  pair_str <- regmatches(x, pairs)[[1]]\n  pair_num <- as.numeric(sub(\"^.?(\\\\d+).*\", \"\\\\1\", pair_str)) * 3 +\n    as.numeric(sub(\".*,(\\\\d+)\\\\]\", \"\\\\1\", pair_str)) * 2\n  new_x <- paste0(strsplit(x, \"\\\\[\\\\d+,\\\\d+\\\\]\")[[1]], c(pair_num, \"\"), collapse = \"\")\n  if (grepl(\"^\\\\[\", new_x)) new_x <- sumFish(new_x)\n  as.numeric(new_x)\n}"
   },
   {
     "objectID": "year_2021/day_18/index.html#part-1",
     "href": "year_2021/day_18/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 18",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nfish_sum <- snailfish[1]\nfor (i in seq_along(snailfish)[-1]) {\n  fish_sum <- findReduction(paste0(\"[\", fish_sum, \",\", snailfish[i], \"]\"))\n}\nsumFish(fish_sum)\n\n\n[1] 4008"
   },
   {
     "objectID": "year_2021/day_18/index.html#part-2",
     "href": "year_2021/day_18/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 18",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\ncombinations <- cbind(rep(snailfish, each = 100), rep(snailfish, times = 100))\ncombinations <- combinations[combinations[, 1] != combinations[, 2], ]\ncombinations_str <- paste0(\"[\", combinations[, 1], \",\", combinations[, 2], \"]\")\n\ndifferences <- sapply(combinations_str, \\(x) sumFish(findReduction(x)))\nmax(differences)\n\n\n[1] 4667"
+  },
+  {
+    "objectID": "year_2021/day_19/index.html",
+    "href": "year_2021/day_19/index.html",
+    "title": "2021 - Day 19",
+    "section": "",
+    "text": "Code\ninput <- readLines(\"input.txt\")\nstr(input)\n\n\n chr [1:1105] \"--- scanner 0 ---\" \"645,-448,-766\" \"529,751,-867\" ...\n\n\nCode\ngaps <- c(0, which(input == \"\"))\norientations <- expand.grid(x = c(1, -1), y = c(1, -1), z = c(1, -1))\nscanners <- lapply(seq_along(gaps), \\(x) {\n  if (x == length(gaps)) nrows <- -1 else nrows <- gaps[x + 1] - gaps[x] - 2\n  beacons <- read.csv(\n    \"input.txt\", header = FALSE, skip = gaps[x] + 1, nrows = nrows,\n    col.names = c(\"x\", \"y\", \"z\")\n  )\n  beacons <- as.matrix(beacons)\n\n  # Everything said 24 directions, have mirrors here (so does make solution slower)\n  all_locations <- c(\n    apply(orientations, 1, \\(y) t(y * t(beacons)), simplify = FALSE),\n    apply(orientations, 1, \\(y) t(y * t(beacons[, c(\"x\", \"z\", \"y\")])), simplify = FALSE),\n    apply(orientations, 1, \\(y) t(y * t(beacons[, c(\"y\", \"x\", \"z\")])), simplify = FALSE),\n    apply(orientations, 1, \\(y) t(y * t(beacons[, c(\"y\", \"z\", \"x\")])), simplify = FALSE),\n    apply(orientations, 1, \\(y) t(y * t(beacons[, c(\"z\", \"x\", \"y\")])), simplify = FALSE),\n    apply(orientations, 1, \\(y) t(y * t(beacons[, c(\"z\", \"y\", \"x\")])), simplify = FALSE)\n  )\n\n  # Column rename for consistency\n  lapply(all_locations, \\(y) {colnames(y) <- c(\"x\", \"y\", \"z\"); y})\n})"
   },
   {
     "objectID": "year_2021/day_19/index.html#part-1",
     "href": "year_2021/day_19/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 19",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\n# Scanner 1 is source of truth\nbeacon_locations <- scanners[[1]][[1]]\nto_scan <- seq(2, length(scanners))\nscanner_locations <- c(0, 0, 0)\n\nwhile (length(to_scan) > 0) {\n  for (i in to_scan) {\n    k <- length(scanners[[i]])\n    # Run through all combinations to look for connecting points\n    for (j in seq_along(scanners[[i]])) {\n      # Gets the x,y,z distances of each beacon to the known locations. Pasting together for speed\n      distances <- apply(scanners[[i]][[j]], 1, \\(x) {\n        m <- sweep(beacon_locations, 2, x)\n        paste(m[, 1], m[, 2], m[, 3])\n      })\n      distances_comb <- table(as.vector(distances))\n      if (any(distances_comb >= 12)) break\n    }\n\n    # If no overlap leave to be scanned again\n    if (j == length(scanners[[i]]) && !any(distances_comb >= 12)) next\n    to_scan <- setdiff(to_scan, i)\n\n    # Find the locations of the scanner and new beacons\n    translation <- as.numeric(strsplit(names(distances_comb[distances_comb >= 12]), \" \")[[1]])\n    scanner_locations <- rbind(scanner_locations, translation)\n    beacon_locations2 <- rbind(beacon_locations, sweep(scanners[[i]][[j]], 2, translation, \"+\"))\n    beacon_locations <- beacon_locations2[!duplicated(beacon_locations2), ]\n  }\n}\n\nnrow(beacon_locations)"
   },
   {
     "objectID": "year_2021/day_19/index.html#part-2",
     "href": "year_2021/day_19/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 19",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nmax(apply(scanner_locations, 1, \\(x) max(rowSums(abs(sweep(scanner_locations, 2, x))))))"
+  },
+  {
+    "objectID": "year_2021/day_20/index.html",
+    "href": "year_2021/day_20/index.html",
+    "title": "2021 - Day 20",
+    "section": "",
+    "text": "Code\nalgorithm <- scan(\"input.txt\", n = 1, sep = \"\", what = character())\nalgorithm <- ifelse(strsplit(algorithm, \"\")[[1]] == \"#\", 1, 0)\nstr(algorithm)\n\n\n num [1:512] 1 1 0 1 1 0 1 0 1 1 ...\n\n\nCode\nimage <- readLines(\"input.txt\")[-1:-2]\nimage <- do.call(rbind, lapply(strsplit(image, \"\"), \\(x) ifelse(x == \"#\", 1, 0)))\nstr(image)\n\n\n num [1:100, 1:100] 0 0 0 0 1 1 0 0 0 1 ...\n\n\n\n\n\n\nCode\nenhanceImage <- function(image, void = 0) {\n  # Padding\n  image_pad <- cbind(void, void, rbind(void, void, image, void, void), void, void)\n  new_image <- matrix(0, nrow(image_pad), ncol(image_pad))\n\n  inner_box <- 2:(ncol(image_pad) - 1)\n\n  for (i in inner_box) {\n    for (j in inner_box) {\n      bin_number <- paste0(t(image_pad[(i - 1):(i + 1), (j - 1):(j + 1)]), collapse = \"\")\n      new_image[i, j] <- algorithm[strtoi(bin_number, 2L) + 1]\n    }\n  }\n  new_image[inner_box, inner_box]\n}"
   },
   {
     "objectID": "year_2021/day_20/index.html#part-1",
     "href": "year_2021/day_20/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 20",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nimage1 <- enhanceImage(image, 0)\nimage2 <- enhanceImage(image1, image1[1, 1])\nsum(image2)\n\n\n[1] 5391\n\n\nCode\nfor (i in seq(nrow(image2))) cat(ifelse(image2[i, ], \"#\", \".\"), \"\\n\", sep = \"\")\n\n\n....##.....##...#..#......##...##.###..#......##..##...#...##..##...##..##.........#..........###.#..##.\n....##..##..###.#..#####.####...#..###.##.##..###..###.##...####.####.########.####.#....##...##..#####.\n...#....##.#..#####...##.#.###.###.###.###.#..###.#..#.####.###..##..#.###.#.#..#.#####...####..#..#.###\n..#......###..#..#.......###.###.#...#.#.#....##...###...##.#....###..###.###...#..#..####.##.#..#.#.###\n.#..##..#.######..#######.##..#.....##.###..#.#......#...#..#..###...###..#....#.....####.#.....#.###..#\n.#.###.###.#####.....#.#.#.......#..#.#.##...##.#.#.####...#...##...#####.###.#.#.#...####..#.##.....##.\n.####.#..#.#.#..#...###.#.#.###..#....#....#.#...#.##...###..########...####.###.#.#######.#..#.###.##..\n.#..#.##.#...#.#..#.######..##..#..#..#..#.#.###........#....#.##..#.########..#..##.#.#.#..#..#####.#.#\n.##.#.#..######..#.#..#...#...#.#.###.#.#..#.###..#####....###..#.....##.##..#.#.#.####..#.#######..#.##\n.##..#..#.#..###.#####.#..#..#...###.##..###.#..##.#.#...##..#....#..##..#..#.....###...######..##.#.#..\n....#.####...#...##.#.##..##.#.###.#....########....###...##...#.##.#...#.#.##.#.#####.#.#..##.####...#.\n.....##.#.#..####.#..####..##..##..##.#.#....###...#.#..#.#.#.####...###.##....#.#.##...#.##..##..#..###\n.##.###..##..#.#.##.##......#.###.###.....###...#......####..##.###.##....###..#.##..#...##....#.#...###\n##.#.##...#.##.##.......#.#..#..###..##.#.#..##..##...####......##.##.#.#..#.####.###..#...#...#..##.##.\n#.####...###.##.#...#...###.#####..##..#...###...#.#.#...#....#..#..#.##...#.#####.##..#..#...#..##.#...\n...#.###....###.##..#..#..##......#...##..######...##..#..####.#.#.##.###.#.#....##.#...###.#.#.##..####\n##...###...#.#....#.######..#.##.#..##.#..##.#..#..#.#..#.#.#...##....####...###...####.#...#..####.####\n#..###.#...####.#.#...#.####.#.##.###.....##..#..###.#.###.#.#....####..##.##.##..##...##..#.##..#...##.\n#.###.###.#.##.##.###.#.##...##.#.###.#..#####.###...#....###.####.###.#####.#.......#.#.#.#...###.#.#..\n#.#..#.#####..#..#...#.#.#####.###..#.#..#.##..####.##...#..##..#.##..#####.#..##.#..#..##.#.#....#.##.#\n..###....#...#...#.###...###.#.#.#.##..##...#.#####.#.###..#...##.#..#....#.#....##.##.##.#.#.###.#####.\n..#.#.#...#..##.#.#..####.#...#.#.###.#####.##.##.##..###..######...#.###.....#....#.###..#....####..###\n..##....#...#..###.###.#.#.....####...###....###.#.#####.###....#..#.###.###..#.##.##.#...#....##.###...\n.###.....#.#.....#....###.##.#....###..##..####.#..#.#...#...##.#...#...##...#...#..#.##.#...#.##..#....\n.#..#.#.#..#.##...###.#...#..##.##....#.#.....###..####..#...##......##.###..#..##..#..###.#..##..##...#\n..######...#.....#.#....#.##.##..#..#.######.##...##.#..#....#.#...####.####...#.#.#.##...#.##.#.###.#..\n.###.#.#.#..#....##.#.##..#.##.#.#.##...##..#.#.######.##.#.####..##...#.#.###.###..###.###...#.......#.\n###..#...#.#.#.#..#....##.#.###...###.#.#.#.#..#..#.#..##....#..########.#......#.##..#.#..#..#..#.#####\n#.##.#.#.#.#..####.###...##...#.#.#....###.#.#...##.#.#.#.#.##.##...##.......###..#.##.####.##.#..#..###\n.#.#.##...#..##..#####.##..#.###.#.#.#..#..###..#....##..##..#.....#..#....#.###.#........#.#..#.###..#.\n.###.###.#.#..##.###..#..#...#..#....##.#.#..#....###.##..##.#..#...####.#...#....##.......####...#..#..\n.#..##.#..####.#.#.#####...#..#...#.##....#....####.##.#.###.#.....#.##..#...##..##.#.#.......###...##.#\n...##..###.....#..###.#...##...###..###.#..#.##....#...###.#..###.............#...#.#####..##......##..#\n...#....##...##...##......#######..####..#..#########.###.#...#.#...#.##....##.#.#.##.....###.##..####.#\n###.#.###.#.#########....#.##.....##...##.#..#...#....##.####..###..##.###....#.####.#####..##...#...##.\n#.#..#..##.#.#..#.#####.#...##.###.#..#..#.###.#...#.#.#.######.#..#..####.##.####..##.#.##.#....#..###.\n...##..#..#...#.#..###....#..#.#.####......#.#.#..##..#.##.#.###.###....##.##...#.####.##.##.##.#.#####.\n...............#..#.#.#.#...##.#....#.#..####..#.###.##.###.##.##..###..####.#######.###..#.#####.#####.\n...#...##...#.#.#.#...##..#....#.##...#.#...#..##..#.#....##.###.#..####......#..#.#.#...#.###..#.#...#.\n.###.#.#...##...#.##...#.######.....#.#.#..##.#...#.###.##....#.##.#..#...#.#.#.#.###.##.##....#.######.\n..##..#..#.#.#.###..#...##.###.#..###..#.#.#..###..###.##..###.##..#####..###.###.#.#####....##..#.##..#\n#######.#.#.#.#..#....#....#.......#.##....#####.##....#.###.###...#..###...#####.#.....####.#.#..###.##\n###.#.#..#.#..#...####.##.##.#...###.#.##.#..#.##...#......#.######.####..#...#.#..##....##...####.#.#..\n.##.##..####.####..##.##..#..###.##.####..#.##....##.#..#..##.##.###...#...##..#.#..####..##.#..##.#####\n.##..#.#...#....####..#...######.##..#.####..#.#.##.#.##...#.#.#..##.#.##.###...#.##.....##..##.##......\n..####.###.#..#.#...#####.#####...##.#.###....##.####.##.#.###.#.#.###......####.#..##.....#..###...#...\n.##...#.#.#.#.#...#.#######.##.#..#.##.####..##.#.###.###.#..#.#.##..#..####..####.#.....#.###..#...#..#\n..####.....#.#.#.#.##.####..#........#.#..##.#.#...#.##...#...########........##.####..#.####....#...#..\n##....#..#.#.#..########.#.#...#.#.#####....#..#..###.##.#.#.#...###..###....##...##..##.#..##.##.###..#\n#....##.#..............#.##.##.#.#...#..##.##.#...#....#..#..#.##.##.#....###.#.##.##.####.#.#.#.....##.\n#...##.....#.#.######........#...#.##.##.....##.##.....##.#.#.####..#...####.###.#.##.##.##.##.#########\n###..##.#......#.#..##..###.....###.########..#.#.#.#.####...####..##.#####....###.#....#.###.######....\n##..###....##.#.##.......###..#.##..###.#...#..###.##...##.#..#..####.#...#.#..#..###.#.#....##........#\n#.#####.#.##.##..######.....#.##.#.....###...#...#####.###.##...#.####...##....##..#######.#.#.##.#.###.\n.#####.#..##.#..##.#.##...#..##.###..#####..##.##...#.#.####..##.#..##.##...###.###.####...#...#..###.#.\n.#.##.###..#.#.##.#########......#####..###...##...#.##.#####.#...#.##.....##.##...#.###..##.#.#####.###\n.#.#########.....#..............##....#.#...##..#...#.......#####....##..##.#.#..#...##.####..###...#..#\n.#..#.#..#...#....#...##.#.#.##.#.#.#.#.##.#..##.##.##..##.####....##.#.#.##....#..######...######.#....\n.#.#.#..####.###..#..####..##..#.##.#..##..#.#..#......#.#.##.#..#####.#.#.#.#.#...#.#.#...##.#.###.###.\n#..##.#....#.#...#..#####....#.##.#....#..##..##..#.#.###..#.####..##...#...#.#...###....##..#.##..##.#.\n#.####.#.#....#...####.#...##.##.#..##..########.#.####.##...###....##.#.##..####...##.....#.#....##.#..\n##########......##.#...#.##.###.#.#.#...######.###.###.##...##..##...#...###.###.#....###...#..###.###..\n#..#.#.#..##.#.###..##..##..#.###.#.....##..#.#.##..#...#..#.#.##..#.#.#..#.###.##.###...#...#....#.#...\n#..##.#..####..#..###.#..#..#..##.###.##.#..#..#..##.###...##..#######..#.###.#....#.###.##.#..#.#..##..\n#.###.....#..#.##.##.####.#.######...#.#..###.#######.#.......#.#...##..###.#..###.##.###..#.##..###.#..\n##...##.##.###.###..##.#.#.#.####.#.#.#.###....##.....##.#.#...#...##..##..#.###.#.#.##..#...###########\n###.###...##..##..#.##.####...###..#.#.##..####..#######..#.##..##.....#.##.###.#.#...#.#..#..###..#.###\n.#..###..#..#.###.##..#.#..#.#...#....###..#.##.#.##..##.###....##..#.##....#..#..##.#.#.#.###..#.......\n#....##.##..#..##...#...#.##..#.###.#...###.#.#####...###.####.#.#..##....###..###.##..##.###.#####...#.\n#.#....#.#.##.###.##....###..#..#..#..##..##..#..#....#.###...####.#.......#..##.#.##.#...##.#####.#.###\n#.###....#.#.#...#.#.#.#...#..####...#..#...#..##.#..####.#....###.##..###.#.#...#....#...#....###.....#\n#.#.#.#...#.#.####.....#....#..####.#.##......#.#..###.....####..##...#.##.#####.......#..#.#.####.####.\n..#.###...##....###.##.##.#...#.##.##.###.#.######.#####....######....#.##.#####.#..###.#####.##..#....#\n..#.##...#######..#..#..##..##...#....####.##.#.....###.#.###.##.#..####..##...#..##..#.#.#..###.#.#.#..\n..#.....#.##.#.###..#.##.#.##.#####.#...########.......##.#....#...#.#.##.###.####.#.#.#.####...##.#.###\n....#...#.#...#.#.##.#..#..#...########.##..#..#.#.#...#.#..######...#.##.###.#.#...#####.#########.####\n.####.#.#..#.#..#...#...#.##.#.......#..#..####.####.#.###.#.##..##.#..##.##.##....##...###.#..#.#..##..\n####.##...##..#####.###.###.#.#...#..#.####.#.#.#.##.....###.#.###.#.#..#.######..###..#...##.#.#.#.##..\n#.###.##...#..#.#...###...####.#.###.#.##....#..#.#.#...#.#..##.#.#.#.##..#.#.#....#######..#....#..#.##\n##.##.#.#........#....###.##.#.#..##.....##.#...#.####.#..#..#.##.#..#.....#.#...#.###.#..#.#..#...#.##.\n#..###.#.####..###..#.###.....##..#...#.##..#.######.#.#..##....###..###..###.###.#####......#...#.#####\n....#.#...###.##....##..#.#..#.##..#..#.##.##.#..###.#.#.#.#..#.#..##.#......###..#..###...#...####..#.#\n.############..#.##.##..#....##..#...##.#...##..#..#.####..#...##...#...#...##.##..#.###.####.#.#...#...\n.#..#.#...##.###...#.#..##.##.##.#..##.#.##.##.##.##.##..##..##.#...#.....####.###.#.#####.##.....#.##..\n.###.#..#..##.#..#..#....#.#...##..#.#.#..#..##...##..#.#.###.#.....#...#.....#.###.#.##....#.#.#.##.###\n.#.#..#.#.#.###....#...##.#.#..##.###..##.#.#.####.#######...###.##.##.......#.##...#.##.#...###.##.#.#.\n....#..#.###..##.#####.##.#..##....###.##..#.#.##.##..##..#..##.#.###.#..#.#...##...##....#####..#.#...#\n.#...#.#.##.#..#.####.#.#.##..##..##..#####..####......##.......###.##..#.#.#.#.#..###...#.#.#.##.#.####\n.###.#...##...###.#...##.###...#..#####.#.##.##.#.#.##.#.##...##.##.....###.#..#.#.#....##..##.#.#.##.##\n..####...###.#..#.##.#.###.#.##...#.#######..#..####..##.....###..#...##.###..#.#......#....#.#..#####..\n...##...#..#.##.#...##..##..#.#...######.#..##..#####....#...##...######......###.##.....##.#.#####...##\n............#..#..#..#..#..#.#.#..#.#...#.###..##..#..#.#.####...##..#.###...##.#..#..###...##.#.##.#..#\n.####.####.##.#..#...###.#.#.#.#....#.#.#.....##....##..#####.##..##.#..####..##.....#.#...##.#####..###\n.#.#.###..####..##.####...#.####.#..###.#.##..##.....#..#..##.#...###.##.#.#.###.#.####......#####....#.\n..#.##.#.##....#.....#.#.#...###....#.##.#.#...##.########.....#.#.#.#.#.#...######...######..##.#.####.\n..###.#...#.##.##.###.###..#...######...###.#....##########..#####..#####.#...#####....#..#.##.......#..\n...#.##..########.####..##...##..#.######.#.#####.##....#.#.###.##.#.##.##...####..##.###..###..##..#...\n.#..##...##.#...##....#.#.##.##...##..##.#.#.......##..#..#...####.....#.#.#.#.##.....#..#.####.#.#.###.\n#..#..#..#....#.###..#.#.#..#.######..#.###...#..##.#.###..##......#.##.#.#######..#.#....##..#.#......#\n#.##......#..##..#####....#.#.....#.##.##.##.#.......##.##..##..###.##.#.#.#...###.###.##.#..#.#.##..###\n###.##.##..##...#.####..#......#.#.#.#.###.#..##.#.#..###..#..##..#..##.##..#####..#...#.####..##...#..#\n#.####.#..##.#.#.#..#..####...#....##.##.###.####.##.#....####.###...#.....#.#####...##########.#..#.###\n..##..#..#.#.####..###..#.###..#.#.#.#..#.#.##..#..#.####...#.#.#.##.#.##.....##..###.###......#.#######\n..#.#...#.#....#.#.#.#.....#.#......#.#....#.#....#.#.#.#.............#.#.....#.##.#..#.#............#.#"
   },
   {
     "objectID": "year_2021/day_20/index.html#part-2",
     "href": "year_2021/day_20/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 20",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nimagex <- image\nfor (i in 1:50) imagex <- enhanceImage(imagex, imagex[1, 1])\nsum(imagex)\n\n\n[1] 16383"
+  },
+  {
+    "objectID": "year_2021/day_21/index.html",
+    "href": "year_2021/day_21/index.html",
+    "title": "2021 - Day 21",
+    "section": "",
+    "text": "Code\nstart_positions <- read.delim(\n  \"input.txt\", header = FALSE, sep = \" \",\n  col.names = c(\"x\", \"player\", \"y\", \"z\", \"start\")\n)\nstr(start_positions)\n\n\n'data.frame':   2 obs. of  5 variables:\n $ x     : chr  \"Player\" \"Player\"\n $ player: int  1 2\n $ y     : chr  \"starting\" \"starting\"\n $ z     : chr  \"position:\" \"position:\"\n $ start : int  8 2"
   },
   {
     "objectID": "year_2021/day_21/index.html#part-1",
     "href": "year_2021/day_21/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 21",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\naddScore <- function(p1, p2, s1 = 0, s2 = 0, turn = 1, i = 1, cnt = 3) {\n  code <- \"p1 <- (p1 + sum(i:(i + 2) %% 10)) %% 10; if (p1 == 0) p1 <- 10; s1 <- s1 + p1\"\n  if (turn == 2) code <- gsub(\"(p|s)1\", \"\\\\12\", code)\n  eval(parse(text = code))\n\n  if (s1 >= 1000 || s2 >= 1000) {\n    c(s1, s2)[c(s1, s2) < 1000] * cnt\n  } else {\n    addScore(p1, p2, s1, s2, 3 - turn, (i + 3) %/% 101 + (i + 3) %% 101, cnt + 3)\n  }\n}\n\naddScore(start_positions$start[1], start_positions$start[2])\n\n\n[1] 513936"
   },
   {
     "objectID": "year_2021/day_21/index.html#part-2",
     "href": "year_2021/day_21/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 21",
     "section": "Part 2",
     "text": "Part 2\n\n\nCode\npot_scores <- expand.grid(1:3, 1:3, 1:3)\npot_values <- c(0, 0, table(rowSums(pot_scores)))\ncache <- list()\n\naddScore2 <- function(p1, p2, s1 = 0, s2 = 0, turn = 1, cnt = 1) {\n  cache_name <- paste(p1, p2, s1, s2, turn)\n  if (cache_name %in% names(cache)) {\n    cache[[cache_name]] * cnt\n  } else {\n    rowSums(\n      sapply(9:3, \\(x) {\n        if (turn == 1) {\n          p1 <- (p1 + x) %% 10; if (p1 == 0) p1 <- 10; s1 <- s1 + p1\n        } else {\n          p2 <- (p2 + x) %% 10; if (p2 == 0) p2 <- 10; s2 <- s2 + p2\n        }\n\n        if (s1 >= 21 || s2 >= 21) {\n          cnt * pot_values[[x]] * as.numeric(turn == c(1, 2))\n        } else  {\n          value <- addScore2(p1, p2, s1, s2, 3 - turn, cnt * pot_values[[x]])\n          cache_name <- paste(p1, p2, s1, s2, 3 - turn)\n          if (!cache_name %in% names(cache)) {\n            cache[[cache_name]] <<- value / cnt / pot_values[[x]]\n          }\n          value\n        }\n      })\n    )\n  }\n}\n\naddScore2(8, 2)"
   },
   {
+    "objectID": "year_2021/day_22/index.html",
+    "href": "year_2021/day_22/index.html",
+    "title": "2021 - Day 22",
+    "section": "",
+    "text": "Code\ninstructions <- readLines(\"input.txt\")\nstr(instructions)\n\n\n chr [1:420] \"on x=-17..30,y=-5..41,z=-33..14\" ...\n\n\nCode\ninst <- as.data.frame(do.call(rbind, regmatches(instructions, gregexpr(\"on|off|(-|)\\\\d+\", instructions))))\nnames(inst) <- c(\"switch\", \"x1\", \"x2\", \"y1\", \"y2\", \"z1\", \"z2\")\ninst[, -1] <- sapply(inst[, -1], as.numeric)\ninst[, -1] <- cbind(\n  x1 = pmin(inst$x1, inst$x2), x2 = pmax(inst$x1, inst$x2),\n  y1 = pmin(inst$y1, inst$y2), y2 = pmax(inst$y1, inst$y2),\n  z1 = pmin(inst$z1, inst$z2), z2 = pmax(inst$z1, inst$z2)\n)"
+  },
+  {
     "objectID": "year_2021/day_22/index.html#part-1",
     "href": "year_2021/day_22/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 22",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nmini_inst <- inst\nmini_inst[, -1] <- mini_inst[, -1] + 51\nmini_board <- which(rowMeans(mini_inst[, -1] >= 1 & mini_inst[, -1] <= 101) == 1)\nswitches <- array(0, c(101, 101, 101))\n\nfor (i in mini_board) {\n  value <- as.numeric(mini_inst$switch[i] == \"on\")\n  switches[\n    seq(mini_inst$x1[i], mini_inst$x2[i]),\n    seq(mini_inst$y1[i], mini_inst$y2[i]),\n    seq(mini_inst$z1[i], mini_inst$z2[i])\n  ] <- value\n}\nsum(switches)\n\n\n[1] 600458"
   },
   {
     "objectID": "year_2021/day_22/index.html#part-2",
     "href": "year_2021/day_22/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 22",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nx <- sort(unique(c(inst$x1, inst$x2 + 1)))\ny <- sort(unique(c(inst$y1, inst$y2 + 1)))\nz <- sort(unique(c(inst$z1, inst$z2 + 1)))\nlocs <- array(0, lengths(list(x, y, z)))\n\nfor (i in seq(nrow(inst))) {\n  x_range <- seq(which(inst$x1[i] == x), which(inst$x2[i] + 1 == x) - 1)\n  y_range <- seq(which(inst$y1[i] == y), which(inst$y2[i] + 1 == y) - 1)\n  z_range <- seq(which(inst$z1[i] == z), which(inst$z2[i] + 1 == z) - 1)\n  locs[as.matrix(expand.grid(x_range, y_range, z_range))] <- as.numeric(inst$switch[i] == \"on\")\n}\n\non_points <- which(locs == 1, arr.ind = TRUE)\non_points2 <- on_points + 1\n\nsum(\n  (x[on_points2[, 1]] - x[on_points[, 1]]) *\n    (y[on_points2[, 2]] - y[on_points[, 2]]) *\n    (z[on_points2[, 3]] - z[on_points[, 3]])\n)\n\n\n[1] 1.334275e+15"
   },
   {
-    "objectID": "year_2021/day_23/index.html#part-1",
-    "href": "year_2021/day_23/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
+    "objectID": "year_2021/day_22/index.html#part-2---attempt-2",
+    "href": "year_2021/day_22/index.html#part-2---attempt-2",
+    "title": "2021 - Day 22",
+    "section": "Part 2 - Attempt 2",
+    "text": "Part 2 - Attempt 2\n\n\nCode\nfindNCubes <- function(x) sum(apply(abs(x[, c(\"x2\", \"y2\", \"z2\")] - x[, c(\"x1\", \"y1\", \"z1\")]) + 1, 1, prod))\n# c1 Current cube, c2 previous cube\nexcludeOverlap <- function(c1, c2) {\n  # No Overlap\n  if (any(c1[, c(\"x1\", \"y1\", \"z1\")] > c2[, c(\"x2\", \"y2\", \"z2\")]) |\n      any(c1[, c(\"x2\", \"y2\", \"z2\")] < c2[, c(\"x1\", \"y1\", \"z1\")])) {\n    c1\n  # Full Outer Overlap\n  } else if (all(c1[, c(\"x1\", \"y1\", \"z1\")] >= c2[, c(\"x1\", \"y1\", \"z1\")] &\n                 c1[, c(\"x2\", \"y2\", \"z2\")] <= c2[, c(\"x2\", \"y2\", \"z2\")])) {\n    NULL\n    # Partial Outer Overlap\n  } else {\n    x_extra <- y_extra <- z_extra <- NULL\n    x1 <- c1$x1\n    x2 <- c1$x2\n    y1 <- c1$y1\n    y2 <- c1$y2\n    z1 <- c1$z1\n    z2 <- c1$z2\n\n    if (c1$x1 < c2$x1 && c1$x2 > c2$x2) {\n      x_extra <- data.frame(x1 = c(x1, c2$x2 + 1), x2 = c(c2$x1, x2 + 1), y1 = y1, y2 = y2, z1 = z1, z2 = z2)\n      x1 <- c2$x1\n      x2 <- c2$x2\n    }\n    if (c1$y1 < c2$y1 && c1$y2 > c2$y2) {\n      y_extra <- data.frame(x1 = x1, x2 = x2, y1 = c(y1, c2$y2 + 1), y2 = c(c2$y1, y2 + 1), z1 = z1, z2 = z2)\n      y1 <- c2$y1\n      y2 <- c2$y2\n    }\n    if (c1$z1 < c2$z1 && c1$z2 > c2$z2) {\n      z_extra <- data.frame(x1 = x1, x2 = x2, y1 = y1, y2 = y2, z1 = c(c1$z1, c2$z2 + 1), z2 = c(c2$z1 - 1, c1$z2))\n      z1 <- c2$z1\n      z2 <- c2$z2\n    }\n\n    # Partial Inner Overlap\n    x_min <- max(x1, c2$x1)\n    x_max <- min(x2, c2$x2)\n    y_min <- max(y1, c2$y1)\n    y_max <- min(y2, c2$y2)\n\n    rbind(\n      if (x1 >= c2$x1 && x2 > c2$x2) data.frame(x1 = c2$x2 + 1, x2 = x2, y1 = y1, y2 = y2, z1 = z1, z2 = z2),\n      if (y1 >= c2$y1 && y2 > c2$y2) data.frame(x1 = x_min, x2 = x_max, y1 = c2$y2 + 1, y2 = y2, z1 = z1, z2 = z2),\n      if (z1 >= c2$z1 && z2 > c2$z2) data.frame(x1 = x_min, x2 = x_max, y1 = y_min, y2 = y_max, z1 = c2$z2 + 1, z2 = z2),\n      if (x2 <= c2$x2 && x1 < c2$x1) data.frame(x1 = x1, x2 = c2$x1 - 1, y1 = y1, y2 = y2, z1 = z1, z2 = z2),\n      if (y2 <= c2$y2 && y1 < c2$y1) data.frame(x1 = x_min, x2 = x_max, y1 = y1, y2 = c2$y1 - 1, z1 = z1, z2 = z2),\n      if (z2 <= c2$z2 && z1 < c2$z1) data.frame(x1 = x_min, x2 = x_max, y1 = y_min, y2 = y_max, z1 = z1, z2 = c2$z1 - 1),\n      x_extra,\n      y_extra,\n      z_extra\n    )\n  }\n}\n\non_cubes <- inst[1, -1]\nfor (i in seq(2, nrow(inst))) {\n  print(i)\n  curr_cube <- inst[i, -1]\n\n  if (inst$switch[i] == \"on\") {\n\n    for (j in seq(nrow(on_cubes))) {\n      new_spaces <- NULL\n      for (k in seq(nrow(curr_cube))) {\n        new_spaces <- rbind(new_spaces, excludeOverlap(curr_cube[k, ], on_cubes[j, ]))\n      }\n      curr_cube <- new_spaces\n      if (is.null(curr_cube)) {\n        break\n      }\n    }\n    on_cubes <- rbind(on_cubes, curr_cube)\n\n  } else {\n    new_spaces <- NULL\n    for (j in seq(nrow(on_cubes))) {\n      new_spaces <- rbind(new_spaces, excludeOverlap(c1 = on_cubes[j, ], c2 = inst[i, ]))\n    }\n    on_cubes <- new_spaces\n  }\n}\n\nsum(switches)\nfindNCubes(on_cubes)"
   },
   {
-    "objectID": "year_2021/day_23/index.html#part-2",
-    "href": "year_2021/day_23/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
+    "objectID": "year_2021/day_23/index.html",
+    "href": "year_2021/day_23/index.html",
+    "title": "2021 - Day 23",
+    "section": "",
+    "text": "Code\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\n\n\nWarning in (function (..., deparse.level = 1) : number of columns of result is\nnot a multiple of vector length (arg 1)\n\n\nCode\nstr(seats)\n\n\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n\n\nCode\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n\n\nThis was done with a piece of paper rather than coding…"
+  },
+  {
+    "objectID": "year_2021/day_24/index.html",
+    "href": "year_2021/day_24/index.html",
+    "title": "2021 - Day 24",
+    "section": "",
+    "text": "Code\noptions(scipen = 20)\ncomms <- read.delim(\n  \"input.txt\", sep = \" \", header = FALSE,\n  col.names = c(\"com\", \"var\", \"val\")\n)\nstr(comms)\n\n\n'data.frame':   65 obs. of  3 variables:\n $ com: chr  \"inp\" \"ass\" \"add\" \"inp\" ...\n $ var: chr  \"w\" \"x\" \"z\" \"w\" ...\n $ val: chr  \"\" \"1\" \"(w+15)\" \"\" ...\n\n\nCode\ncomms$call <- NA_character_\ncomms[comms$com == \"inp\", \"call\"] <- paste(comms$var[comms$com == \"inp\"], \"<- w_vals\")\ncomms$input[comms$com == \"inp\"] <- seq_along(comms$var[comms$com == \"inp\"])\ncomms[comms$com == \"mul\", \"call\"] <- paste(\n  comms$var[comms$com == \"mul\"], \"<-\",\n  comms$var[comms$com == \"mul\"], \"*\", comms$val[comms$com == \"mul\"]\n)\ncomms[comms$com == \"mul\" & comms$val == \"0\", \"call\"] <- paste(\n  comms$var[comms$com == \"mul\" & comms$val == \"0\"], \"<- 0\"\n)\ncomms[comms$com == \"add\", \"call\"] <- paste(\n  comms$var[comms$com == \"add\"], \"<-\",\n  comms$var[comms$com == \"add\"], \"+\", comms$val[comms$com == \"add\"]\n)\ncomms[comms$com == \"ass\", \"call\"] <- paste(\n  comms$var[comms$com == \"ass\"], \"<-\", comms$val[comms$com == \"ass\"]\n)\ncomms[comms$com == \"div\", \"call\"] <- paste(\n  comms$var[comms$com == \"div\"], \"<-\",\n  comms$var[comms$com == \"div\"], \"%/%\", comms$val[comms$com == \"div\"]\n)\ncomms[comms$com == \"mod\", \"call\"] <- paste(\n  comms$var[comms$com == \"mod\"], \"<-\",\n  comms$var[comms$com == \"mod\"], \"%%\", comms$val[comms$com == \"div\"]\n)\ncomms[comms$com == \"neql\", \"call\"] <- paste(\n  comms$var[comms$com == \"neql\"], \"<- as.numeric(\",\n  comms$var[comms$com == \"neql\"], \"!=\", comms$val[comms$com == \"neql\"],\n  \")\"\n)"
   },
   {
     "objectID": "year_2021/day_24/index.html#part-1",
     "href": "year_2021/day_24/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2021 - Day 24",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\n\nCode\nw <- x <- z <- 0\nw_vals <- vals <- 9:1\n\nfor (i in seq(nrow(comms))) {\n  eval(parse(text = paste(comms$call[i])))\n  if (comms$com[i] == \"inp\" && i != 1) {\n    vals <- vals[!duplicated(z)]\n    z <- z[!duplicated(z)]\n\n    vals <- c(t(outer(vals, w_vals, paste0)))\n    z <- rep(z, each = 9)\n    w <- rep(w_vals, times = length(z) / 9)\n  }\n}\nvals[z == 0][1]"
   },
   {
     "objectID": "year_2021/day_24/index.html#part-2",
     "href": "year_2021/day_24/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2021 - Day 24",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\n\nCode\nw <- x <- z <- 0\nw_vals <- vals <- 1:9\n\nfor (i in seq(nrow(comms))) {\n  eval(parse(text = paste(comms$call[i])))\n  if (comms$com[i] == \"inp\" && i != 1) {\n    vals <- vals[!duplicated(z)]\n    z <- z[!duplicated(z)]\n    cat(i, length(z), \"\\n\")\n\n    vals <- c(outer(vals, w_vals, paste0))\n    z <- rep(z, times = 9)\n    w <- rep(w_vals, each = length(z) / 9)\n  }\n}\nvals[z == 0][1]"
+  },
+  {
+    "objectID": "year_2021/day_25/index.html",
+    "href": "year_2021/day_25/index.html",
+    "title": "2021 - Day 25",
+    "section": "",
+    "text": "Code\nfishes <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\nstr(fishes)\n\n\n chr [1:137, 1:139] \">\" \">\" \">\" \">\" \".\" \"v\" \">\" \".\" \".\" \">\" \".\" \">\" \".\" \"v\" ..."
   },
   {
     "objectID": "year_2021/day_25/index.html#part-1",
@@ -418,13 +523,6 @@
     "title": "2021 - Day 25",
     "section": "Part 1",
     "text": "Part 1\n\n\nCode\nright <- which(fishes == \">\", arr.ind = TRUE)\ndown <-  which(fishes == \"v\", arr.ind = TRUE)\nn_points <- nrow(right) + nrow(down)\n\nn_row <- nrow(fishes)\nn_col <- ncol(fishes)\ni <- 0\nmoveable <- TRUE\n\nwhile (moveable) {\n  new_right <- cbind(row = right[, \"row\"], col = right[, \"col\"] + 1)\n  new_right[right[, \"col\"] == n_col, \"col\"] <- 1\n  r_intersections <- duplicated(rbind(right, down, new_right))[-1:-n_points]\n  new_right[r_intersections, ] <- right[r_intersections, ]\n  right <- new_right\n\n  new_down <- cbind(row = down[, \"row\"] + 1, col = down[, \"col\"])\n  new_down[down[, \"row\"] == n_row, \"row\"] <- 1\n  d_intersections <- duplicated(rbind(right, down, new_down))[-1:-n_points]\n  new_down[d_intersections, ] <- down[d_intersections, ]\n  down <- new_down\n\n  i <- i + 1\n  moveable <- !all(c(r_intersections, d_intersections))\n}\n\nprint(i)\n\n\n[1] 295"
-  },
-  {
-    "objectID": "year_2021/day_25/index.html#part-2",
-    "href": "year_2021/day_25/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
   },
   {
     "objectID": "year_2022/day_01/index.html#part-1",
@@ -775,384 +873,6 @@
     "title": "Advent of Code",
     "section": "Part 2",
     "text": "Part 2"
-  },
-  {
-    "objectID": "year_2022/index.html",
-    "href": "year_2022/index.html",
-    "title": "2022",
-    "section": "",
-    "text": "No matching items"
-  },
-  {
-    "objectID": "year_xxx/day_01/index.html#part-1",
-    "href": "year_xxx/day_01/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_01/index.html#part-2",
-    "href": "year_xxx/day_01/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_02/index.html#part-1",
-    "href": "year_xxx/day_02/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_02/index.html#part-2",
-    "href": "year_xxx/day_02/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_03/index.html#part-1",
-    "href": "year_xxx/day_03/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_03/index.html#part-2",
-    "href": "year_xxx/day_03/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_04/index.html#part-1",
-    "href": "year_xxx/day_04/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_04/index.html#part-2",
-    "href": "year_xxx/day_04/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_05/index.html#part-1",
-    "href": "year_xxx/day_05/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_05/index.html#part-2",
-    "href": "year_xxx/day_05/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_06/index.html#part-1",
-    "href": "year_xxx/day_06/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_06/index.html#part-2",
-    "href": "year_xxx/day_06/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_07/index.html#part-1",
-    "href": "year_xxx/day_07/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_07/index.html#part-2",
-    "href": "year_xxx/day_07/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_08/index.html#part-1",
-    "href": "year_xxx/day_08/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_08/index.html#part-2",
-    "href": "year_xxx/day_08/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_09/index.html#part-1",
-    "href": "year_xxx/day_09/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_09/index.html#part-2",
-    "href": "year_xxx/day_09/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_10/index.html#part-1",
-    "href": "year_xxx/day_10/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_10/index.html#part-2",
-    "href": "year_xxx/day_10/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_11/index.html#part-1",
-    "href": "year_xxx/day_11/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_11/index.html#part-2",
-    "href": "year_xxx/day_11/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_12/index.html#part-1",
-    "href": "year_xxx/day_12/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_12/index.html#part-2",
-    "href": "year_xxx/day_12/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_13/index.html#part-1",
-    "href": "year_xxx/day_13/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_13/index.html#part-2",
-    "href": "year_xxx/day_13/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_14/index.html#part-1",
-    "href": "year_xxx/day_14/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_14/index.html#part-2",
-    "href": "year_xxx/day_14/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_15/index.html#part-1",
-    "href": "year_xxx/day_15/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_15/index.html#part-2",
-    "href": "year_xxx/day_15/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_16/index.html#part-1",
-    "href": "year_xxx/day_16/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_16/index.html#part-2",
-    "href": "year_xxx/day_16/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_17/index.html#part-1",
-    "href": "year_xxx/day_17/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_17/index.html#part-2",
-    "href": "year_xxx/day_17/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_18/index.html#part-1",
-    "href": "year_xxx/day_18/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_18/index.html#part-2",
-    "href": "year_xxx/day_18/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_19/index.html#part-1",
-    "href": "year_xxx/day_19/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_19/index.html#part-2",
-    "href": "year_xxx/day_19/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_20/index.html#part-1",
-    "href": "year_xxx/day_20/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_20/index.html#part-2",
-    "href": "year_xxx/day_20/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_21/index.html#part-1",
-    "href": "year_xxx/day_21/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_21/index.html#part-2",
-    "href": "year_xxx/day_21/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_22/index.html#part-1",
-    "href": "year_xxx/day_22/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_22/index.html#part-2",
-    "href": "year_xxx/day_22/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_23/index.html#part-1",
-    "href": "year_xxx/day_23/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_23/index.html#part-2",
-    "href": "year_xxx/day_23/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_24/index.html#part-1",
-    "href": "year_xxx/day_24/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_24/index.html#part-2",
-    "href": "year_xxx/day_24/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/day_25/index.html#part-1",
-    "href": "year_xxx/day_25/index.html#part-1",
-    "title": "Advent of Code",
-    "section": "Part 1",
-    "text": "Part 1"
-  },
-  {
-    "objectID": "year_xxx/day_25/index.html#part-2",
-    "href": "year_xxx/day_25/index.html#part-2",
-    "title": "Advent of Code",
-    "section": "Part 2",
-    "text": "Part 2"
-  },
-  {
-    "objectID": "year_xxx/index.html",
-    "href": "year_xxx/index.html",
-    "title": "xxx",
-    "section": "",
-    "text": "No matching items"
-  },
-  {
-    "objectID": "year_2021/day_21/index.html",
-    "href": "year_2021/day_21/index.html",
-    "title": "Advent of Code",
-    "section": "",
-    "text": "Code\nstart_positions <- read.delim(\n  \"input.txt\", header = FALSE, sep = \" \",\n  col.names = c(\"x\", \"player\", \"y\", \"z\", \"start\")\n)\nstr(start_positions)\n\n\n'data.frame':   2 obs. of  5 variables:\n $ x     : chr  \"Player\" \"Player\"\n $ player: int  1 2\n $ y     : chr  \"starting\" \"starting\"\n $ z     : chr  \"position:\" \"position:\"\n $ start : int  8 2"
-  },
-  {
-    "objectID": "year_2021/day_25/index.html",
-    "href": "year_2021/day_25/index.html",
-    "title": "2021 - Day 25",
-    "section": "",
-    "text": "Code\nfishes <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\nstr(fishes)\n\n\n chr [1:137, 1:139] \">\" \">\" \">\" \">\" \".\" \"v\" \">\" \".\" \".\" \">\" \".\" \">\" \".\" \"v\" ..."
   },
   {
     "objectID": "year_xxxx/day_01/index.html#part-1",
@@ -1510,12 +1230,5 @@
     "title": "xxx",
     "section": "",
     "text": "No matching items"
-  },
-  {
-    "objectID": "year_2021/day_08/index.html",
-    "href": "year_2021/day_08/index.html",
-    "title": "2021 - Day 8",
-    "section": "",
-    "text": "Code\ncol_names <- c(paste0(\"P\", 1:10), \"SEP\", paste0(\"I\", 1:4))\nnumbers <- read.delim(\"input.txt\", sep = \" \", header = FALSE, col.names = col_names)\nstr(numbers)\n\n\n'data.frame':   200 obs. of  15 variables:\n $ P1 : chr  \"afebd\" \"eabcdg\" \"fbeadcg\" \"adgcbe\" ...\n $ P2 : chr  \"ecdgfb\" \"fc\" \"fdcge\" \"bgaef\" ...\n $ P3 : chr  \"gacfed\" \"fbce\" \"deb\" \"cab\" ...\n $ P4 : chr  \"dgaeb\" \"dbfagc\" \"gcdeaf\" \"gbfadec\" ...\n $ P5 : chr  \"bf\" \"cagbdfe\" \"fdgb\" \"deacg\" ...\n $ P6 : chr  \"acefd\" \"cbdge\" \"bd\" \"bdcg\" ...\n $ P7 : chr  \"fgdabec\" \"fgc\" \"bedacg\" \"cfegad\" ...\n $ P8 : chr  \"bfd\" \"gfade\" \"cedbf\" \"gbcea\" ...\n $ P9 : chr  \"bedcaf\" \"ecdgfb\" \"feabc\" \"fbeadc\" ...\n $ P10: chr  \"bafc\" \"gfedc\" \"fcgdeb\" \"cb\" ...\n $ SEP: chr  \"|\" \"|\" \"|\" \"|\" ...\n $ I1 : chr  \"afcbed\" \"cf\" \"dbcfeg\" \"bgcd\" ...\n $ I2 : chr  \"fb\" \"fgbacd\" \"cbeagd\" \"gdcb\" ...\n $ I3 : chr  \"bfd\" \"fecb\" \"ebd\" \"acb\" ...\n $ I4 : chr  \"bdf\" \"becdg\" \"db\" \"gabced\" ..."
   }
 ]

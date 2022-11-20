@@ -7,58 +7,7 @@ This is a brain dump of my attempts of Advent of Code ([adventofcode.com](https:
 Click on any of the yellow stars to see my solution for that day.
 
 ```{r, echo=FALSE, warning=FALSE}
-library(reactable)
+source("_rhelp/aoc_table.R")
 year_dirs <- list.files(pattern = "year_\\d{4}$")
-years <- sub("year_", "", year_dirs)
-
-year_info <- lapply(file.path(year_dirs, "days.yml"), \(x) {
-  year_yaml <- yaml::read_yaml(x)
-  year <- sub("year_", "", dirname(x))
-  
-  completion <- do.call(
-    rbind,
-    lapply(year_yaml, \(y) {
-      data.frame(
-        day = y$title, 
-        complete = if ("complete" %in% names(y)) y$complete else 0
-      )
-    })
-  )
-  names(completion) <- c("Day", year)
-  completion
-})
-
-aoc_completion <- Reduce(function(x, y) merge(x, y, by = "Day", all = TRUE), year_info)
-
-reactable::reactable(
-  aoc_completion,
-  columns = list(
-    Day = reactable::colDef(
-      width = 60,
-      cell = \(x, i) x
-    )
-  ),
-  defaultColDef = reactable::colDef(
-    cell = \(x, i, year) {
-      if (is.na(x)) {
-        ""
-      } else {
-        if (x > 0) {
-          htmltools::a(
-            href = file.path(sprintf("year_%s", year), sprintf("day_%02d", i)),
-            title = paste("Solution to day", i, "for", year),
-            htmltools::span(class = "stars", paste(rep("*", x), collapse = "")), 
-            paste(rep("*", 2 - x), collapse = "")
-          )
-        } else {
-          "**"
-        }
-      }
-    }
-  ),
-  pagination = FALSE,
-  theme = reactable::reactableTheme(
-    backgroundColor = "inherit"
-  )
-)
+create_aoc_star_table(file.path(year_dirs, "days.yml"))
 ```

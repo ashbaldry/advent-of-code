@@ -1,0 +1,18 @@
+{
+  "hash": "208f09148d9bd76243655568a438ac8c",
+  "result": {
+    "markdown": "---\ntitle: \"2022\"\n---\n\n::: {.cell}\n::: {.cell-output-display}\n```{=html}\n<div id=\"htmlwidget-7a682d59994d5b67d98d\" class=\"reactable html-widget\" style=\"width:auto;height:auto;\"></div>\n<script type=\"application/json\" data-for=\"htmlwidget-7a682d59994d5b67d98d\">{\"x\":{\"tag\":{\"name\":\"Reactable\",\"attribs\":{\"data\":{\"Day\":[\"01\"],\"2022\":[0]},\"columns\":[{\"accessor\":\"Day\",\"name\":\"Day\",\"type\":\"character\",\"cell\":[\"01\"],\"width\":60},{\"accessor\":\"2022\",\"name\":\"2022\",\"type\":\"numeric\",\"cell\":[\"**\"]}],\"pagination\":false,\"defaultPageSize\":10,\"paginationType\":\"numbers\",\"showPageInfo\":true,\"minRows\":1,\"theme\":{\"backgroundColor\":\"inherit\"},\"dataKey\":\"cc21e98bd8685de7e8a236692bd95d69\"},\"children\":[]},\"class\":\"reactR_markup\"},\"evals\":[],\"jsHooks\":[]}</script>\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"../site_libs/core-js-2.5.3/shim.min.js\"></script>\r\n<script src=\"../site_libs/react-17.0.0/react.min.js\"></script>\r\n<script src=\"../site_libs/react-17.0.0/react-dom.min.js\"></script>\r\n<script src=\"../site_libs/reactwidget-1.0.0/react-tools.js\"></script>\r\n<script src=\"../site_libs/htmlwidgets-1.5.4/htmlwidgets.js\"></script>\r\n<script src=\"../site_libs/reactable-binding-0.3.0/reactable.js\"></script>\r\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
