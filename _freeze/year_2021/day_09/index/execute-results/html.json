@@ -1,8 +1,10 @@
 {
-  "hash": "e752bfcf2a0200292227ab10b3cae7e7",
+  "hash": "b39803e8fd05e6eb37ad90c29a30bca9",
   "result": {
-    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\npositions <- apply(do.call(rbind, strsplit(readLines(\"input.txt\"), \"\")), 2, as.numeric)\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nright <- positions < cbind(positions[, 2:100], 10)\nleft <- positions < cbind(10, positions[, 1:99])\nup <- positions < rbind(10, positions[1:99, ])\ndown <- positions < rbind(positions[2:100, ], 10)\n\nsum(positions[right & left & up & down] + 1)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 444\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfindBasinSize <- function(x) {\n  points <- findSurroundingPoints(t(x))\n  nrow(points)\n}\n\nfindSurroundingPoints <- function(x) {\n  # Expanding all points left, right, up, down\n  y <- rbind(\n    x,\n    cbind(x[, \"row\"] - 1, x[, \"col\"]),\n    cbind(x[, \"row\"] + 1, x[, \"col\"]),\n    cbind(x[, \"row\"], x[, \"col\"] - 1),\n    cbind(x[, \"row\"], x[, \"col\"] + 1)\n  )\n\n  # Unique, within bounds, and value is not 9\n  y <- y[!duplicated(y), ]\n  y <- y[apply(y, 1, min) > 0 & apply(y, 1, max) <= 100, ]\n  y <- y[!positions[y] == 9, ]\n\n  # If no new points, return all points\n  if (nrow(x) != nrow(y)) {\n    findSurroundingPoints(y)\n  } else {\n    y\n  }\n}\n\nmin_positions <- which(right & left & up & down, arr.ind = TRUE)\nbasin_sizes <- apply(min_positions, 1, findBasinSize)\nprod(sort(basin_sizes, decreasing = TRUE)[1:3])\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1168440\n```\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

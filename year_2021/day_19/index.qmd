@@ -1,4 +1,5 @@
 ---
+title: "2021 - Day 19"
 format:
   html:
     code-fold: show
@@ -18,7 +19,7 @@ orientations <- expand.grid(x = c(1, -1), y = c(1, -1), z = c(1, -1))
 scanners <- lapply(seq_along(gaps), \(x) {
   if (x == length(gaps)) nrows <- -1 else nrows <- gaps[x + 1] - gaps[x] - 2
   beacons <- read.csv(
-    "2021/day_19/input.txt", header = FALSE, skip = gaps[x] + 1, nrows = nrows,
+    "input.txt", header = FALSE, skip = gaps[x] + 1, nrows = nrows,
     col.names = c("x", "y", "z")
   )
   beacons <- as.matrix(beacons)
@@ -40,7 +41,7 @@ scanners <- lapply(seq_along(gaps), \(x) {
 
 ## Part 1
 
-```{r part_1}
+```{r part_1, eval=FALSE}
 # Scanner 1 is source of truth
 beacon_locations <- scanners[[1]][[1]]
 to_scan <- seq(2, length(scanners))
@@ -77,6 +78,6 @@ nrow(beacon_locations)
 
 ## Part 2
 
-```{r part_2}
+```{r part_2, eval=FALSE}
 max(apply(scanner_locations, 1, \(x) max(rowSums(abs(sweep(scanner_locations, 2, x))))))
 ```

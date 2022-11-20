@@ -1,4 +1,5 @@
 ---
+title: "2021 - Day 24"
 format:
   html:
     code-fold: show
@@ -51,7 +52,7 @@ comms[comms$com == "neql", "call"] <- paste(
 
 ## Part 1
 
-```{r part_1}
+```{r part_1, eval=FALSE}
 w <- x <- z <- 0
 w_vals <- vals <- 9:1
 
@@ -71,7 +72,7 @@ vals[z == 0][1]
 
 ## Part 2
 
-```{r part_2}
+```{r part_2, eval=FALSE}
 w <- x <- z <- 0
 w_vals <- vals <- 1:9
 

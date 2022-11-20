@@ -1,4 +1,5 @@
 ---
+title: "2021 - Day 21"
 format:
   html:
     code-fold: show
@@ -37,7 +38,7 @@ addScore(start_positions$start[1], start_positions$start[2])
 
 ## Part 2
 
-```{r part_2}
+```{r part_2, eval=FALSE}
 pot_scores <- expand.grid(1:3, 1:3, 1:3)
 pot_values <- c(0, 0, table(rowSums(pot_scores)))
 cache <- list()

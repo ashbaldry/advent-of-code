@@ -1,0 +1,98 @@
+---
+format:
+  html:
+    code-fold: show
+    code-tools: true
+    code-block-bg: true
+    code-block-border-left: "#AB63BD"
+---
+
+
+## Set-Up
+
+
+```{r setup}
+options(scipen = 20)
+comms <- read.delim(
+  "input.txt", sep = " ", header = FALSE,
+  col.names = c("com", "var", "val")
+)
+str(comms)
+
+comms$call <- NA_character_
+comms[comms$com == "inp", "call"] <- paste(comms$var[comms$com == "inp"], "<- w_vals")
+comms$input[comms$com == "inp"] <- seq_along(comms$var[comms$com == "inp"])
+comms[comms$com == "mul", "call"] <- paste(
+  comms$var[comms$com == "mul"], "<-",
+  comms$var[comms$com == "mul"], "*", comms$val[comms$com == "mul"]
+)
+comms[comms$com == "mul" & comms$val == "0", "call"] <- paste(
+  comms$var[comms$com == "mul" & comms$val == "0"], "<- 0"
+)
+comms[comms$com == "add", "call"] <- paste(
+  comms$var[comms$com == "add"], "<-",
+  comms$var[comms$com == "add"], "+", comms$val[comms$com == "add"]
+)
+comms[comms$com == "ass", "call"] <- paste(
+  comms$var[comms$com == "ass"], "<-", comms$val[comms$com == "ass"]
+)
+comms[comms$com == "div", "call"] <- paste(
+  comms$var[comms$com == "div"], "<-",
+  comms$var[comms$com == "div"], "%/%", comms$val[comms$com == "div"]
+)
+comms[comms$com == "mod", "call"] <- paste(
+  comms$var[comms$com == "mod"], "<-",
+  comms$var[comms$com == "mod"], "%%", comms$val[comms$com == "div"]
+)
+comms[comms$com == "neql", "call"] <- paste(
+  comms$var[comms$com == "neql"], "<- as.numeric(",
+  comms$var[comms$com == "neql"], "!=", comms$val[comms$com == "neql"],
+  ")"
+)
+```
+
+
+## Part 1
+
+
+```{r part_1}
+w <- x <- z <- 0
+w_vals <- vals <- 9:1
+
+for (i in seq(nrow(comms))) {
+  eval(parse(text = paste(comms$call[i])))
+  if (comms$com[i] == "inp" && i != 1) {
+    vals <- vals[!duplicated(z)]
+    z <- z[!duplicated(z)]
+
+    vals <- c(t(outer(vals, w_vals, paste0)))
+    z <- rep(z, each = 9)
+    w <- rep(w_vals, times = length(z) / 9)
+  }
+}
+vals[z == 0][1]
+```
+
+
+## Part 2
+
+
+```{r part_2}
+w <- x <- z <- 0
+w_vals <- vals <- 1:9
+
+for (i in seq(nrow(comms))) {
+  eval(parse(text = paste(comms$call[i])))
+  if (comms$com[i] == "inp" && i != 1) {
+    vals <- vals[!duplicated(z)]
+    z <- z[!duplicated(z)]
+    cat(i, length(z), "\n")
+
+    vals <- c(outer(vals, w_vals, paste0))
+    z <- rep(z, times = 9)
+    w <- rep(w_vals, each = length(z) / 9)
+  }
+}
+vals[z == 0][1]
+```
+

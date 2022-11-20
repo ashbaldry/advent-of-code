@@ -1,8 +1,10 @@
 {
-  "hash": "e752bfcf2a0200292227ab10b3cae7e7",
+  "hash": "d3371e144f3609560a0c7842b4f035a2",
   "result": {
-    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\ninput <- readLines(\"input.txt\")\nstr(input)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n chr \"target area: x=117..164, y=-140..-89\"\n```\n:::\n\n```{.r .cell-code}\nedges <- setNames(\n  as.numeric(regmatches(input, gregexpr(\"(-|)\\\\d+\", input))[[1]]),\n  c(\"x1\", \"x2\", \"y1\", \"y2\")\n)\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsum(seq(abs(edges[\"y1\"]) - 1))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 9730\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntriangle_numbers <- cumsum(seq(20))\nmin_x <- min(which(triangle_numbers >= edges[\"x1\"] & triangle_numbers <= edges[\"x2\"]))\nmax_x <- unname(edges[\"x2\"])\nmin_y <- unname(edges[\"y1\"])\nmax_y <- unname(abs(edges[\"y1\"]) - 1)\n\npotential_veloctiy <- cbind(\n  x = rep(min_x:max_x, each = max_y - min_y + 1),\n  y = rep(min_y:max_y, times = max_x - min_x + 1)\n)\n\nsum(apply(potential_veloctiy, 1, \\(velocity) {\n  x_pos <- cumsum(pmax(velocity[\"x\"] - 0:280, 0))\n  y_pos <- cumsum(velocity[\"y\"] - 0:280)\n  any(\n    x_pos >= edges[\"x1\"] & x_pos <= edges[\"x2\"] &\n      y_pos >= edges[\"y1\"] & y_pos <= edges[\"y2\"]\n  )\n}))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4110\n```\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

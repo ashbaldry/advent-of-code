@@ -167,7 +167,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#set-up" id="toc-set-up" class="nav-link active" data-scroll-target="#set-up">Set-Up</a></li>
+  <li><a href="#set-up" id="toc-set-up" class="nav-link active" data-scroll-target="#set-up">Set-Up</a>
+  <ul class="collapse">
+  <li><a href="#helper-functions" id="toc-helper-functions" class="nav-link" data-scroll-target="#helper-functions">Helper Functions</a></li>
+  </ul></li>
   <li><a href="#part-1" id="toc-part-1" class="nav-link" data-scroll-target="#part-1">Part 1</a></li>
   <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
   </ul>
@@ -181,19 +184,114 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="set-up" class="level2">
 <h2 class="anchored" data-anchor-id="set-up">Set-Up</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>snailfish <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(snailfish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> chr [1:100] "[[6,[[9,4],[5,1]]],[[[6,5],[9,4]],2]]" ...</code></pre>
 </div>
+</div>
+<section id="helper-functions" class="level3">
+<h3 class="anchored" data-anchor-id="helper-functions">Helper Functions</h3>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>findReduction <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  explode_loc <span class="ot">&lt;-</span> <span class="fu">findExplodeLocations</span>(x)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  split_loc <span class="ot">&lt;-</span> <span class="fu">findSplitLocations</span>(x)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(explode_loc) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">explodePair</span>(x, explode_loc[<span class="dv">1</span>])</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(split_loc) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">splitPair</span>(x, split_loc[<span class="dv">1</span>])</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    x</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>findExplodeLocations <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">depth =</span> <span class="dv">4</span>) {</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  pairs <span class="ot">&lt;-</span> <span class="fu">gregexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+,</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]"</span>, x)[[<span class="dv">1</span>]]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  opens <span class="ot">&lt;-</span> <span class="fu">cumsum</span>((<span class="fu">strsplit</span>(x, <span class="st">""</span>)[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">"["</span>) <span class="sc">-</span> (<span class="fu">strsplit</span>(x, <span class="st">""</span>)[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">"]"</span>))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  pairs[opens[pairs] <span class="sc">&gt;</span> depth]</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>findSplitLocations <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">setdiff</span>(<span class="fu">as.numeric</span>(<span class="fu">gregexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d{2}"</span>, x)[[<span class="dv">1</span>]]), <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>explodePair <span class="ot">&lt;-</span> <span class="cf">function</span>(x, pair_loc, <span class="at">recurse =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  num1 <span class="ot">&lt;-</span> num2 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  init_str <span class="ot">&lt;-</span> <span class="fu">substr</span>(x, <span class="dv">1</span>, pair_loc <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  pair_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"(.?</span><span class="sc">\\</span><span class="st">]).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, <span class="fu">substr</span>(x, pair_loc, <span class="fu">nchar</span>(x)))</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  first_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[(</span><span class="sc">\\</span><span class="st">d+),.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str))</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  second_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[.*,(</span><span class="sc">\\</span><span class="st">d+)</span><span class="sc">\\</span><span class="st">]"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  end_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(pair_str, <span class="st">""</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>, <span class="fu">substr</span>(x, pair_loc, <span class="fu">nchar</span>(x)))</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>, init_str)) {</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    num1 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">".*[^0-9](</span><span class="sc">\\</span><span class="st">d+)(?=[^0-9]+$).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, init_str, <span class="at">perl =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> first_num</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    init_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"(?!&lt;[^0-9])(</span><span class="sc">\\</span><span class="st">d+)(?=[^0-9]+$)"</span>, num1, init_str, <span class="at">perl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>, end_str)) {</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    num2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">regmatches</span>(end_str, <span class="fu">regexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, end_str))) <span class="sc">+</span> second_num</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    end_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, num2, end_str)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">findReduction</span>(<span class="fu">paste0</span>(init_str, <span class="dv">0</span>, end_str))</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>splitPair <span class="ot">&lt;-</span> <span class="cf">function</span>(x, number_loc, <span class="at">recurse =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  init_str <span class="ot">&lt;-</span> <span class="fu">substr</span>(x, <span class="dv">1</span>, number_loc <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  end_str <span class="ot">&lt;-</span> <span class="fu">substr</span>(x, number_loc <span class="sc">+</span> <span class="dv">2</span>, <span class="fu">nchar</span>(x))</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  number <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">substr</span>(x, number_loc, number_loc <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">findReduction</span>(<span class="fu">paste0</span>(init_str, <span class="st">"["</span>, <span class="fu">floor</span>(number <span class="sc">/</span> <span class="dv">2</span>), <span class="st">","</span>, <span class="fu">ceiling</span>(number <span class="sc">/</span> <span class="dv">2</span>), <span class="st">"]"</span>, end_str))</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>sumFish <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  pairs <span class="ot">&lt;-</span> <span class="fu">gregexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+,</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]"</span>, x)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  pair_str <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(x, pairs)[[<span class="dv">1</span>]]</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  pair_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"^.?(</span><span class="sc">\\</span><span class="st">d+).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str)) <span class="sc">*</span> <span class="dv">3</span> <span class="sc">+</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">".*,(</span><span class="sc">\\</span><span class="st">d+)</span><span class="sc">\\</span><span class="st">]"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str)) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  new_x <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">strsplit</span>(x, <span class="st">"</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+,</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]"</span>)[[<span class="dv">1</span>]], <span class="fu">c</span>(pair_num, <span class="st">""</span>), <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">["</span>, new_x)) new_x <span class="ot">&lt;-</span> <span class="fu">sumFish</span>(new_x)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(new_x)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
 </section>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fish_sum <span class="ot">&lt;-</span> snailfish[<span class="dv">1</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(snailfish)[<span class="sc">-</span><span class="dv">1</span>]) {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  fish_sum <span class="ot">&lt;-</span> <span class="fu">findReduction</span>(<span class="fu">paste0</span>(<span class="st">"["</span>, fish_sum, <span class="st">","</span>, snailfish[i], <span class="st">"]"</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sumFish</span>(fish_sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4008</code></pre>
+</div>
 </div>
 </section>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rep</span>(snailfish, <span class="at">each =</span> <span class="dv">100</span>), <span class="fu">rep</span>(snailfish, <span class="at">times =</span> <span class="dv">100</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">&lt;-</span> combinations[combinations[, <span class="dv">1</span>] <span class="sc">!=</span> combinations[, <span class="dv">2</span>], ]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>combinations_str <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"["</span>, combinations[, <span class="dv">1</span>], <span class="st">","</span>, combinations[, <span class="dv">2</span>], <span class="st">"]"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>differences <span class="ot">&lt;-</span> <span class="fu">sapply</span>(combinations_str, \(x) <span class="fu">sumFish</span>(<span class="fu">findReduction</span>(x)))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(differences)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4667</code></pre>
+</div>
 </div>
 
 
@@ -351,29 +449,106 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>snailfish <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(snailfish)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">### Helper Functions</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{r function}</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>findReduction <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  explode_loc <span class="ot">&lt;-</span> <span class="fu">findExplodeLocations</span>(x)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  split_loc <span class="ot">&lt;-</span> <span class="fu">findSplitLocations</span>(x)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(explode_loc) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">explodePair</span>(x, explode_loc[<span class="dv">1</span>])</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(split_loc) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">splitPair</span>(x, split_loc[<span class="dv">1</span>])</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    x</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>findExplodeLocations <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">depth =</span> <span class="dv">4</span>) {</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  pairs <span class="ot">&lt;-</span> <span class="fu">gregexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+,</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]"</span>, x)[[<span class="dv">1</span>]]</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  opens <span class="ot">&lt;-</span> <span class="fu">cumsum</span>((<span class="fu">strsplit</span>(x, <span class="st">""</span>)[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">"["</span>) <span class="sc">-</span> (<span class="fu">strsplit</span>(x, <span class="st">""</span>)[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">"]"</span>))</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  pairs[opens[pairs] <span class="sc">&gt;</span> depth]</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>findSplitLocations <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">setdiff</span>(<span class="fu">as.numeric</span>(<span class="fu">gregexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d{2}"</span>, x)[[<span class="dv">1</span>]]), <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>explodePair <span class="ot">&lt;-</span> <span class="cf">function</span>(x, pair_loc, <span class="at">recurse =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  num1 <span class="ot">&lt;-</span> num2 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  init_str <span class="ot">&lt;-</span> <span class="fu">substr</span>(x, <span class="dv">1</span>, pair_loc <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  pair_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"(.?</span><span class="sc">\\</span><span class="st">]).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, <span class="fu">substr</span>(x, pair_loc, <span class="fu">nchar</span>(x)))</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  first_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[(</span><span class="sc">\\</span><span class="st">d+),.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str))</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  second_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[.*,(</span><span class="sc">\\</span><span class="st">d+)</span><span class="sc">\\</span><span class="st">]"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str))</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  end_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(pair_str, <span class="st">""</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>, <span class="fu">substr</span>(x, pair_loc, <span class="fu">nchar</span>(x)))</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>, init_str)) {</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    num1 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">".*[^0-9](</span><span class="sc">\\</span><span class="st">d+)(?=[^0-9]+$).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, init_str, <span class="at">perl =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> first_num</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    init_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"(?!&lt;[^0-9])(</span><span class="sc">\\</span><span class="st">d+)(?=[^0-9]+$)"</span>, num1, init_str, <span class="at">perl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>, end_str)) {</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    num2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">regmatches</span>(end_str, <span class="fu">regexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, end_str))) <span class="sc">+</span> second_num</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>    end_str <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, num2, end_str)</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">findReduction</span>(<span class="fu">paste0</span>(init_str, <span class="dv">0</span>, end_str))</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>splitPair <span class="ot">&lt;-</span> <span class="cf">function</span>(x, number_loc, <span class="at">recurse =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>  init_str <span class="ot">&lt;-</span> <span class="fu">substr</span>(x, <span class="dv">1</span>, number_loc <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>  end_str <span class="ot">&lt;-</span> <span class="fu">substr</span>(x, number_loc <span class="sc">+</span> <span class="dv">2</span>, <span class="fu">nchar</span>(x))</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>  number <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">substr</span>(x, number_loc, number_loc <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">findReduction</span>(<span class="fu">paste0</span>(init_str, <span class="st">"["</span>, <span class="fu">floor</span>(number <span class="sc">/</span> <span class="dv">2</span>), <span class="st">","</span>, <span class="fu">ceiling</span>(number <span class="sc">/</span> <span class="dv">2</span>), <span class="st">"]"</span>, end_str))</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>sumFish <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>  pairs <span class="ot">&lt;-</span> <span class="fu">gregexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+,</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]"</span>, x)</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>  pair_str <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(x, pairs)[[<span class="dv">1</span>]]</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>  pair_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"^.?(</span><span class="sc">\\</span><span class="st">d+).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str)) <span class="sc">*</span> <span class="dv">3</span> <span class="sc">+</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">".*,(</span><span class="sc">\\</span><span class="st">d+)</span><span class="sc">\\</span><span class="st">]"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, pair_str)) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>  new_x <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">strsplit</span>(x, <span class="st">"</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+,</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]"</span>)[[<span class="dv">1</span>]], <span class="fu">c</span>(pair_num, <span class="st">""</span>), <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">["</span>, new_x)) new_x <span class="ot">&lt;-</span> <span class="fu">sumFish</span>(new_x)</span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(new_x)</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>fish_sum <span class="ot">&lt;-</span> snailfish[<span class="dv">1</span>]</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(snailfish)[<span class="sc">-</span><span class="dv">1</span>]) {</span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>  fish_sum <span class="ot">&lt;-</span> <span class="fu">findReduction</span>(<span class="fu">paste0</span>(<span class="st">"["</span>, fish_sum, <span class="st">","</span>, snailfish[i], <span class="st">"]"</span>))</span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="fu">sumFish</span>(fish_sum)</span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rep</span>(snailfish, <span class="at">each =</span> <span class="dv">100</span>), <span class="fu">rep</span>(snailfish, <span class="at">times =</span> <span class="dv">100</span>))</span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>combinations <span class="ot">&lt;-</span> combinations[combinations[, <span class="dv">1</span>] <span class="sc">!=</span> combinations[, <span class="dv">2</span>], ]</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>combinations_str <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"["</span>, combinations[, <span class="dv">1</span>], <span class="st">","</span>, combinations[, <span class="dv">2</span>], <span class="st">"]"</span>)</span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>differences <span class="ot">&lt;-</span> <span class="fu">sapply</span>(combinations_str, \(x) <span class="fu">sumFish</span>(<span class="fu">findReduction</span>(x)))</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(differences)</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

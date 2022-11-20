@@ -1,8 +1,10 @@
 {
-  "hash": "e752bfcf2a0200292227ab10b3cae7e7",
+  "hash": "3aa7f3614f6f996d8ec5a9ad65e24023",
   "result": {
-    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmovements <- scan(\"input.txt\", what = numeric(), sep = \",\", quiet = TRUE)\nstr(movements)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n num [1:1000] 1101 1 29 67 1102 ...\n```\n:::\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmin(vapply(\n  seq(min(movements), max(movements)), \n  \\(x) sum(abs(movements - x)), \n  numeric(1)\n))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 337488\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntriangle_numbers <- sapply(seq(min(movements), max(movements)), \\(x) sum(seq(x)))\ntriangle_numbers[1] <- 0\nmin(sapply(\n  seq(min(movements), max(movements)), \n  \\(x) sum(triangle_numbers[abs(movements - x) + 1])\n))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 89647695\n```\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

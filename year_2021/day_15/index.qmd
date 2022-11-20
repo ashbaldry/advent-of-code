@@ -1,4 +1,5 @@
 ---
+title: "2021 - Day 15"
 format:
   html:
     code-fold: show
@@ -10,7 +11,8 @@ format:
 ## Set-Up
 
 ```{r setup}
-risk <- as.matrix(read.fwf("index.txt", rep(1, 100), header = FALSE))
+risk <- as.matrix(read.fwf("input.txt", rep(1, 100), header = FALSE))
+str(risk)
 ```
 
 ### Helper Function
@@ -60,7 +62,7 @@ getRisk(risk)
 
 ## Part 2
 
-```{r part_2}
+```{r part_2, eval=FALSE}
 risk2 <- cbind(risk, risk + 1, risk + 2, risk + 3, risk + 4)
 risk2 <- rbind(risk2, risk2 + 1, risk2 + 2, risk2 + 3, risk2 + 4)
 risk2[risk2 > 9] <- risk2[risk2 > 9] %% 10 + 1

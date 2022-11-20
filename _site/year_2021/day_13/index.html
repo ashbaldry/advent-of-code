@@ -181,19 +181,97 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="set-up" class="level2">
 <h2 class="anchored" data-anchor-id="set-up">Set-Up</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(input)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> chr [1:852] "43,593" "1139,385" "1178,51" "216,679" "743,185" "1241,250" ...</code></pre>
+</div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>input_space <span class="ot">&lt;-</span> <span class="fu">which</span>(input <span class="sc">==</span> <span class="st">""</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>coordinates <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">strsplit</span>(input[<span class="fu">seq</span>(input_space <span class="sc">-</span> <span class="dv">1</span>)], <span class="st">","</span>), as.numeric)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>folds <span class="ot">&lt;-</span> input[<span class="sc">-</span><span class="fu">seq</span>(input_space)]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>paper <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">FALSE</span>, <span class="at">nrow =</span> <span class="fu">max</span>(coordinates[, <span class="dv">2</span>]), <span class="at">ncol =</span> <span class="fu">max</span>(coordinates[, <span class="dv">1</span>]))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>paper[<span class="fu">as.matrix</span>(coordinates[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)])] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>foldPaper <span class="ot">&lt;-</span> <span class="cf">function</span>(x, fold) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  position <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">".*="</span>, <span class="st">""</span>, fold)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"x"</span>, fold)) {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    x[, <span class="fu">seq</span>(position <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>)] <span class="sc">|</span> x[, <span class="fu">seq</span>(position <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">ncol</span>(x))]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    x[<span class="fu">seq</span>(position <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>), ] <span class="sc">|</span> x[<span class="fu">seq</span>(position <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">nrow</span>(x)), ]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">foldPaper</span>(paper, folds[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 704</code></pre>
+</div>
 </div>
 </section>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell">
-
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (fold <span class="cf">in</span> folds) paper <span class="ot">&lt;-</span> <span class="fu">foldPaper</span>(paper, fold)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="fu">rev</span>(<span class="fu">ifelse</span>(paper, <span class="st">"O"</span>, <span class="st">""</span>)), <span class="at">nrow =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+[1,] "O"  ""   ""   "O"  ""   ""   "O"  "O"  ""   ""    ""    "O"   "O"   ""   
+[2,] "O"  ""   ""   "O"  ""   "O"  ""   ""   "O"  ""    "O"   ""    ""    "O"  
+[3,] "O"  "O"  "O"  "O"  ""   "O"  ""   ""   ""   ""    "O"   ""    ""    "O"  
+[4,] "O"  ""   ""   "O"  ""   "O"  ""   "O"  "O"  ""    "O"   "O"   "O"   "O"  
+[5,] "O"  ""   ""   "O"  ""   "O"  ""   ""   "O"  ""    "O"   ""    ""    "O"  
+[6,] "O"  ""   ""   "O"  ""   ""   "O"  "O"  "O"  ""    "O"   ""    ""    "O"  
+     [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25] [,26]
+[1,] ""    ""    ""    "O"   "O"   ""    "O"   "O"   "O"   ""    ""    "O"  
+[2,] ""    ""    ""    ""    "O"   ""    "O"   ""    ""    "O"   ""    "O"  
+[3,] ""    ""    ""    ""    "O"   ""    "O"   "O"   "O"   ""    ""    "O"  
+[4,] ""    ""    ""    ""    "O"   ""    "O"   ""    ""    "O"   ""    "O"  
+[5,] ""    "O"   ""    ""    "O"   ""    "O"   ""    ""    "O"   ""    "O"  
+[6,] ""    ""    "O"   "O"   ""    ""    "O"   "O"   "O"   ""    ""    "O"  
+     [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35] [,36] [,37] [,38]
+[1,] "O"   "O"   "O"   ""    "O"   ""    ""    "O"   ""    ""    "O"   "O"  
+[2,] ""    ""    ""    ""    "O"   ""    ""    "O"   ""    "O"   ""    ""   
+[3,] "O"   "O"   ""    ""    "O"   "O"   "O"   "O"   ""    "O"   ""    ""   
+[4,] ""    ""    ""    ""    "O"   ""    ""    "O"   ""    "O"   ""    ""   
+[5,] ""    ""    ""    ""    "O"   ""    ""    "O"   ""    "O"   ""    ""   
+[6,] "O"   "O"   "O"   ""    "O"   ""    ""    "O"   ""    ""    "O"   "O"  
+     [,39] [,40]
+[1,] ""    ""   
+[2,] "O"   ""   
+[3,] ""    ""   
+[4,] ""    ""   
+[5,] "O"   ""   
+[6,] ""    ""   </code></pre>
+</div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nicer print</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">rev</span>(<span class="fu">t</span>(<span class="fu">cbind</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">ifelse</span>(paper, <span class="st">"O"</span>, <span class="st">" "</span>)))), <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>O  O  OO   OO    OO OOO  OOOO O  O  OO  
+O  O O  O O  O    O O  O O    O  O O  O 
+OOOO O    O  O    O OOO  OOO  OOOO O    
+O  O O OO OOOO    O O  O O    O  O O    
+O  O O  O O  O O  O O  O O    O  O O  O 
+O  O  OOO O  O  OO  OOO  OOOO O  O  OO  </code></pre>
+</div>
 </div>
 
 
@@ -351,29 +429,52 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(input)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>input_space <span class="ot">&lt;-</span> <span class="fu">which</span>(input <span class="sc">==</span> <span class="st">""</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>coordinates <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">strsplit</span>(input[<span class="fu">seq</span>(input_space <span class="sc">-</span> <span class="dv">1</span>)], <span class="st">","</span>), as.numeric)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>folds <span class="ot">&lt;-</span> input[<span class="sc">-</span><span class="fu">seq</span>(input_space)]</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>paper <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">FALSE</span>, <span class="at">nrow =</span> <span class="fu">max</span>(coordinates[, <span class="dv">2</span>]), <span class="at">ncol =</span> <span class="fu">max</span>(coordinates[, <span class="dv">1</span>]))</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>paper[<span class="fu">as.matrix</span>(coordinates[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)])] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>foldPaper <span class="ot">&lt;-</span> <span class="cf">function</span>(x, fold) {</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  position <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">".*="</span>, <span class="st">""</span>, fold)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"x"</span>, fold)) {</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    x[, <span class="fu">seq</span>(position <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>)] <span class="sc">|</span> x[, <span class="fu">seq</span>(position <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">ncol</span>(x))]</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    x[<span class="fu">seq</span>(position <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>), ] <span class="sc">|</span> x[<span class="fu">seq</span>(position <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">nrow</span>(x)), ]</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">foldPaper</span>(paper, folds[<span class="dv">1</span>]))</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (fold <span class="cf">in</span> folds) paper <span class="ot">&lt;-</span> <span class="fu">foldPaper</span>(paper, fold)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="fu">rev</span>(<span class="fu">ifelse</span>(paper, <span class="st">"O"</span>, <span class="st">""</span>)), <span class="at">nrow =</span> <span class="dv">6</span>)</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Nicer print</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">rev</span>(<span class="fu">t</span>(<span class="fu">cbind</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">ifelse</span>(paper, <span class="st">"O"</span>, <span class="st">" "</span>)))), <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

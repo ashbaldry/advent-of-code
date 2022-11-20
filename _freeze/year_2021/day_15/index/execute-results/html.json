@@ -1,8 +1,10 @@
 {
-  "hash": "e752bfcf2a0200292227ab10b3cae7e7",
+  "hash": "3266b40a4cae4b9cf5a207d883af90e4",
   "result": {
-    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\nrisk <- as.matrix(read.fwf(\"input.txt\", rep(1, 100), header = FALSE))\nstr(risk)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n int [1:100, 1:100] 4 7 2 9 1 1 9 8 2 7 ...\n - attr(*, \"dimnames\")=List of 2\n  ..$ : NULL\n  ..$ : chr [1:100] \"V1\" \"V2\" \"V3\" \"V4\" ...\n```\n:::\n:::\n\n\n### Helper Function\n\n\n::: {.cell}\n\n```{.r .cell-code}\ngetRisk <- function(risk) {\n  size <- nrow(risk)\n  distance <- matrix(Inf, size, size)\n  distance[1, 1] <- 0\n  distance[-1, 1] <- cumsum(risk[-1, 1])\n  distance[1, -1] <- cumsum(risk[1, -1])\n\n  # First iteration only looks at moving right/down (what I thought was all that happened...)\n  for (x in seq(2, size)) {\n    for (y in seq(2, size)) {\n      distance[x, y] <- risk[x, y] + min(distance[cbind(c(x - 1, x), c(y, y - 1))])\n    }\n  }\n\n  # Checks if can move/left with lower risk\n  reducible <- distance > risk + rbind(distance[2:size, ], Inf) |\n    distance > risk + cbind(distance[, 2:size], Inf)\n\n  while (any(reducible)) {\n    for (x in seq(1, size)) {\n      for (y in seq(1, size)) {\n        # Checks all 4 directions for lowest risk\n        points <- cbind(c(x - 1, x, x, x + 1), c(y, y - 1, y + 1, y))\n        points <- points[points[, 1] >= 1 & points[, 1] <= size & points[, 2] >= 1 & points[, 2] <= size, ]\n        distance[x, y] <- min(distance[x, y], risk[x, y] + min(distance[points]))\n      }\n    }\n    reducible <- distance > risk + rbind(distance[2:size, ], Inf) |\n      distance > risk + cbind(distance[, 2:size], Inf)\n  }\n\n  # Return bottom right element\n  distance[size, size]\n}\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\ngetRisk(risk)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 527\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n```{.r .cell-code}\nrisk2 <- cbind(risk, risk + 1, risk + 2, risk + 3, risk + 4)\nrisk2 <- rbind(risk2, risk2 + 1, risk2 + 2, risk2 + 3, risk2 + 4)\nrisk2[risk2 > 9] <- risk2[risk2 > 9] %% 10 + 1\ngetRisk(risk2)\n```\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
