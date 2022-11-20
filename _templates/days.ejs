@@ -3,7 +3,7 @@
 <% for (const item of items) { %>
   <% if (item.show !== false) { %>
     <li>
-      <a href="day_<%- item.title %>/script.R"><%= item.title %></a>
+      <a href="day_<%- item.title %>/index.qmd"><%= item.title %></a>
       <% if (item.complete) { %>
         <span class="stars"><%= '*'.repeat(item.complete) %></span>
       <% } %>

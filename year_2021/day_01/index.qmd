@@ -1,9 +1,28 @@
-measurements <- scan("2021/day_01/input.txt")
+---
+format:
+  html:
+    code-fold: show
+    code-tools: true
+    code-block-bg: true
+    code-block-border-left: "#AB63BD"
+---
 
-# Part 1
+## Set-Up
+
+```{r setup}
+measurements <- scan("input.txt")
+str(measurements)
+```
+
+## Part 1
+
+```{r part_1}
 sum(measurements[-1] > measurements[-length(measurements)])
+```
 
-# Part 2
+## Part 2
+
+```{r part_2}
 rollSums <- function(x) {
   N <- length(x)
   ids <- outer(seq_len(N - 2), 0:2, `+`)
@@ -11,8 +30,11 @@ rollSums <- function(x) {
 }
 
 sum(diff(rollSums(measurements)) > 0)
+```
 
-# Part 2 - Vectorised
+### Vectorised
+
+```{r part_2_vec}
 rollSums2 <- function(x) {
   N <- length(x)
   x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]
@@ -26,3 +48,4 @@ rollIncrease <- function(x) {
 }
 
 sum(rollIncrease(measurements))
+```

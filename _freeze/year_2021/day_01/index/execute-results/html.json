@@ -1,0 +1,16 @@
+{
+  "hash": "2fe89e2cdcfbf9311a9b4270271be39d",
+  "result": {
+    "markdown": "---\nformat:\n  html:\n    toc: true\n    toc-depth: 4\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmeasurements <- scan(\"input.txt\")\nstr(measurements)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n num [1:2000] 159 158 174 196 197 194 209 213 214 222 ...\n```\n:::\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsum(measurements[-1] > measurements[-length(measurements)])\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1583\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n```{.r .cell-code}\nrollSums <- function(x) {\n  N <- length(x)\n  ids <- outer(seq_len(N - 2), 0:2, `+`)\n  apply(ids, 1, \\(y) sum(x[y]))\n}\n\nsum(diff(rollSums(measurements)) > 0)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1627\n```\n:::\n:::\n\n\n### Vectorised\n\n\n::: {.cell}\n\n```{.r .cell-code}\nrollSums2 <- function(x) {\n  N <- length(x)\n  x[-1:-2] + x[c(-1, -N)] + x[c(-(N - 1), -N)]\n}\nsum(diff(rollSums2(measurements)) > 0)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1627\n```\n:::\n\n```{.r .cell-code}\nrollIncrease <- function(x) {\n  N <- length(x)\n  x[-1:-3] + x[c(-1, -2, -N)] + x[c(-1, -(N - 1), -N)] >\n    x[-N + 0:2] + x[c(-1, -(N - 1), -N)] + x[c(-1, -2, -N)]\n}\n\nsum(rollIncrease(measurements))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1627\n```\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

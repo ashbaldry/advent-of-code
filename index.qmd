@@ -6,7 +6,7 @@ This is a brain dump of my attempts of Advent of Code ([adventofcode.com](https:
 
 ```{r, echo=FALSE, warning=FALSE}
 library(reactable)
-year_dirs <- list.files(pattern = "year")
+year_dirs <- list.files(pattern = "year_\\d{4}$")
 years <- sub("year_", "", year_dirs)
 
 year_info <- lapply(file.path(year_dirs, "days.yml"), \(x) {
