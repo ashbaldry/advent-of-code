@@ -1,10 +1,12 @@
 library(reactable)
 
-create_aoc_star_table <- function(year_yaml_files, year = NULL) {
+create_aoc_star_table <- function(year_yaml_files, sel_year = NULL) {
   year_info <- lapply(year_yaml_files, \(x) {
     year_yaml <- yaml::read_yaml(x)
-    if (is.null(year)) {
+    if (is.null(sel_year)) {
       year <- sub("year_", "", dirname(x))
+    } else {
+      year <- sel_year
     }
 
     completion <- do.call(
@@ -36,7 +38,7 @@ create_aoc_star_table <- function(year_yaml_files, year = NULL) {
           ""
         } else {
           if (x > 0) {
-            if (is.null(year)) {
+            if (is.null(sel_year)) {
               day_solution <- file.path(sprintf("year_%s", year), sprintf("day_%02d", i))
             } else {
               day_solution <- sprintf("day_%02d", i)

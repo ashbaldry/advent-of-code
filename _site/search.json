@@ -487,7 +487,7 @@
     "href": "year_2021/day_23/index.html",
     "title": "2021 - Day 23",
     "section": "",
-    "text": "Code\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\n\n\nWarning in (function (..., deparse.level = 1) : number of columns of result is\nnot a multiple of vector length (arg 1)\n\n\nCode\nstr(seats)\n\n\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n\n\nCode\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n\n\nThis was done with a piece of paper rather than coding…"
+    "text": "Code\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\nstr(seats)\n\n\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n\n\nCode\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n\n\nThis was done with a piece of paper rather than coding…"
   },
   {
     "objectID": "year_2021/day_24/index.html",
