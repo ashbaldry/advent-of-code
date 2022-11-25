@@ -1,8 +1,58 @@
-/* css styles */
+#quarto-header nav.navbar {
+  padding: 0.3rem 1rem;
+  font-family: monospace;
+  background: #0f0f23;
+}
+
+#quarto-header .nav-link,
+#quarto-header .navbar-title,
+#quarto-header #quarto-search .aa-SubmitIcon,
+.anchorjs-link,
+a {
+ color: #009900;
+}
+
+#TOC .nav-link.active,
+#TOC .nav-link.active:hover {
+  color: #00cc00!important;
+  border-left: 1px solid #00cc00!important;
+}
+
+#TOC .nav-link:hover,
+#TOC .nav-link:focus {
+  color: #009900!important;
+  border-left: 1px solid #009900!important;
+}
+
+#quarto-header .nav-link.active {
+  color: #00cc00;
+}
+
+body {
+  background: #0f0f23;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+
 .star-count, .stars {
   color: #ffff66;
 }
 
+.Reactable {
+  font-family: monospace;
+}
+
 .Reactable a {
   text-decoration: none;
+}
+
+pre.sourceCode {
+  border-left-color: #dee;
 }

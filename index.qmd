@@ -2,7 +2,7 @@
 title: "Advent of Code"
 ---
 
-This is a brain dump of my attempts of Advent of Code ([adventofcode.com](https://adventofcode.com))
+This is a brain dump of my attempts for Advent of Code ([adventofcode.com](https://adventofcode.com))
 
 Click on any of the yellow stars to see my solution for that day.
 
