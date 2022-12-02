@@ -56,3 +56,7 @@ h2 {
 pre.sourceCode {
   border-left-color: #dee;
 }
+
+.panel-tabset .tab-content {
+  border: none;
+}
