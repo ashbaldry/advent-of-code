@@ -302,7 +302,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rps<span class="sc">$</span>my_rps_2 <span class="ot">&lt;-</span> <span class="fu">with</span>(rps, (elf_rps <span class="sc">+</span> my_rps <span class="sc">-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rps<span class="sc">$</span>my_rps_2 <span class="ot">&lt;-</span> <span class="fu">with</span>(rps, (elf_rps <span class="sc">+</span> my_rps) <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rps<span class="sc">$</span>my_score_2 <span class="ot">&lt;-</span> <span class="fu">with</span>(rps, my_rps_2 <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> (my_rps <span class="sc">-</span> <span class="dv">1</span>))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(rps<span class="sc">$</span>my_score_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -560,7 +560,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cleaned Solution</span></span>
 <span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2a}</span></span>
-<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>rps<span class="sc">$</span>my_rps_2 <span class="ot">&lt;-</span> <span class="fu">with</span>(rps, (elf_rps <span class="sc">+</span> my_rps <span class="sc">-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>rps<span class="sc">$</span>my_rps_2 <span class="ot">&lt;-</span> <span class="fu">with</span>(rps, (elf_rps <span class="sc">+</span> my_rps) <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>rps<span class="sc">$</span>my_score_2 <span class="ot">&lt;-</span> <span class="fu">with</span>(rps, my_rps_2 <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> (my_rps <span class="sc">-</span> <span class="dv">1</span>))</span>
 <span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(rps<span class="sc">$</span>my_score_2)</span>
 <span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
