@@ -550,21 +550,21 @@
     "href": "year_2022/day_02/index.html#part-2",
     "title": "2022 - Day 2",
     "section": "Part 2",
-    "text": "Part 2\n\nThe Elf finishes helping with the tent and sneaks back over to you. “Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!”\n\nWe already have the outcome score this time, so just need to work out whether we are to play rock, paper or scissors.\nAgain, using modulus makes things a lot easier to calculate scores, rather than the more manual ifelse.\n\nInitial SolutionCleaned Solution\n\n\n\n\nCode\nrps$my_rps_2 <- with(\n  rps,\n  ifelse(\n    my_play == \"X\",\n    ifelse(elf_rps == 1, 3, elf_rps - 1),\n  ifelse(\n    my_play == \"Y\",\n    elf_rps,\n    ifelse(elf_rps == 3, 1, elf_rps + 1)\n  )\n))\nrps$my_score_2 <- with(rps, my_rps_2 + 3 * (my_rps - 1))\nsum(rps$my_score_2)\n\n\n[1] 14859\n\n\n\n\n\n\nCode\nrps$my_rps_2 <- with(rps, (elf_rps + my_rps - 2 - 1) %% 3 + 1)\nrps$my_score_2 <- with(rps, my_rps_2 + 3 * (my_rps - 1))\nsum(rps$my_score_2)\n\n\n[1] 14859\n\n\n\n\n\nLesson of the day, have a coffee before starting the puzzle, and don’t start coding before finishing reading."
+    "text": "Part 2\n\nThe Elf finishes helping with the tent and sneaks back over to you. “Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!”\n\nWe already have the outcome score this time, so just need to work out whether we are to play rock, paper or scissors.\nAgain, using modulus makes things a lot easier to calculate scores, rather than the more manual ifelse.\n\nInitial SolutionCleaned Solution\n\n\n\n\nCode\nrps$my_rps_2 <- with(\n  rps,\n  ifelse(\n    my_play == \"X\",\n    ifelse(elf_rps == 1, 3, elf_rps - 1),\n  ifelse(\n    my_play == \"Y\",\n    elf_rps,\n    ifelse(elf_rps == 3, 1, elf_rps + 1)\n  )\n))\nrps$my_score_2 <- with(rps, my_rps_2 + 3 * (my_rps - 1))\nsum(rps$my_score_2)\n\n\n[1] 14859\n\n\n\n\n\n\nCode\nrps$my_rps_2 <- with(rps, (elf_rps + my_rps) %% 3 + 1)\nrps$my_score_2 <- with(rps, my_rps_2 + 3 * (my_rps - 1))\nsum(rps$my_score_2)\n\n\n[1] 14859\n\n\n\n\n\nLesson of the day, have a coffee before starting the puzzle, and don’t start coding before finishing reading."
   },
   {
     "objectID": "year_2022/day_03/index.html#part-1",
     "href": "year_2022/day_03/index.html#part-1",
     "title": "Advent of Code",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nFind the item type that appears in both compartments of each rucksack. What is the sum of the priorities of those item types?\n\n\n\nCode\nsplit_rucksack <- function(x) {\n  strsplit(c(substr(x, 1, nchar(x) / 2), substr(x, nchar(x) / 2 + 1, nchar(x))), \"\")\n}\nrucksacks_splits <- lapply(rucksacks, split_rucksack)\nrucksacks_intersects <- vapply(rucksacks_splits, \\(x) intersect(x[[1]], x[[2]]), character(1L))\nsum(match(rucksacks_intersects, c(letters, LETTERS)))\n\n\n[1] 8039"
   },
   {
     "objectID": "year_2022/day_03/index.html#part-2",
     "href": "year_2022/day_03/index.html#part-2",
     "title": "Advent of Code",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nAs you finish identifying the misplaced items, the Elves come to you with another issue.\nFor safety, the Elves are divided into groups of three. Every Elf carries a badge that identifies their group. For efficiency, within each group of three Elves, the badge is the only item type carried by all three Elves. That is, if a group’s badge is item type B, then all three Elves will have item type B somewhere in their rucksack, and at most two of the Elves will be carrying any other item type.\nThe problem is that someone forgot to put this year’s updated authenticity sticker on the badges. All of the badges need to be pulled out of the rucksacks so the new authenticity stickers can be attached.\nAdditionally, nobody wrote down which item type corresponds to each group’s badges. The only way to tell which item type is the right one is by finding the one item type that is common between all three Elves in each group.\nFind the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?\n\n\n\nCode\nrucksacks_splits2 <- lapply(rucksacks, \\(x) unlist(strsplit(x, \"\")))\nrucksacks_intersects2 <- vector(\"character\", 100)\nfor (i in seq(length(rucksacks_splits2) / 3)) {\n  rucksacks_intersects2[i] <- Reduce(intersect, rucksacks_splits2[1:3 + 3 * (i - 1)])\n}\nsum(match(rucksacks_intersects2, c(letters, LETTERS)))\n\n\n[1] 2510"
   },
   {
     "objectID": "year_2022/day_04/index.html#part-1",
@@ -1244,5 +1244,19 @@
     "title": "2022 - Day 2",
     "section": "",
     "text": "The Elves begin to set up camp on the beach. To decide whose tent gets to be closest to the snack storage, a giant Rock Paper Scissors tournament is already in progress.\nRock Paper Scissors is a game between two players. Each game contains many rounds; in each round, the players each simultaneously choose one of Rock, Paper, or Scissors using a hand shape. Then, a winner for that round is selected: Rock defeats Scissors, Scissors defeats Paper, and Paper defeats Rock. If both players choose the same shape, the round instead ends in a draw."
+  },
+  {
+    "objectID": "year_2022/day_03/index.html",
+    "href": "year_2022/day_03/index.html",
+    "title": "Advent of Code",
+    "section": "",
+    "text": "One Elf has the important job of loading all of the rucksacks with supplies for the jungle journey. Unfortunately, that Elf didn’t quite follow the packing instructions, and so a few items now need to be rearranged.\nEach rucksack has two large compartments. All items of a given type are meant to go into exactly one of the two compartments. The Elf that did the packing failed to follow this rule for exactly one item type per rucksack.\nThe Elves have made a list of all of the items currently in each rucksack (your puzzle input), but they need your help finding the errors. Every item type is identified by a single lowercase or uppercase letter (that is, a and A refer to different types of items).\nThe list of items for each rucksack is given as characters all on a single line. A given rucksack always has the same number of items in each of its two compartments, so the first half of the characters represent items in the first compartment, while the second half of the characters represent items in the second compartment.\nTo help prioritize item rearrangement, every item type can be converted to a priority:\nLowercase item types a through z have priorities 1 through 26. Uppercase item types A through Z have priorities 27 through 52."
+  },
+  {
+    "objectID": "year_2022/day_03/index.html#set-up",
+    "href": "year_2022/day_03/index.html#set-up",
+    "title": "Advent of Code",
+    "section": "Set-Up",
+    "text": "Set-Up\n\n\nCode\nrucksacks <- readLines(\"input.txt\")"
   }
 ]
