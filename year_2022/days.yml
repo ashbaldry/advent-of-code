@@ -1,3 +1,8 @@
-- path: day_01
-  title: "01"
-  show: false
+- title: "01"
+  complete: 2
+- title: "02"
+  complete: 2
+- title: "03"
+  complete: 2
+- title: "04"
+  complete: 2
