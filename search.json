@@ -618,30 +618,30 @@
   {
     "objectID": "year_2022/day_05/index.html#part-1",
     "href": "year_2022/day_05/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2022 - Day 6",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nAfter the rearrangement procedure completes, what crate ends up on top of each stack?\n\n\n\nCode\nblocks_p1 <- blocks\nfor (i in seq(nrow(operations))) {\n  blocks_p1[[operations$to[i]]] <- c(\n    blocks_p1[[operations$to[i]]],\n    rev(tail(blocks_p1[[operations$from[i]]], operations$move[i]))\n  )\n  blocks_p1[[operations$from[i]]] <- head(blocks_p1[[operations$from[i]]], -operations$move[i])\n}\nvapply(blocks_p1, tail, character(1L), n = 1) |> paste(collapse = \"\")\n\n\n[1] \"BSDMQFLSP\""
   },
   {
     "objectID": "year_2022/day_05/index.html#part-2",
     "href": "year_2022/day_05/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2022 - Day 6",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nAs you watch the crane operator expertly rearrange the crates, you notice the process isn’t following your prediction.\nSome mud was covering the writing on the side of the crane, and you quickly wipe it away. The crane isn’t a CrateMover 9000 - it’s a CrateMover 9001.\nThe CrateMover 9001 is notable for many new and exciting features: air conditioning, leather seats, an extra cup holder, and the ability to pick up and move multiple crates at once.\n\nSometimes it is as simple as removing a rev from the previous solution…\n\n\nCode\nfor (i in seq(nrow(operations))) {\n  blocks[[operations$to[i]]] <- c(\n    blocks[[operations$to[i]]],\n    tail(blocks[[operations$from[i]]], operations$move[i])\n  )\n  blocks[[operations$from[i]]] <- head(blocks[[operations$from[i]]], -operations$move[i])\n}\nvapply(blocks, tail, character(1L), n = 1) |> paste(collapse = \"\")\n\n\n[1] \"PGSQBFLDP\""
   },
   {
     "objectID": "year_2022/day_06/index.html#part-1",
     "href": "year_2022/day_06/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "2022 - Day 6",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nHow many characters need to be processed before the first start-of-packet marker is detected?\n\nNormally I stick to using base-R functions, but {zoo} provides a nice wrapper around mapply to handle applying functions over a rolling set of elements.\n\nSolutionBase Solution\n\n\n\n\nCode\nwhich(zoo::rollapply(data_stream, 4, \\(x) length(unique(x)) == 4))[1] + 3\n\n\n[1] 1238\n\n\n\n\n\n\nCode\nfor (i in seq_along(data_stream)) {\n  if (length(unique(data_stream[seq(i, i + 3)])) == 4) break\n}\nprint(i + 3)\n\n\n[1] 1238"
   },
   {
     "objectID": "year_2022/day_06/index.html#part-2",
     "href": "year_2022/day_06/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "2022 - Day 6",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nYour device’s communication system is correctly detecting packets, but still isn’t working. It looks like it also needs to look for messages.\nA start-of-message marker is just like a start-of-packet marker, except it consists of 14 distinct characters rather than 4.\n\n\nSolutionBase Solution\n\n\n\n\nCode\nwhich(zoo::rollapply(data_stream, 14, \\(x) length(unique(x)) == 14))[1] + 13\n\n\n[1] 3037\n\n\n\n\n\n\nCode\nfor (i in seq_along(data_stream)) {\n  if (length(unique(data_stream[seq(i, i + 13)])) == 14) break\n}\nprint(i + 13)\n\n\n[1] 3037"
   },
   {
     "objectID": "year_2022/day_07/index.html#part-1",
@@ -1272,5 +1272,33 @@
     "title": "2022 - Day 4",
     "section": "Set-Up",
     "text": "Set-Up\nToday this was the most inefficient part of my solution. Originally read in the data as a table and then split out using gsub. This can be simplified by reading in as strings, replacing with commas in the strings, and then use the text argument in read.table.\n\n\nCode\n# Original\nassignments <- read.csv(\"input.txt\", header = FALSE, col.names = c(\"A\", \"B\"))\nassignments$A1 <- with(assignments, as.numeric(sub(\"-.*\", \"\", A)))\nassignments$A2 <- with(assignments, as.numeric(sub(\".*-\", \"\", A)))\nassignments$B1 <- with(assignments, as.numeric(sub(\"-.*\", \"\", B)))\nassignments$B2 <- with(assignments, as.numeric(sub(\".*-\", \"\", B)))\n\n# Simplified\nassignments_clean <- read.table(\n  text = gsub(\"-\", \",\", readLines(\"input.txt\")), \n  sep = \",\", \n  col.names = c(\"A1\", \"A2\", \"B1\", \"B2\")\n)\n\nall.equal(assignments[, c(\"A1\", \"A2\", \"B1\", \"B2\")], assignments_clean)\n\n\n[1] TRUE"
+  },
+  {
+    "objectID": "year_2022/day_06/index.html",
+    "href": "year_2022/day_06/index.html",
+    "title": "2022 - Day 6",
+    "section": "",
+    "text": "The preparations are finally complete; you and the Elves leave camp on foot and begin to make your way toward the star fruit grove.\nAs you move through the dense undergrowth, one of the Elves gives you a handheld device. He says that it has many fancy features, but the most important one to set up right now is the communication system.\nHowever, because he’s heard you have significant experience dealing with signal-based systems, he convinced the other Elves that it would be okay to give you their one malfunctioning device - surely you’ll have no problem fixing it.\nAs if inspired by comedic timing, the device emits a few colorful sparks.\nTo be able to communicate with the Elves, the device needs to lock on to their signal. The signal is a series of seemingly-random characters that the device receives one at a time.\nTo fix the communication system, you need to add a subroutine to the device that detects a start-of-packet marker in the datastream. In the protocol being used by the Elves, the start of a packet is indicated by a sequence of four characters that are all different.\nThe device will send your subroutine a datastream buffer (your puzzle input); your subroutine needs to identify the first position where the four most recently received characters were all different. Specifically, it needs to report the number of characters from the beginning of the buffer to the end of the first such four-character marker."
+  },
+  {
+    "objectID": "year_2022/day_06/index.html#set-up",
+    "href": "year_2022/day_06/index.html#set-up",
+    "title": "2022 - Day 6",
+    "section": "Set-Up",
+    "text": "Set-Up\n\n\nCode\ndata_stream <- strsplit(readLines(\"input.txt\"), \"\")[[1]]\nstr(data_stream)\n\n\n chr [1:4095] \"d\" \"c\" \"b\" \"c\" \"s\" \"b\" \"b\" \"l\" \"h\" \"h\" \"g\" \"d\" \"g\" \"s\" \"s\" ..."
+  },
+  {
+    "objectID": "year_2022/day_05/index.html",
+    "href": "year_2022/day_05/index.html",
+    "title": "2022 - Day 6",
+    "section": "",
+    "text": "The expedition can depart as soon as the final supplies have been unloaded from the ships. Supplies are stored in stacks of marked crates, but because the needed supplies are buried under many other crates, the crates need to be rearranged.\nThe ship has a giant cargo crane capable of moving crates between stacks. To ensure none of the crates get crushed or fall over, the crane operator will rearrange them in a series of carefully-planned steps. After the crates are rearranged, the desired crates will be at the top of each stack.\nThe Elves don’t want to interrupt the crane operator during this delicate procedure, but they forgot to ask her which crate will end up where, and they want to be ready to unload them as soon as possible so they can embark."
+  },
+  {
+    "objectID": "year_2022/day_05/index.html#set-up",
+    "href": "year_2022/day_05/index.html#set-up",
+    "title": "2022 - Day 6",
+    "section": "Set-Up",
+    "text": "Set-Up\nToday’s has been the most complicated format, with two bits of code to read in, the first of which isn’t structured nicely to read in with something like read.table.\n        [Q] [B]         [H]\n    [F] [W] [D] [Q]     [S]\n    [D] [C] [N] [S] [G] [F]\n    [R] [D] [L] [C] [N] [Q]     [R]\n[V] [W] [L] [M] [P] [S] [M]     [M]\n[J] [B] [F] [P] [B] [B] [P] [F] [F]\n[B] [V] [G] [J] [N] [D] [B] [L] [V]\n[D] [P] [R] [W] [H] [R] [Z] [W] [S]\n 1   2   3   4   5   6   7   8   9\nWith some manipulation. read.fwf was the best solution I could find, taking each four characters and extracting the letter from each set of characters.\n\n\nCode\nblocks <- read.fwf(\"input.txt\", widths = rep(4, 9), n = 8) |>\n  lapply(\\(x) rev(gsub(\"\\\\W\", \"\", x))) |>\n  lapply(\\(x) x[!x %in% c(\"\", NA)])\nstr(blocks)\n\n\nList of 9\n $ V1: chr [1:4] \"D\" \"B\" \"J\" \"V\"\n $ V2: chr [1:7] \"P\" \"V\" \"B\" \"W\" ...\n $ V3: chr [1:8] \"R\" \"G\" \"F\" \"L\" ...\n $ V4: chr [1:8] \"W\" \"J\" \"P\" \"M\" ...\n $ V5: chr [1:7] \"H\" \"N\" \"B\" \"P\" ...\n $ V6: chr [1:6] \"R\" \"D\" \"B\" \"S\" ...\n $ V7: chr [1:8] \"Z\" \"B\" \"P\" \"M\" ...\n $ V8: chr [1:3] \"W\" \"L\" \"F\"\n $ V9: chr [1:5] \"S\" \"V\" \"F\" \"M\" ...\n\n\nCode\noperations <- read.table(\n  \"input.txt\", sep = \" \", skip = 10,\n  col.names = c(\"x1\", \"move\", \"x2\", \"from\", \"x3\", \"to\")\n)\nhead(operations)\n\n\n    x1 move   x2 from x3 to\n1 move    1 from    4 to  1\n2 move    2 from    4 to  8\n3 move    5 from    9 to  6\n4 move    1 from    1 to  3\n5 move    5 from    8 to  3\n6 move    1 from    1 to  5"
   }
 ]
