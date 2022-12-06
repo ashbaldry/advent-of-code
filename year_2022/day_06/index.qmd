@@ -1,4 +1,5 @@
 ---
+title: "2022 - Day 6"
 format:
   html:
     code-fold: show
@@ -7,17 +8,69 @@ format:
     code-block-border-left: "#AB63BD"
 ---
 
+> The preparations are finally complete; you and the Elves leave camp on foot and begin to make your way toward the star fruit grove.
+>
+> As you move through the dense undergrowth, one of the Elves gives you a handheld device. He says that it has many fancy features, but the most important one to set up right now is the communication system.
+>
+> However, because he's heard you have significant experience dealing with signal-based systems, he convinced the other Elves that it would be okay to give you their one malfunctioning device - surely you'll have no problem fixing it.
+>
+> As if inspired by comedic timing, the device emits a few colorful sparks.
+>
+> To be able to communicate with the Elves, the device needs to lock on to their signal. The signal is a series of seemingly-random characters that the device receives one at a time.
+>
+> To fix the communication system, you need to add a subroutine to the device that detects a start-of-packet marker in the datastream. In the protocol being used by the Elves, the start of a packet is indicated by a sequence of four characters that are all different.
+>
+> The device will send your subroutine a datastream buffer (your puzzle input); your subroutine needs to identify the first position where the four most recently received characters were all different. Specifically, it needs to report the number of characters from the beginning of the buffer to the end of the first such four-character marker.
+
 ## Set-Up
 
 ```{r setup}
+data_stream <- strsplit(readLines("input.txt"), "")[[1]]
+str(data_stream)
 ```
 
 ## Part 1
 
+> How many characters need to be processed before the first start-of-packet marker is detected?
+
+Normally I stick to using base-R functions, but {zoo} provides a nice wrapper around `mapply` to handle applying functions over a rolling set of elements.
+
+::: panel-tabset
+## Solution
+
 ```{r part_1}
+which(zoo::rollapply(data_stream, 4, \(x) length(unique(x)) == 4))[1] + 3
 ```
+
+## Base Solution
+
+```{r part_1_base}
+for (i in seq_along(data_stream)) {
+  if (length(unique(data_stream[seq(i, i + 3)])) == 4) break
+}
+print(i + 3)
+```
+:::
 
 ## Part 2
 
+> Your device's communication system is correctly detecting packets, but still isn't working. It looks like it also needs to look for messages.
+>
+> A start-of-message marker is just like a start-of-packet marker, except it consists of 14 distinct characters rather than 4.
+
+::: panel-tabset
+## Solution
+
 ```{r part_2}
+which(zoo::rollapply(data_stream, 14, \(x) length(unique(x)) == 14))[1] + 13
 ```
+
+## Base Solution
+
+```{r part_2_base}
+for (i in seq_along(data_stream)) {
+  if (length(unique(data_stream[seq(i, i + 13)])) == 14) break
+}
+print(i + 13)
+```
+:::
