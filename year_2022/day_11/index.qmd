@@ -35,6 +35,7 @@ The input today was not nice, however it was very similar to a YAML file, using 
 monkeys <- readLines("input.txt") |>
   sub(pattern = "  If", replacement = "If") |>
   yaml::yaml.load()
+str(monkeys[[1]])
 ```
 
 I started this one later in the day, so thought would have some fun with {R6} and communicating between the different monkeys. Initialise set-up the monkey class, and I could loop through this without having to worry about creating a load of lists to handle different 
@@ -96,6 +97,7 @@ Monkey <- R6::R6Class(
 )
 
 for (i in seq(8)) assign(paste0("monkey_", i), Monkey$new(monkeys[[i]]))
+monkey_1
 ```
 
 ## Part 1
@@ -116,7 +118,7 @@ for (round in seq(20)) {
 }
 ```
 
-## Part 
+## Part 2
 
 > You're worried you might not ever get your items back. So worried, in fact, that your relief that a monkey's inspection didn't damage an item no longer causes your worry level to be divided by three.
 >
