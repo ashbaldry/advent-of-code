@@ -1,4 +1,5 @@
 ---
+title: "2022 - Day 11"
 format:
   html:
     code-fold: show
@@ -7,17 +8,144 @@ format:
     code-block-border-left: "#AB63BD"
 ---
 
+> As you finally start making your way upriver, you realize your pack is much lighter than you remember. Just then, one of the items from your pack goes flying overhead. Monkeys are playing Keep Away with your missing things!
+>
+> To get your stuff back, you need to be able to predict where the monkeys will throw your items. After some careful observation, you realize the monkeys operate based on how worried you are about each item.
+>
+> You take some notes (your puzzle input) on the items each monkey currently has, how worried you are about those items, and how the monkey makes decisions based on your worry level.
+> Each monkey has several attributes:
+>
+> - Starting items lists your worry level for each item the monkey is currently holding in the order they will be inspected.
+> - Operation shows how your worry level changes as that monkey inspects an item. (An operation like new = old * 5 means that your worry level after the monkey inspected the item is five times whatever your worry level was before inspection.)
+> - Test shows how the monkey uses your worry level to decide where to throw an item next.
+> - If true shows what happens with an item if the Test was true.
+> - If false shows what happens with an item if the Test was false.
+>
+> After each monkey inspects an item but before it tests your worry level, your relief that the monkey's inspection didn't damage the item causes your worry level to be divided by three and rounded down to the nearest integer.
+>
+> The monkeys take turns inspecting and throwing items. On a single monkey's turn, it inspects and throws all of the items it is holding one at a time and in the order listed. Monkey 0 goes first, then monkey 1, and so on until each monkey has had one turn. The process of each monkey taking a single turn is called a round.
+>
+> When a monkey throws an item to another monkey, the item goes on the end of the recipient monkey's list. A monkey that starts a round with no items could end up inspecting and throwing many items by the time its turn comes around. If a monkey is holding no items at the start of its turn, its turn ends.
+
 ## Set-Up
 
+The input today was not nice, however it was very similar to a YAML file, using {yaml} meant that I had a nicer list that I could parse the attributes of each monkey.
+
 ```{r setup}
+monkeys <- readLines("input.txt") |>
+  sub(pattern = "  If", replacement = "If") |>
+  yaml::yaml.load()
+```
+
+I started this one later in the day, so thought would have some fun with {R6} and communicating between the different monkeys. Initialise set-up the monkey class, and I could loop through this without having to worry about creating a load of lists to handle different 
+
+Two helper functions are included to help parse the input: one to extract the number, and one to send the new number to a different monkey.
+
+```{r r6}
+extract_number <- \(x) as.numeric(gsub("\\D", "", x))
+pass_monkey_func <- \(x) paste0("\\(x) monkey_", extract_number(x) + 1, "$receiveItem(x)")
+
+Monkey <- R6::R6Class(
+  classname = "monkey",
+  public = list(
+    n_checks = 0,
+    divisor = numeric(0),
+
+    initialize = \(x) {
+      private$initial_items <- as.numeric(strsplit(as.character(x[["Starting items"]]), ", ")[[1]])
+      private$received_items <- private$initial_items
+      private$operation <- eval(parse(text = sub("new = ", "\\\\(old) ", x[["Operation"]])))
+      self$divisor <- extract_number(x[["Test"]])
+      private$pass <- eval(parse(text = pass_monkey_func(x[["If true"]])))
+      private$fail <- eval(parse(text = pass_monkey_func(x[["If false"]])))
+    },
+    
+    checkItems = \(modulus = 0) {
+      private$items <- private$received_items
+      private$received_items <- numeric(0)
+      lapply(private$items, private$checkItem, modulus = modulus)
+      self$n_checks <- self$n_checks + length(private$items)
+    },
+    
+    receiveItem = \(x) private$received_items <- append(private$received_items, x),
+    
+    reset = \() {
+      private$items <- numeric(0)
+      private$received_items <- private$initial_items
+      self$n_checks <- 0
+    }
+  ),
+  private = list(
+    checkItem = \(old, modulus = 0) {
+      if (modulus) {
+        new <- private$operation(old) %% modulus
+      } else {
+        new <- private$operation(old) %/% 3
+      }
+      if (private$test(new)) private$pass(new) else private$fail(new)
+    },
+    test = \(x) x %% self$divisor == 0,
+    
+    items = numeric(0),
+    initial_items = numeric(0),
+    received_items = numeric(0),
+    operation = NULL,
+    pass = NULL,
+    fail = NULL
+  )
+)
+
+for (i in seq(8)) assign(paste0("monkey_", i), Monkey$new(monkeys[[i]]))
 ```
 
 ## Part 1
 
+> Chasing all of the monkeys at once is impossible; you're going to have to focus on the two most active monkeys if you want any hope of getting your stuff back. Count the total number of times each monkey inspects items over 20 rounds.
+>
+> Figure out which monkeys to chase by counting how many items they inspect over 20 rounds. What is the level of monkey business after 20 rounds of stuff-slinging simian shenanigans?
+
 ```{r part_1}
+for (round in seq(20)) {
+  for (i in seq(8)) {
+    monkey <- get(paste0("monkey_", i))
+    monkey$checkItems()
+    if (round == 20) {
+      print(paste("Monkey", i, "inspected items", monkey$n_checks, "times."))
+    }
+  }
+}
 ```
 
-## Part 2
+## Part 
+
+> You're worried you might not ever get your items back. So worried, in fact, that your relief that a monkey's inspection didn't damage an item no longer causes your worry level to be divided by three.
+>
+> Unfortunately, that relief was all that was keeping your worry levels from reaching ridiculous levels. You'll need to find another way to keep your worry levels manageable.
+>
+> At this rate, you might be putting up with these monkeys for a very long time - possibly 10000 rounds!
+>
+> Worry levels are no longer divided by three after each item is inspected; you'll need to find another way to keep your worry levels manageable. Starting again from the initial state in your puzzle input, what is the level of monkey business after 10000 rounds?
+
+Some of the information in the monkeys I no longer needed, so I included a `reset` method to revert to the starting state. The modulus was created as the largest possible number required before the sequence would restart itself, meaning the divisors would loop for each `MODULUS`
+
+```{r part_2_setup}
+MODULUS <- 1
+for (i in seq(8)) {
+  monkey <- get(paste0("monkey_", i))
+  monkey$reset()
+  MODULUS <- MODULUS * monkey$divisor
+}
+print(MODULUS)
+```
 
 ```{r part_2}
+for (round in seq(10000)) {
+  for (i in seq(8)) {
+    monkey <- get(paste0("monkey_", i))
+    monkey$checkItems(modulus = MODULUS)
+    if (round == 10000) {
+      print(paste("Monkey", i, "inspected items", monkey$n_checks, "times."))
+    }
+  }
+}
 ```
