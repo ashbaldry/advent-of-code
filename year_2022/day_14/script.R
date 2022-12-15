@@ -1,5 +1,5 @@
 #### Set-Up ####
-directions <- readLines("example.txt") |>
+directions <- readLines("input.txt") |>
   strsplit(" -> ") |>
   lapply(strsplit, ",") |>
   lapply(\(x) lapply(x, as.numeric)) |>
