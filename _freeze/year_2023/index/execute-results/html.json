@@ -1,0 +1,18 @@
+{
+  "hash": "8758613941e8ba5f828f5bc543ca9a2a",
+  "result": {
+    "markdown": "---\ntitle: \"2023\"\n---\n\n::: {.cell}\n::: {.cell-output-display}\n```{=html}\n<div class=\"reactable html-widget html-fill-item\" id=\"htmlwidget-496e13997d249871ba69\" style=\"width:auto;height:auto;\"></div>\n<script type=\"application/json\" data-for=\"htmlwidget-496e13997d249871ba69\">{\"x\":{\"tag\":{\"name\":\"Reactable\",\"attribs\":{\"data\":{\"Day\":[\"01\"],\"Complete\":[2],\"Time_1\":[\"14:26:37\"],\"Rank_1\":[\"111,794\"],\"Score_1\":[0],\"Time_2\":[\"14:50:21\"],\"Rank_2\":[\"75,680\"],\"Score_2\":[0]},\"columns\":[{\"id\":\"Day\",\"name\":\"Day\",\"type\":\"character\",\"maxWidth\":120,\"align\":\"right\",\"width\":80},{\"id\":\"Complete\",\"name\":\"Complete\",\"type\":\"numeric\",\"maxWidth\":120,\"align\":\"right\",\"cell\":[{\"name\":\"a\",\"attribs\":{\"href\":\"day_01\",\"title\":\"Solution to day 1 for Complete\"},\"children\":[{\"name\":\"span\",\"attribs\":{\"className\":\"stars\"},\"children\":[\"**\"]},\"\"]}]},{\"id\":\"Time_1\",\"name\":\"Time\",\"type\":\"character\",\"maxWidth\":120,\"align\":\"right\"},{\"id\":\"Rank_1\",\"name\":\"Rank\",\"type\":\"character\",\"maxWidth\":120,\"align\":\"right\"},{\"id\":\"Score_1\",\"name\":\"Score\",\"type\":\"numeric\",\"maxWidth\":120,\"align\":\"right\"},{\"id\":\"Time_2\",\"name\":\"Time\",\"type\":\"character\",\"maxWidth\":120,\"align\":\"right\"},{\"id\":\"Rank_2\",\"name\":\"Rank\",\"type\":\"character\",\"maxWidth\":120,\"align\":\"right\"},{\"id\":\"Score_2\",\"name\":\"Score\",\"type\":\"numeric\",\"maxWidth\":120,\"align\":\"right\"}],\"columnGroups\":[{\"name\":\"Part 1\",\"columns\":[\"Time_1\",\"Rank_1\",\"Score_1\"]},{\"name\":\"Part 2\",\"columns\":[\"Time_2\",\"Rank_2\",\"Score_2\"]}],\"pagination\":false,\"theme\":{\"backgroundColor\":\"inherit\"},\"dataKey\":\"f7504b580762238be523364ab39cefe2\"},\"children\":[]},\"class\":\"reactR_markup\"},\"evals\":[],\"jsHooks\":[]}</script>\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"../site_libs/core-js-2.5.3/shim.min.js\"></script>\r\n<script src=\"../site_libs/react-18.2.0/react.min.js\"></script>\r\n<script src=\"../site_libs/react-18.2.0/react-dom.min.js\"></script>\r\n<script src=\"../site_libs/reactwidget-1.0.0/react-tools.js\"></script>\r\n<script src=\"../site_libs/htmlwidgets-1.6.3/htmlwidgets.js\"></script>\r\n<link href=\"../site_libs/reactable-0.4.4/reactable.css\" rel=\"stylesheet\" />\r\n<script src=\"../site_libs/reactable-binding-0.4.4/reactable.js\"></script>\r\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
