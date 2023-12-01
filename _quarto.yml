@@ -10,6 +10,7 @@ website:
         text: Home
       - href: year_2021/index.qmd
       - href: year_2022/index.qmd
+      - href: year_2023/index.qmd
 
 format:
   html:
