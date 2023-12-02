@@ -1,5 +1,5 @@
 ---
-title: "xxxx - Day 2"
+title: "2023 - Day 2"
 format:
   html:
     code-fold: show
@@ -8,17 +8,54 @@ format:
     code-block-border-left: "#AB63BD"
 ---
 
+> You're launched high into the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
+>
+> The Elf explains that you've arrived at Snow Island and apologizes for the lack of snow. He'll be happy to explain the situation, but it's a bit of a walk, so you have some time. They don't get many visitors up here; would you like to play a game in the meantime?
+>
+> As you walk, the Elf shows you a small bag and some cubes which are either red, green, or blue. Each time you play this game, he will hide a secret number of cubes of each color in the bag, and your goal is to figure out information about the number of cubes.
+>
+> To get information, once a bag has been loaded with cubes, the Elf will reach into the bag, grab a handful of random cubes, show them to you, and then put them back in the bag. He'll do this a few times per game.
+
 ## Set-Up
 
+Getting the games as a number was useful to get the sum of the IDs, but alternatively could have added a new column that contained the row number. Splitting the results into the separate games makes searching for colours easier.
+
 ```{r setup}
+games <- read.table("input.txt", sep = ":", col.names = c("game", "results"))
+games$game <- as.numeric(sub(".* ", "", games$game))
+
+head(games)
+games$result_split <- strsplit(games$results, ";")
 ```
 
 ## Part 1
 
+> The Elf would first like to know which games would have been possible if the bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes?
+
+Having a space before the first game made things a lot easier for this part, as the regular expression could explicity look for a space before the number of blocks.
+
 ```{r part_1}
+colours <- c("red", "blue", "green")
+
+for (colour in colours) {
+  games[[colour]] <- lapply(games$result_split, function(x) {
+    matches <- grep(colour, x, value = TRUE)
+    as.numeric(sub(paste0("^.* (\\d+) ", colour, ".*"), "\\1", matches))
+  })
+  games[[paste0(colour, "_max")]] <- sapply(games[[colour]], max)
+}
+
+sum(subset(games, red_max <= 12 & green_max <= 13 & blue_max <= 14)$game)
 ```
 
 ## Part 2
 
+> The Elf says they've stopped producing snow because they aren't getting any water! He isn't sure why the water stopped; however, he can show you how to get to the water source to check it out for yourself. It's just up ahead!
+>
+> As you continue your walk, the Elf poses a second question: in each game you played, what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
+
+Much nicer part 2 than yesterday!
+
 ```{r part_2}
+sum(games$red_max * games$blue_max * games$green_max)
 ```
