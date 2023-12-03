@@ -54,12 +54,8 @@ special_area <- which(special_locs, arr.ind = TRUE) |>
     if (tr) {
       nums <- c(nums, sub(".*[^0-9]", "", sub(paste0("(^.{", x[2], "}\\d+).*"), "\\1", schema_lines[x[1] - 1])))
     }
-    if (l) {
-      nums <- c(nums, sub(".*[^0-9]", "", substr(schema_lines[x[1]], 1, x[2] - 1)))
-    }
-    if (r) {
-      nums <- c(nums, sub("[^0-9].*", "", substr(schema_lines[x[1]], x[2] + 1, dims[2])))
-    }
+    if (l) nums <- c(nums, sub(".*[^0-9]", "", substr(schema_lines[x[1]], 1, x[2] - 1)))
+    if (r) nums <- c(nums, sub("[^0-9].*", "", substr(schema_lines[x[1]], x[2] + 1, dims[2])))
     if (bl) {
       nums <- c(nums, sub(".*[^0-9]", "", sub(paste0("(^.{", x[2] - 2, "}\\d+).*"), "\\1", schema_lines[x[1] + 1])))
     }
