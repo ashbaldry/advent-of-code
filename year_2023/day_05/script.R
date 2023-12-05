@@ -19,9 +19,10 @@ seed_loc <- seeds
 mapped <- rep(FALSE, length(seeds))
 
 apply_mapping <- function(mapping) {
+  if (all(mapped)) return(NULL)
   source <- mapping[2] + mapping[3]
   seed_diff <- seed_loc - mapping[2]
-  valid_seeds <- seed_loc >= mapping[2] & seed_loc <= source
+  valid_seeds <- seed_loc >= mapping[2] & seed_loc < source
 
   seed_loc[valid_seeds & !mapped] <<- c(mapping[1] + seed_diff)[valid_seeds & !mapped]
   mapped <<- mapped | valid_seeds
@@ -45,18 +46,21 @@ min_i <- Inf
 lapply(seed_loc_2, \(x) {
   print(x)
   i <<- x[[1]]
-  while (i <= x[[1]] + x[[2]]) {
+  while (i < x[[1]] + x[[2]]) {
     seed_loc <<- i
     lapply(seed_map, \(x) {
       mapped <<- FALSE
       apply(x, 1, apply_mapping)
     })
     if (seed_loc < min_seed_loc) {min_i <<- i; min_seed_loc <<- seed_loc}
-    i <<- i + 50000
+    i <<- i + 10000
   }
 })
 
-lapply(list(c(min_i - 50000, 100000)), \(x) {
+print(min_i)
+print(min_seed_loc)
+
+lapply(list(c(min_i - 10001, 10001 * 2)), \(x) {
   i <<- x[[1]]
   while (i <= x[[1]] + x[[2]]) {
     seed_loc <<- i
