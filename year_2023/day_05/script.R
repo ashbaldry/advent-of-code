@@ -53,14 +53,14 @@ lapply(seed_loc_2, \(x) {
       apply(x, 1, apply_mapping)
     })
     if (seed_loc < min_seed_loc) {min_i <<- i; min_seed_loc <<- seed_loc}
-    i <<- i + 10000
+    i <<- i + 20000
   }
 })
 
 print(min_i)
 print(min_seed_loc)
 
-lapply(list(c(min_i - 10001, 10001 * 2)), \(x) {
+lapply(list(c(min_i - 20000, 20000 * 2)), \(x) {
   i <<- x[[1]]
   while (i <= x[[1]] + x[[2]]) {
     seed_loc <<- i

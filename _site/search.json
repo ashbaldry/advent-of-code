@@ -1465,30 +1465,30 @@
   {
     "objectID": "year_2023/day_05/index.html",
     "href": "year_2023/day_05/index.html",
-    "title": "",
+    "title": "2023 - Day 5: If You Give A Seed A Fertilizer",
     "section": "",
-    "text": "Code"
+    "text": "You take the boat and find the gardener right where you were told he would be: managing a giant “garden” that looks more to you like a farm.\n“A water source? Island Island is the water source!” You point out that Snow Island isn’t receiving any water.\n“Oh, we had to stop the water because we ran out of sand to filter it with! Can’t make snow with dirty water. Don’t worry, I’m sure we’ll get more sand soon; we only turned off the water a few days… weeks… oh no.” His face sinks into a look of horrified realization.\n“I’ve been so busy making sure everyone here has food that I completely forgot to check why we stopped getting more sand! There’s a ferry leaving soon that is headed over in that direction - it’s much faster than your boat. Could you please go check it out?”\nYou barely have time to agree to this request when he brings up another. “While you wait for the ferry, maybe you can help us with our food production problem. The latest Island Island Almanac just arrived and we’re having trouble making sense of it.”\nThe almanac (your puzzle input) lists all of the seeds that need to be planted. It also lists what type of soil to use with each kind of seed, what type of fertilizer to use with each kind of soil, what type of water to use with each kind of fertilizer, and so on. Every type of seed, soil, fertilizer and so on is identified with a number, but numbers are reused by each category - that is, soil 123 and fertilizer 123 aren’t necessarily related to each other.\nThe rest of the almanac contains a list of maps which describe how to convert numbers from a source category into numbers in a destination category. That is, the section that starts with seed-to-soil map: describes how to convert a seed number (the source) to a soil number (the destination). This lets the gardener and his team know which soil to use with which seeds, which water to use with which fertilizer, and so on.\nRather than list every source number and its corresponding destination number one by one, the maps describe entire ranges of numbers that can be converted. Each line within a map contains three numbers: the destination range start, the source range start, and the range length."
   },
   {
     "objectID": "year_2023/day_05/index.html#set-up",
     "href": "year_2023/day_05/index.html#set-up",
-    "title": "",
+    "title": "2023 - Day 5: If You Give A Seed A Fertilizer",
     "section": "Set-Up",
-    "text": "Set-Up"
+    "text": "Set-Up\nConverting all the sets of data into nice little matrices to apply over later on. Keeping the seeds separate from the process.\n\n\nCode\nfile_name &lt;- \"input.txt\"\nseed_data &lt;- readLines(file_name)\nempty_lines &lt;- which(seed_data == \"\") + 1\n\nseeds &lt;- sub(\"seeds: \", \"\", seed_data[1]) |&gt; strsplit(\" \") |&gt; _[[1]] |&gt; as.numeric()\nseed_map &lt;- list(\n  seed_soil = read.table(file_name, skip = empty_lines[1], nrows = empty_lines[2] - empty_lines[1] - 2),\n  soil_fert = read.table(file_name, skip = empty_lines[2], nrows = empty_lines[3] - empty_lines[2] - 2),\n  fert_water = read.table(file_name, skip = empty_lines[3], nrows = empty_lines[4] - empty_lines[3] - 2),\n  water_light = read.table(file_name, skip = empty_lines[4], nrows = empty_lines[5] - empty_lines[4] - 2),\n  light_temp = read.table(file_name, skip = empty_lines[5], nrows = empty_lines[6] - empty_lines[5] - 2),\n  temp_humid = read.table(file_name, skip = empty_lines[6], nrows = empty_lines[7] - empty_lines[6] - 2),\n  huid_loc = read.table(file_name, skip = empty_lines[7])\n)\nseed_map &lt;- lapply(seed_map, as.matrix)"
   },
   {
     "objectID": "year_2023/day_05/index.html#part-1",
     "href": "year_2023/day_05/index.html#part-1",
-    "title": "",
+    "title": "2023 - Day 5: If You Give A Seed A Fertilizer",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nThe gardener and his team want to get started as soon as possible, so they’d like to know the closest location that needs a seed. Using these maps, find the lowest location number that corresponds to any of the initial seeds. To do this, you’ll need to convert each seed number through other categories until you can find its corresponding location number.\nWhat is the lowest location number that corresponds to any of the initial seed numbers?\n\nI’ve been assigning variables using &lt;&lt;- which isn’t the best practice, but was the easiest way I could find iteratively finding the lowest location without including too many for loops.\n\n\nCode\nseed_loc &lt;- seeds\nmapped &lt;- rep(FALSE, length(seeds))\n\napply_mapping &lt;- function(mapping) {\n  if (all(mapped)) return(NULL)\n  source &lt;- mapping[2] + mapping[3]\n  seed_diff &lt;- seed_loc - mapping[2]\n  valid_seeds &lt;- seed_loc &gt;= mapping[2] & seed_loc &lt; source\n\n  seed_loc[valid_seeds & !mapped] &lt;&lt;- c(mapping[1] + seed_diff)[valid_seeds & !mapped]\n  mapped &lt;&lt;- mapped | valid_seeds\n  NULL\n}\n\ntmp &lt;- lapply(seed_map, \\(x) {\n  mapped &lt;&lt;- rep(FALSE, length(seed_loc))\n  apply(x, 1, apply_mapping)\n  NULL\n})\n\nprint(seed_loc)\n\n\n [1]  522761994 1669264475 1994231379 1646553585  876486655 2502514616\n [7]  280278922 2482052341 3990263023 2737734226 1813446793  218513636\n[13] 3367560261 2500384090 2459750215 3090063388 4002673505 3137354224\n[19] 3071107355 1137359212"
   },
   {
     "objectID": "year_2023/day_05/index.html#part-2",
     "href": "year_2023/day_05/index.html#part-2",
-    "title": "",
+    "title": "2023 - Day 5: If You Give A Seed A Fertilizer",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\nThis part was frustrating, not least because my inequality was slightly wrong in part 1, and kept being off by 1. Brute force seemed to be the best tactic, pretty much using the same functionality as part 1 (thanks to Tan Ho for the idea of having a crude estimate before going to the smaller chunk).\n\n\nCode\nseed_loc_2 &lt;- split(seeds, (seq(seeds) + 1) %/% 2)\nmapped &lt;- FALSE\nmin_seed_loc &lt;- Inf\ni &lt;- Inf\nmin_i &lt;- Inf\n\nlapply(seed_loc_2, \\(x) {\n  print(x)\n  i &lt;&lt;- x[[1]]\n  while (i &lt; x[[1]] + x[[2]]) {\n    seed_loc &lt;&lt;- i\n    lapply(seed_map, \\(x) {\n      mapped &lt;&lt;- FALSE\n      apply(x, 1, apply_mapping)\n    })\n    if (seed_loc &lt; min_seed_loc) {min_i &lt;&lt;- i; min_seed_loc &lt;&lt;- seed_loc}\n    i &lt;&lt;- i + 20000\n  }\n})\n\n\n[1] 3127166940  109160474\n[1] 3265086325   86449584\n[1] 1581539098  205205726\n[1] 3646327835  184743451\n[1] 2671979893   17148151\n[1] 305618297  40401857\n[1] 2462071712  203075200\n[1] 358806266 131147346\n[1] 1802185716  538526744\n[1] 635790399 705979250\n\n\n$`1`\nNULL\n\n$`2`\nNULL\n\n$`3`\nNULL\n\n$`4`\nNULL\n\n$`5`\nNULL\n\n$`6`\nNULL\n\n$`7`\nNULL\n\n$`8`\nNULL\n\n$`9`\nNULL\n\n$`10`\nNULL\n\n\nCode\nprint(min_i)\n\n\n[1] 2087145716\n\n\nCode\nprint(min_seed_loc)\n\n\n[1] 81965221\n\n\nCode\nlapply(list(c(min_i - 20000, 20000 * 2)), \\(x) {\n  i &lt;&lt;- x[[1]]\n  while (i &lt;= x[[1]] + x[[2]]) {\n    seed_loc &lt;&lt;- i\n    lapply(seed_map, \\(x) {\n      mapped &lt;&lt;- FALSE\n      apply(x, 1, apply_mapping)\n    })\n    if (seed_loc &lt; min_seed_loc) {min_i &lt;&lt;- i; min_seed_loc &lt;&lt;- seed_loc}\n    i &lt;&lt;- i + 1\n  }\n})\n\n\n[[1]]\nNULL\n\n\nCode\nprint(min_seed_loc)\n\n\n[1] 81956384"
   },
   {
     "objectID": "year_2023/day_06/index.html",

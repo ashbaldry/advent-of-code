@@ -1,4 +1,5 @@
 ---
+title: "2023 - Day 5: If You Give A Seed A Fertilizer"
 format:
   html:
     code-fold: show
@@ -7,17 +8,116 @@ format:
     code-block-border-left: "#AB63BD"
 ---
 
+> You take the boat and find the gardener right where you were told he would be: managing a giant "garden" that looks more to you like a farm.
+>
+> "A water source? Island Island is the water source!" You point out that Snow Island isn't receiving any water.
+>
+> "Oh, we had to stop the water because we ran out of sand to filter it with! Can't make snow with dirty water. Don't worry, I'm sure we'll get more sand soon; we only turned off the water a few days... weeks... oh no." His face sinks into a look of horrified realization.
+>
+> "I've been so busy making sure everyone here has food that I completely forgot to check why we stopped getting more sand! There's a ferry leaving soon that is headed over in that direction - it's much faster than your boat. Could you please go check it out?"
+>
+> You barely have time to agree to this request when he brings up another. "While you wait for the ferry, maybe you can help us with our food production problem. The latest Island Island Almanac just arrived and we're having trouble making sense of it."
+>
+> The almanac (your puzzle input) lists all of the seeds that need to be planted. It also lists what type of soil to use with each kind of seed, what type of fertilizer to use with each kind of soil, what type of water to use with each kind of fertilizer, and so on. Every type of seed, soil, fertilizer and so on is identified with a number, but numbers are reused by each category - that is, soil 123 and fertilizer 123 aren't necessarily related to each other.
+>
+> The rest of the almanac contains a list of maps which describe how to convert numbers from a source category into numbers in a destination category. That is, the section that starts with seed-to-soil map: describes how to convert a seed number (the source) to a soil number (the destination). This lets the gardener and his team know which soil to use with which seeds, which water to use with which fertilizer, and so on.
+>
+> Rather than list every source number and its corresponding destination number one by one, the maps describe entire ranges of numbers that can be converted. Each line within a map contains three numbers: the destination range start, the source range start, and the range length.
+
 ## Set-Up
 
+Converting all the sets of data into nice little matrices to `apply` over later on. Keeping the seeds separate from the process.
+
 ```{r setup}
+file_name <- "input.txt"
+seed_data <- readLines(file_name)
+empty_lines <- which(seed_data == "") + 1
+
+seeds <- sub("seeds: ", "", seed_data[1]) |> strsplit(" ") |> _[[1]] |> as.numeric()
+seed_map <- list(
+  seed_soil = read.table(file_name, skip = empty_lines[1], nrows = empty_lines[2] - empty_lines[1] - 2),
+  soil_fert = read.table(file_name, skip = empty_lines[2], nrows = empty_lines[3] - empty_lines[2] - 2),
+  fert_water = read.table(file_name, skip = empty_lines[3], nrows = empty_lines[4] - empty_lines[3] - 2),
+  water_light = read.table(file_name, skip = empty_lines[4], nrows = empty_lines[5] - empty_lines[4] - 2),
+  light_temp = read.table(file_name, skip = empty_lines[5], nrows = empty_lines[6] - empty_lines[5] - 2),
+  temp_humid = read.table(file_name, skip = empty_lines[6], nrows = empty_lines[7] - empty_lines[6] - 2),
+  huid_loc = read.table(file_name, skip = empty_lines[7])
+)
+seed_map <- lapply(seed_map, as.matrix)
 ```
 
 ## Part 1
 
+> The gardener and his team want to get started as soon as possible, so they'd like to know the closest location that needs a seed. Using these maps, find the lowest location number that corresponds to any of the initial seeds. To do this, you'll need to convert each seed number through other categories until you can find its corresponding location number.
+>
+> What is the lowest location number that corresponds to any of the initial seed numbers?
+
+I've been assigning variables using `<<-` which isn't the best practice, but was the easiest way I could find iteratively finding the lowest location without including too many `for` loops.
+
 ```{r part_1}
+seed_loc <- seeds
+mapped <- rep(FALSE, length(seeds))
+
+apply_mapping <- function(mapping) {
+  if (all(mapped)) return(NULL)
+  source <- mapping[2] + mapping[3]
+  seed_diff <- seed_loc - mapping[2]
+  valid_seeds <- seed_loc >= mapping[2] & seed_loc < source
+
+  seed_loc[valid_seeds & !mapped] <<- c(mapping[1] + seed_diff)[valid_seeds & !mapped]
+  mapped <<- mapped | valid_seeds
+  NULL
+}
+
+tmp <- lapply(seed_map, \(x) {
+  mapped <<- rep(FALSE, length(seed_loc))
+  apply(x, 1, apply_mapping)
+  NULL
+})
+
+print(seed_loc)
 ```
 
 ## Part 2
 
+This part was frustrating, not least because my inequality was slightly wrong in part 1, and kept being off by 1. Brute force seemed to be the best tactic, pretty much using the same functionality as part 1 (thanks to Tan Ho for the idea of having a crude estimate before going to the smaller chunk).
+
 ```{r part_2}
+seed_loc_2 <- split(seeds, (seq(seeds) + 1) %/% 2)
+mapped <- FALSE
+min_seed_loc <- Inf
+i <- Inf
+min_i <- Inf
+
+lapply(seed_loc_2, \(x) {
+  print(x)
+  i <<- x[[1]]
+  while (i < x[[1]] + x[[2]]) {
+    seed_loc <<- i
+    lapply(seed_map, \(x) {
+      mapped <<- FALSE
+      apply(x, 1, apply_mapping)
+    })
+    if (seed_loc < min_seed_loc) {min_i <<- i; min_seed_loc <<- seed_loc}
+    i <<- i + 20000
+  }
+})
+
+print(min_i)
+print(min_seed_loc)
+
+lapply(list(c(min_i - 20000, 20000 * 2)), \(x) {
+  i <<- x[[1]]
+  while (i <= x[[1]] + x[[2]]) {
+    seed_loc <<- i
+    lapply(seed_map, \(x) {
+      mapped <<- FALSE
+      apply(x, 1, apply_mapping)
+    })
+    if (seed_loc < min_seed_loc) {min_i <<- i; min_seed_loc <<- seed_loc}
+    i <<- i + 1
+  }
+})
+
+print(min_seed_loc)
 ```
