@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Advent of Code – index</title>
+<title>Advent of Code - 2023 - Day 7: Camel Cards</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -155,18 +155,131 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><div class="quarto-title-block"><div class="quarto-title-tools-only"><h1></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">2023 - Day 7: Camel Cards</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<blockquote class="blockquote">
+<p>Your all-expenses-paid trip turns out to be a one-way, five-minute ride in an airship. (At least it’s a cool airship!) It drops you off at the edge of a vast desert and descends back to Island Island.</p>
+<p>“Did you bring the parts?”</p>
+<p>You turn around to see an Elf completely covered in white clothing, wearing goggles, and riding a large camel.</p>
+<p>“Did you bring the parts?” she asks again, louder this time. You aren’t sure what parts she’s looking for; you’re here to figure out why the sand stopped.</p>
+<p>“The parts! For the sand, yes! Come with me; I will show you.” She beckons you onto the camel.</p>
+<p>After riding a bit across the sands of Desert Island, you can see what look like very large rocks covering half of the horizon. The Elf explains that the rocks are all along the part of Desert Island that is directly above Island Island, making it hard to even get there. Normally, they use big machines to move the rocks and filter the sand, but the machines have broken down because Desert Island recently stopped receiving the parts they need to fix the machines.</p>
+<p>You’ve already assumed it’ll be your job to figure out why the parts stopped when she asks if you can help. You agree automatically.</p>
+<p>Because the journey will take a few days, she offers to teach you the game of Camel Cards. Camel Cards is sort of similar to poker except it’s designed to be easier to play while riding a camel.</p>
+<p>In Camel Cards, you get a list of hands, and your goal is to order them based on the strength of each hand. A hand consists of five cards labeled one of A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, or 2. The relative strength of each card follows this order, where A is the highest and 2 is the lowest.</p>
+<p>If two hands have the same type, a second ordering rule takes effect. Start by comparing the first card in each hand. If these cards are different, the hand with the stronger first card is considered stronger. If the first card in each hand have the same label, however, then move on to considering the second card in each hand. If they differ, the hand with the higher second card wins; otherwise, continue with the third card in each hand, then the fourth, then the fifth.</p>
+</blockquote>
 <section id="set-up" class="level2">
 <h2 class="anchored" data-anchor-id="set-up">Set-Up</h2>
+<p>Fell into using {data.table} as originally had different number of columns as I was tracking highest value card rather than the position like the description mentioned. With all iterations the same number of columns, <code>do.call(rbind, ...)</code> would have also worked.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'data.table' was built under R version 4.3.2</code></pre>
+</div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cards <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"input.txt"</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"card"</span>, <span class="st">"bid"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Created a function for part 1, and included the <code>card_order</code> and <code>wild_jacks</code> for Part 2, making the code for Part 2 a lot simpler. Using <code>table</code> enabled checking the most common card better than trying to count through the cards.</p>
+<p>Got stumped twice by ordering the cards by value (using <code>nms &lt;- names(tbl)</code>) and then one minor thing where <code>table</code> includes all values of a factor, not just the ones available like a character vector.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>get_card_score <span class="ot">&lt;-</span> <span class="cf">function</span>(x, card_order, <span class="at">wild_jacks =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">factor</span>(x, card_order)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  tbl <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">table</span>(x), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (wild_jacks) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    tbl[[<span class="dv">1</span> <span class="sc">+</span> (<span class="fu">names</span>(tbl)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"J"</span>)]] <span class="ot">&lt;-</span> tbl[[<span class="dv">1</span> <span class="sc">+</span> (<span class="fu">names</span>(tbl)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"J"</span>)]] <span class="sc">+</span> tbl[[<span class="st">"J"</span>]]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    tbl[[<span class="st">"J"</span>]] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    tbl <span class="ot">&lt;-</span> <span class="fu">sort</span>(tbl, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  index <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">5</span>) index <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">4</span>) index <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">3</span>) index <span class="ot">&lt;-</span> <span class="cf">if</span> (tbl[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">2</span>) <span class="dv">3</span> <span class="cf">else</span> <span class="dv">4</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">2</span>) index <span class="ot">&lt;-</span> <span class="cf">if</span> (tbl[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">2</span>) <span class="dv">5</span> <span class="cf">else</span> <span class="dv">6</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">index =</span> index, <span class="at">cd1 =</span> x[<span class="dv">1</span>], <span class="at">cd2 =</span> x[<span class="dv">2</span>], <span class="at">cd3 =</span> x[<span class="dv">3</span>], <span class="at">cd4 =</span> x[<span class="dv">4</span>], <span class="at">cd5 =</span> x[<span class="dv">5</span>])</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>get_card_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(card, card_order, <span class="at">wild_jacks =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  card_result <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lapply</span>(</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">strsplit</span>(cards<span class="sc">$</span>card, <span class="st">""</span>), </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      get_card_score, </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">card_order =</span> card_order, </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">wild_jacks =</span> wild_jacks</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">use.names =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  card_result[</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    , </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">names</span>(card_result)[<span class="sc">-</span><span class="dv">1</span>]) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, factor, <span class="at">levels =</span> card_order), </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    .SDcols <span class="ot">=</span> <span class="fu">names</span>(card_result)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  card_result <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(<span class="fu">cbind</span>(cards, card_result))</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">setorderv</span>(card_result, <span class="fu">c</span>(<span class="st">"index"</span>, <span class="fu">paste0</span>(<span class="st">"cd"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)), <span class="at">order =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">6</span>))</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  card_result[, rank <span class="sc">:</span><span class="er">=</span> .I]</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  card_result[, <span class="fu">sum</span>(bid <span class="sc">*</span> rank)]</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
+<blockquote class="blockquote">
+<p>Now, you can determine the total winnings of this set of hands by adding up the result of multiplying each hand’s bid with its rank. Find the rank of every hand in your set. What are the total winnings?</p>
+</blockquote>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_card_sum</span>(cards, <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"K"</span>, <span class="st">"Q"</span>, <span class="st">"J"</span>, <span class="st">"T"</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 250474325</code></pre>
+</div>
+</div>
 </section>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<blockquote class="blockquote">
+<p>To make things a little more interesting, the Elf introduces one additional rule. Now, J cards are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.</p>
+<p>To balance this, J cards are now the weakest individual cards, weaker even than 2. The other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.</p>
+<p>Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?</p>
+</blockquote>
+<p>Having the function helped make this quick to write, as could include a new parameter for the Jack as joker. Only thing realised when adding the function in, Jacks could be the most common card but not every card, so needed to add the check, otherwise wouldn’t find the better hand!</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_card_sum</span>(cards, <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"K"</span>, <span class="st">"Q"</span>, <span class="st">"T"</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">1</span>, <span class="st">"J"</span>), <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 248909434</code></pre>
+</div>
+</div>
 
 
 <!-- -->
@@ -458,29 +571,111 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "2023 - Day 7: Camel Cards"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-bg: true</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-block-border-left: "#AB63BD"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Your all-expenses-paid trip turns out to be a one-way, five-minute ride in an airship. (At least it's a cool airship!) It drops you off at the edge of a vast desert and descends back to Island Island.</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "Did you bring the parts?"</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; You turn around to see an Elf completely covered in white clothing, wearing goggles, and riding a large camel.</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "Did you bring the parts?" she asks again, louder this time. You aren't sure what parts she's looking for; you're here to figure out why the sand stopped.</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "The parts! For the sand, yes! Come with me; I will show you." She beckons you onto the camel.</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; After riding a bit across the sands of Desert Island, you can see what look like very large rocks covering half of the horizon. The Elf explains that the rocks are all along the part of Desert Island that is directly above Island Island, making it hard to even get there. Normally, they use big machines to move the rocks and filter the sand, but the machines have broken down because Desert Island recently stopped receiving the parts they need to fix the machines.</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; You've already assumed it'll be your job to figure out why the parts stopped when she asks if you can help. You agree automatically.</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Because the journey will take a few days, she offers to teach you the game of Camel Cards. Camel Cards is sort of similar to poker except it's designed to be easier to play while riding a camel.</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; In Camel Cards, you get a list of hands, and your goal is to order them based on the strength of each hand. A hand consists of five cards labeled one of A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, or 2. The relative strength of each card follows this order, where A is the highest and 2 is the lowest.</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; If two hands have the same type, a second ordering rule takes effect. Start by comparing the first card in each hand. If these cards are different, the hand with the stronger first card is considered stronger. If the first card in each hand have the same label, however, then move on to considering the second card in each hand. If they differ, the hand with the higher second card wins; otherwise, continue with the third card in each hand, then the fourth, then the fifth.</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set-Up</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>Fell into using {data.table} as originally had different number of columns as I was tracking highest value card rather than the position like the description mentioned. With all iterations the same number of columns, <span class="in">`do.call(rbind, ...)`</span> would have also worked.</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>cards <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"input.txt"</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"card"</span>, <span class="st">"bid"</span>))</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>Created a function for part 1, and included the <span class="in">`card_order`</span> and <span class="in">`wild_jacks`</span> for Part 2, making the code for Part 2 a lot simpler. Using <span class="in">`table`</span> enabled checking the most common card better than trying to count through the cards.</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>Got stumped twice by ordering the cards by value (using <span class="in">`nms &lt;- names(tbl)`</span>) and then one minor thing where <span class="in">`table`</span> includes all values of a factor, not just the ones available like a character vector.</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{r func}</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>get_card_score <span class="ot">&lt;-</span> <span class="cf">function</span>(x, card_order, <span class="at">wild_jacks =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">factor</span>(x, card_order)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  tbl <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">table</span>(x), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (wild_jacks) {</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    tbl[[<span class="dv">1</span> <span class="sc">+</span> (<span class="fu">names</span>(tbl)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"J"</span>)]] <span class="ot">&lt;-</span> tbl[[<span class="dv">1</span> <span class="sc">+</span> (<span class="fu">names</span>(tbl)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"J"</span>)]] <span class="sc">+</span> tbl[[<span class="st">"J"</span>]]</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    tbl[[<span class="st">"J"</span>]] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    tbl <span class="ot">&lt;-</span> <span class="fu">sort</span>(tbl, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>  index <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">5</span>) index <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">4</span>) index <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">3</span>) index <span class="ot">&lt;-</span> <span class="cf">if</span> (tbl[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">2</span>) <span class="dv">3</span> <span class="cf">else</span> <span class="dv">4</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (tbl[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">2</span>) index <span class="ot">&lt;-</span> <span class="cf">if</span> (tbl[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">2</span>) <span class="dv">5</span> <span class="cf">else</span> <span class="dv">6</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">index =</span> index, <span class="at">cd1 =</span> x[<span class="dv">1</span>], <span class="at">cd2 =</span> x[<span class="dv">2</span>], <span class="at">cd3 =</span> x[<span class="dv">3</span>], <span class="at">cd4 =</span> x[<span class="dv">4</span>], <span class="at">cd5 =</span> x[<span class="dv">5</span>])</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>get_card_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(card, card_order, <span class="at">wild_jacks =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>  card_result <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lapply</span>(</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">strsplit</span>(cards<span class="sc">$</span>card, <span class="st">""</span>), </span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>      get_card_score, </span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>      <span class="at">card_order =</span> card_order, </span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>      <span class="at">wild_jacks =</span> wild_jacks</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">use.names =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>  card_result[</span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>    , </span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">names</span>(card_result)[<span class="sc">-</span><span class="dv">1</span>]) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, factor, <span class="at">levels =</span> card_order), </span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>    .SDcols <span class="ot">=</span> <span class="fu">names</span>(card_result)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>  card_result <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(<span class="fu">cbind</span>(cards, card_result))</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">setorderv</span>(card_result, <span class="fu">c</span>(<span class="st">"index"</span>, <span class="fu">paste0</span>(<span class="st">"cd"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)), <span class="at">order =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">6</span>))</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>  card_result[, rank <span class="sc">:</span><span class="er">=</span> .I]</span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>  card_result[, <span class="fu">sum</span>(bid <span class="sc">*</span> rank)]</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Now, you can determine the total winnings of this set of hands by adding up the result of multiplying each hand's bid with its rank. Find the rank of every hand in your set. What are the total winnings?</span></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_1}</span></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a><span class="fu">get_card_sum</span>(cards, <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"K"</span>, <span class="st">"Q"</span>, <span class="st">"J"</span>, <span class="st">"T"</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">1</span>))</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; To make things a little more interesting, the Elf introduces one additional rule. Now, J cards are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.</span></span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; To balance this, J cards are now the weakest individual cards, weaker even than 2. The other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?</span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>Having the function helped make this quick to write, as could include a new parameter for the Jack as joker. Only thing realised when adding the function in, Jacks could be the most common card but not every card, so needed to add the check, otherwise wouldn't find the better hand!</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a><span class="in">```{r part_2}</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a><span class="fu">get_card_sum</span>(cards, <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"K"</span>, <span class="st">"Q"</span>, <span class="st">"T"</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">1</span>, <span class="st">"J"</span>), <span class="cn">TRUE</span>)</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
