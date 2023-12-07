@@ -1521,30 +1521,30 @@
   {
     "objectID": "year_2023/day_07/index.html",
     "href": "year_2023/day_07/index.html",
-    "title": "",
+    "title": "2023 - Day 7: Camel Cards",
     "section": "",
-    "text": "Code"
+    "text": "Your all-expenses-paid trip turns out to be a one-way, five-minute ride in an airship. (At least it’s a cool airship!) It drops you off at the edge of a vast desert and descends back to Island Island.\n“Did you bring the parts?”\nYou turn around to see an Elf completely covered in white clothing, wearing goggles, and riding a large camel.\n“Did you bring the parts?” she asks again, louder this time. You aren’t sure what parts she’s looking for; you’re here to figure out why the sand stopped.\n“The parts! For the sand, yes! Come with me; I will show you.” She beckons you onto the camel.\nAfter riding a bit across the sands of Desert Island, you can see what look like very large rocks covering half of the horizon. The Elf explains that the rocks are all along the part of Desert Island that is directly above Island Island, making it hard to even get there. Normally, they use big machines to move the rocks and filter the sand, but the machines have broken down because Desert Island recently stopped receiving the parts they need to fix the machines.\nYou’ve already assumed it’ll be your job to figure out why the parts stopped when she asks if you can help. You agree automatically.\nBecause the journey will take a few days, she offers to teach you the game of Camel Cards. Camel Cards is sort of similar to poker except it’s designed to be easier to play while riding a camel.\nIn Camel Cards, you get a list of hands, and your goal is to order them based on the strength of each hand. A hand consists of five cards labeled one of A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, or 2. The relative strength of each card follows this order, where A is the highest and 2 is the lowest.\nIf two hands have the same type, a second ordering rule takes effect. Start by comparing the first card in each hand. If these cards are different, the hand with the stronger first card is considered stronger. If the first card in each hand have the same label, however, then move on to considering the second card in each hand. If they differ, the hand with the higher second card wins; otherwise, continue with the third card in each hand, then the fourth, then the fifth."
   },
   {
     "objectID": "year_2023/day_07/index.html#set-up",
     "href": "year_2023/day_07/index.html#set-up",
-    "title": "",
+    "title": "2023 - Day 7: Camel Cards",
     "section": "Set-Up",
-    "text": "Set-Up"
+    "text": "Set-Up\nFell into using {data.table} as originally had different number of columns as I was tracking highest value card rather than the position like the description mentioned. With all iterations the same number of columns, do.call(rbind, ...) would have also worked.\n\n\nCode\nlibrary(data.table)\n\n\nWarning: package 'data.table' was built under R version 4.3.2\n\n\nCode\ncards &lt;- read.table(\"input.txt\", col.names = c(\"card\", \"bid\"))\n\n\nCreated a function for part 1, and included the card_order and wild_jacks for Part 2, making the code for Part 2 a lot simpler. Using table enabled checking the most common card better than trying to count through the cards.\nGot stumped twice by ordering the cards by value (using nms &lt;- names(tbl)) and then one minor thing where table includes all values of a factor, not just the ones available like a character vector.\n\n\nCode\nget_card_score &lt;- function(x, card_order, wild_jacks = FALSE) {\n  x &lt;- factor(x, card_order)\n  tbl &lt;- sort(table(x), decreasing = TRUE)\n  if (wild_jacks) {\n    tbl[[1 + (names(tbl)[1] == \"J\")]] &lt;- tbl[[1 + (names(tbl)[1] == \"J\")]] + tbl[[\"J\"]]\n    tbl[[\"J\"]] &lt;- 0\n    tbl &lt;- sort(tbl, decreasing = TRUE)\n  }\n\n  index &lt;- 7\n  if (tbl[1] == 5) index &lt;- 1\n  if (tbl[1] == 4) index &lt;- 2\n  if (tbl[1] == 3) index &lt;- if (tbl[2] == 2) 3 else 4\n  if (tbl[1] == 2) index &lt;- if (tbl[2] == 2) 5 else 6\n  data.frame(index = index, cd1 = x[1], cd2 = x[2], cd3 = x[3], cd4 = x[4], cd5 = x[5])\n}\n\nget_card_sum &lt;- function(card, card_order, wild_jacks = FALSE) {\n  card_result &lt;- data.table::rbindlist(\n    lapply(\n      strsplit(cards$card, \"\"), \n      get_card_score, \n      card_order = card_order, \n      wild_jacks = wild_jacks\n    ), \n    use.names = TRUE, \n    fill = TRUE\n  )\n  card_result[\n    , \n    (names(card_result)[-1]) := lapply(.SD, factor, levels = card_order), \n    .SDcols = names(card_result)[-1]\n  ]\n  card_result &lt;- data.table::data.table(cbind(cards, card_result))\n  data.table::setorderv(card_result, c(\"index\", paste0(\"cd\", 1:5)), order = rep(-1, 6))\n  card_result[, rank := .I]\n  card_result[, sum(bid * rank)]\n}"
   },
   {
     "objectID": "year_2023/day_07/index.html#part-1",
     "href": "year_2023/day_07/index.html#part-1",
-    "title": "",
+    "title": "2023 - Day 7: Camel Cards",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nNow, you can determine the total winnings of this set of hands by adding up the result of multiplying each hand’s bid with its rank. Find the rank of every hand in your set. What are the total winnings?\n\n\n\nCode\nget_card_sum(cards, c(\"A\", \"K\", \"Q\", \"J\", \"T\", 9:1))\n\n\n[1] 250474325"
   },
   {
     "objectID": "year_2023/day_07/index.html#part-2",
     "href": "year_2023/day_07/index.html#part-2",
-    "title": "",
+    "title": "2023 - Day 7: Camel Cards",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nTo make things a little more interesting, the Elf introduces one additional rule. Now, J cards are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.\nTo balance this, J cards are now the weakest individual cards, weaker even than 2. The other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.\nUsing the new joker rule, find the rank of every hand in your set. What are the new total winnings?\n\nHaving the function helped make this quick to write, as could include a new parameter for the Jack as joker. Only thing realised when adding the function in, Jacks could be the most common card but not every card, so needed to add the check, otherwise wouldn’t find the better hand!\n\n\nCode\nget_card_sum(cards, c(\"A\", \"K\", \"Q\", \"T\", 9:1, \"J\"), TRUE)\n\n\n[1] 248909434"
   },
   {
     "objectID": "year_2023/day_08/index.html",
