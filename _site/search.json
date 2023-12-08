@@ -1549,30 +1549,30 @@
   {
     "objectID": "year_2023/day_08/index.html",
     "href": "year_2023/day_08/index.html",
-    "title": "",
+    "title": "2023 - Day 8: Haunted Wasteland",
     "section": "",
-    "text": "Code"
+    "text": "You’re still riding a camel across Desert Island when you spot a sandstorm quickly approaching. When you turn to warn the Elf, she disappears before your eyes! To be fair, she had just finished warning you about ghosts a few minutes ago.\nOne of the camel’s pouches is labeled “maps” - sure enough, it’s full of documents (your puzzle input) about how to navigate the desert. At least, you’re pretty sure that’s what they are; one of the documents contains a list of left/right instructions, and the rest of the documents seem to describe some kind of network of labeled nodes.\nIt seems like you’re meant to use the left/right instructions to navigate the network. Perhaps if you have the camel follow the same instructions, you can escape the haunted wasteland!\nAfter examining the maps for a bit, two nodes stick out: AAA and ZZZ. You feel like AAA is where you are now, and you have to follow the left/right instructions until you reach ZZZ."
   },
   {
     "objectID": "year_2023/day_08/index.html#set-up",
     "href": "year_2023/day_08/index.html#set-up",
-    "title": "",
+    "title": "2023 - Day 8: Haunted Wasteland",
     "section": "Set-Up",
-    "text": "Set-Up"
+    "text": "Set-Up\nFirst day of needing to use scipen! Other than that, the data was in a nice enough structure to hard code the substrings for the columns.\n\n\nCode\noptions(scipen = 999)\nfile_name &lt;- \"input.txt\"\ninstructions &lt;- readLines(file_name, n = 1L) |&gt; strsplit(\"\") |&gt; unlist()\n\npath_info &lt;- readLines(file_name)[-1:-2]\npaths &lt;- data.frame(\n  from = substr(path_info, 1, 3),\n  L = substr(path_info, 8, 10),\n  R = substr(path_info, 13, 15)\n)\nhead(paths)\n\n\n  from   L   R\n1  QRX XNN TCJ\n2  GSM PNH BVG\n3  VDX VSG ZZZ\n4  TGV SHD FVB\n5  PPH MLX CBT\n6  GRP FGH VLK"
   },
   {
     "objectID": "year_2023/day_08/index.html#part-1",
     "href": "year_2023/day_08/index.html#part-1",
-    "title": "",
+    "title": "2023 - Day 8: Haunted Wasteland",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nStarting with AAA, you need to look up the next element based on the next left/right instruction in your input.\nOf course, you might not find ZZZ right away. If you run out of left/right instructions, repeat the whole sequence of instructions as necessary: RL really means RLRLRLRLRLRLRLRL... and so on.\nStarting at AAA, follow the left/right instructions. How many steps are required to reach ZZZ?\n\nCreated a small while loop to count the iterations, this was then functionalised for Part 2.\n\n\nCode\ncalculate_niters &lt;- function(path, x = \"AAA\", y = \"ZZZ\") {\n  iter &lt;- 0\n  inst_i &lt;- 1\n  while (!grepl(y, x)) {\n    x &lt;- path[path$from == x, instructions[inst_i]]\n    inst_i &lt;- if (inst_i == length(instructions)) 1 else inst_i + 1\n    iter &lt;- iter + 1\n  }\n  iter\n}\n\ncalculate_niters(paths)\n\n\n[1] 20093"
   },
   {
     "objectID": "year_2023/day_08/index.html#part-2",
     "href": "year_2023/day_08/index.html#part-2",
-    "title": "",
+    "title": "2023 - Day 8: Haunted Wasteland",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nThe sandstorm is upon you and you aren’t any closer to escaping the wasteland. You had the camel follow the instructions, but you’ve barely left your starting position. It’s going to take significantly more steps to escape!\nWhat if the map isn’t for people - what if the map is for ghosts? Are ghosts even bound by the laws of spacetime? Only one way to find out.\nAfter examining the maps a bit longer, your attention is drawn to a curious fact: the number of nodes with names ending in A is equal to the number ending in Z! If you were a ghost, you’d probably just start at every node that ends with A and follow all of the paths at the same time until they all simultaneously end up at nodes that end with Z.\n\nFirst read this as needed to convert everything ending in A as 1A, 2A etc (like the example). Was easier to create a function that used the code in part 1 when just needed to know when all ..A were in ..Z. Used the pracma::Lcm function to find the lowest common multiple because was quicker than writing something in base R!\n\n\nCode\nn_steps &lt;- sapply(grep(\"..A\", paths$from, value = TRUE), calculate_niters, path = paths, y = \"..Z\")\nReduce(pracma::Lcm, n_steps)\n\n\n[1] 22103062509257"
   },
   {
     "objectID": "year_2023/day_09/index.html",
