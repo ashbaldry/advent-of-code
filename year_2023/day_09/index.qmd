@@ -1,4 +1,5 @@
 ---
+title: "2023 - Day 9: Mirage Maintenance"
 format:
   html:
     code-fold: show
@@ -7,17 +8,48 @@ format:
     code-block-border-left: "#AB63BD"
 ---
 
+> You ride the camel through the sandstorm and stop where the ghost's maps told you to stop. The sandstorm subsequently subsides, somehow seeing you standing at an oasis!
+>
+> The camel goes to get some water and you stretch your neck. As you look up, you discover what must be yet another giant floating island, this one made of metal! That must be where the parts to fix the sand machines come from.
+>
+> There's even a hang glider partially buried in the sand here; once the sun rises and heats up the sand, you might be able to use the glider and the hot air to get all the way up to the metal island!
+>
+> While you wait for the sun to rise, you admire the oasis hidden here in the middle of Desert Island. It must have a delicate ecosystem; you might as well take some ecological readings while you wait. Maybe you can report any environmental instabilities you find to someone so the oasis can be around for the next sandstorm-worn traveler.
+>
+> You pull out your handy Oasis And Sand Instability Sensor and analyze your surroundings. The OASIS produces a report of many values and how they are changing over time (your puzzle input). Each line in the report contains the history of a single value.
+>
+> To best protect the oasis, your environmental report should include a prediction of the next value in each history. To do this, start by making a new sequence from the difference at each step of your history. If that sequence is not all zeroes, repeat this process, using the sequence you just generated as the input sequence. Once all of the values in your latest sequence are zeroes, you can extrapolate what the next value of the original history should be.
+
 ## Set-Up
 
 ```{r setup}
+sensors <- read.table("input.txt")
+head(sensors)
 ```
 
 ## Part 1
 
+> Analyze your OASIS report and extrapolate the next value for each history. What is the sum of these extrapolated values?
+
 ```{r part_1}
+find_next_sensor <- function(x) {
+  if (all(x == 0)) return(0)
+  y <- diff(x)
+  z <- find_next_sensor(y)
+  tail(x, 1) + z
+}
+
+sum(apply(sensors, 1, find_next_sensor))
 ```
 
 ## Part 2
 
+> Of course, it would be nice to have even more history included in your report. Surely it's safe to just extrapolate backwards as well, right?
+>
+> For each history, repeat the process of finding differences until the sequence of differences is entirely zero. Then, rather than adding a zero to the end and filling in the next values of each previous sequence, you should instead add a zero to the beginning of your sequence of zeroes, then fill in new first values for each previous sequence.
+
+Hooray for one line part 2s!
+
 ```{r part_2}
+sum(apply(rev(sensors), 1, find_next_sensor))
 ```
