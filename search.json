@@ -1577,30 +1577,30 @@
   {
     "objectID": "year_2023/day_09/index.html",
     "href": "year_2023/day_09/index.html",
-    "title": "",
+    "title": "2023 - Day 9: Mirage Maintenance",
     "section": "",
-    "text": "Code"
+    "text": "You ride the camel through the sandstorm and stop where the ghost’s maps told you to stop. The sandstorm subsequently subsides, somehow seeing you standing at an oasis!\nThe camel goes to get some water and you stretch your neck. As you look up, you discover what must be yet another giant floating island, this one made of metal! That must be where the parts to fix the sand machines come from.\nThere’s even a hang glider partially buried in the sand here; once the sun rises and heats up the sand, you might be able to use the glider and the hot air to get all the way up to the metal island!\nWhile you wait for the sun to rise, you admire the oasis hidden here in the middle of Desert Island. It must have a delicate ecosystem; you might as well take some ecological readings while you wait. Maybe you can report any environmental instabilities you find to someone so the oasis can be around for the next sandstorm-worn traveler.\nYou pull out your handy Oasis And Sand Instability Sensor and analyze your surroundings. The OASIS produces a report of many values and how they are changing over time (your puzzle input). Each line in the report contains the history of a single value.\nTo best protect the oasis, your environmental report should include a prediction of the next value in each history. To do this, start by making a new sequence from the difference at each step of your history. If that sequence is not all zeroes, repeat this process, using the sequence you just generated as the input sequence. Once all of the values in your latest sequence are zeroes, you can extrapolate what the next value of the original history should be."
   },
   {
     "objectID": "year_2023/day_09/index.html#set-up",
     "href": "year_2023/day_09/index.html#set-up",
-    "title": "",
+    "title": "2023 - Day 9: Mirage Maintenance",
     "section": "Set-Up",
-    "text": "Set-Up"
+    "text": "Set-Up\n\n\nCode\nsensors &lt;- read.table(\"input.txt\")\nhead(sensors)\n\n\n  V1  V2  V3  V4  V5  V6  V7   V8   V9  V10   V11   V12   V13    V14    V15\n1 18  34  62 104 162 241 354  541  935 1948  4716 12044 30251  72571 165186\n2 -1   9  31  63 102 139 150   87 -129 -609 -1472 -2740 -4028  -3797   2219\n3 -5 -12 -21 -31 -28  39 297 1010 2680 6225 13298 26846 52051  97846 179258\n4 16  31  55  93 166 327 690 1491 3227 6970 15040 32365 69094 145421 300225\n5 18  23  28  33  38  43  48   53   58   63    68    73    78     83     88\n6 -5   6  29  60  96 153 294  676 1649 3981  9347 21326 47356 102536 217094\n     V16     V17     V18     V19     V20      V21\n1 357653  740584 1475142 2841482 5317016  9700712\n2  24016   82639  219061  508309 1081061  2155578\n3 320897  561985  963402 1617317 2660071  4289086\n4 606225 1196290 2309185 4370163 8136063 14963082\n5     93      98     103     108     113      118\n6 451214  924476 1873567 3762890 7490707 14761961"
   },
   {
     "objectID": "year_2023/day_09/index.html#part-1",
     "href": "year_2023/day_09/index.html#part-1",
-    "title": "",
+    "title": "2023 - Day 9: Mirage Maintenance",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nAnalyze your OASIS report and extrapolate the next value for each history. What is the sum of these extrapolated values?\n\n\n\nCode\nfind_next_sensor &lt;- function(x) {\n  if (all(x == 0)) return(0)\n  y &lt;- diff(x)\n  z &lt;- find_next_sensor(y)\n  tail(x, 1) + z\n}\n\nsum(apply(sensors, 1, find_next_sensor))\n\n\n[1] 1731106378"
   },
   {
     "objectID": "year_2023/day_09/index.html#part-2",
     "href": "year_2023/day_09/index.html#part-2",
-    "title": "",
+    "title": "2023 - Day 9: Mirage Maintenance",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nOf course, it would be nice to have even more history included in your report. Surely it’s safe to just extrapolate backwards as well, right?\nFor each history, repeat the process of finding differences until the sequence of differences is entirely zero. Then, rather than adding a zero to the end and filling in the next values of each previous sequence, you should instead add a zero to the beginning of your sequence of zeroes, then fill in new first values for each previous sequence.\n\nHooray for one line part 2s!\n\n\nCode\nsum(apply(rev(sensors), 1, find_next_sensor))\n\n\n[1] 1087"
   },
   {
     "objectID": "year_2023/day_10/index.html",
