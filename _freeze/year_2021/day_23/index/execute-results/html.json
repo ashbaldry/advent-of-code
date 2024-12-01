@@ -1,8 +1,11 @@
 {
-  "hash": "9a712362cc297e5573473258b0201165",
+  "hash": "1811105014c70ebbb4c3eaaaa0752f1f",
   "result": {
-    "markdown": "---\ntitle: \"2021 - Day 23\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n```{.r .cell-code}\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\nstr(seats)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n```\n:::\n\n```{.r .cell-code}\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n```\n:::\n\n\nThis was done with a piece of paper rather than coding...\n",
-    "supporting": [],
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"2021 - Day 23\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n\n\n## Set-Up\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nseats <- do.call(rbind, strsplit(readLines(\"input.txt\"), \"\"))\nstr(seats)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n chr [1:27, 1:15] \"#\" \"#\" \"#\" \" \" \" \" \" \" \" \" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" \"1\" ...\n```\n\n\n:::\n\n```{.r .cell-code}\nenergy <- c(A = 1, B = 10, C = 100, D = 1000)\n```\n:::\n\n\n\n\nThis was done with a piece of paper rather than coding...\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

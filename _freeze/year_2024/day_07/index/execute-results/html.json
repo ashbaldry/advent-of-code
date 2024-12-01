@@ -1,0 +1,15 @@
+{
+  "hash": "9aa1256250f8a7a78f3e06a54ea37ddb",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n\n\n## Set-Up\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

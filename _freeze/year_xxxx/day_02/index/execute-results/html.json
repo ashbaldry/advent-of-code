@@ -1,8 +1,11 @@
 {
-  "hash": "6fdfc8f891a704d1c3feccfc1e546390",
+  "hash": "7d3fc340232c65a27eedd87b786f74a6",
   "result": {
-    "markdown": "---\ntitle: \"xxxx - Day 2\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n## Set-Up\n\n\n::: {.cell}\n\n:::\n\n\n## Part 1\n\n\n::: {.cell}\n\n:::\n\n\n## Part 2\n\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"xxxx - Day 2\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n\n\n## Set-Up\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

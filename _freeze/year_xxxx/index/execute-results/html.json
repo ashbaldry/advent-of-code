@@ -1,8 +1,11 @@
 {
-  "hash": "d5eb58caec918af91f9b1d60d3fa2b69",
+  "hash": "4211c326612a699580d35e46cee5b962",
   "result": {
+    "engine": "knitr",
     "markdown": "---\ntitle: \"xxxx\"\n---\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

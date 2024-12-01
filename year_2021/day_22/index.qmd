@@ -45,7 +45,7 @@ sum(switches)
 
 ## Part 2
 
-```{r part_2}
+```{r part_2, eval=FALSE}
 x <- sort(unique(c(inst$x1, inst$x2 + 1)))
 y <- sort(unique(c(inst$y1, inst$y2 + 1)))
 z <- sort(unique(c(inst$z1, inst$z2 + 1)))

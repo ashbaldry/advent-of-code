@@ -459,28 +459,28 @@
     "href": "year_2021/day_22/index.html",
     "title": "2021 - Day 22",
     "section": "",
-    "text": "Code\ninstructions <- readLines(\"input.txt\")\nstr(instructions)\n\n\n chr [1:420] \"on x=-17..30,y=-5..41,z=-33..14\" ...\n\n\nCode\ninst <- as.data.frame(do.call(rbind, regmatches(instructions, gregexpr(\"on|off|(-|)\\\\d+\", instructions))))\nnames(inst) <- c(\"switch\", \"x1\", \"x2\", \"y1\", \"y2\", \"z1\", \"z2\")\ninst[, -1] <- sapply(inst[, -1], as.numeric)\ninst[, -1] <- cbind(\n  x1 = pmin(inst$x1, inst$x2), x2 = pmax(inst$x1, inst$x2),\n  y1 = pmin(inst$y1, inst$y2), y2 = pmax(inst$y1, inst$y2),\n  z1 = pmin(inst$z1, inst$z2), z2 = pmax(inst$z1, inst$z2)\n)"
+    "text": "Code\ninstructions &lt;- readLines(\"input.txt\")\nstr(instructions)\n\n\n chr [1:420] \"on x=-17..30,y=-5..41,z=-33..14\" ...\n\n\nCode\ninst &lt;- as.data.frame(do.call(rbind, regmatches(instructions, gregexpr(\"on|off|(-|)\\\\d+\", instructions))))\nnames(inst) &lt;- c(\"switch\", \"x1\", \"x2\", \"y1\", \"y2\", \"z1\", \"z2\")\ninst[, -1] &lt;- sapply(inst[, -1], as.numeric)\ninst[, -1] &lt;- cbind(\n  x1 = pmin(inst$x1, inst$x2), x2 = pmax(inst$x1, inst$x2),\n  y1 = pmin(inst$y1, inst$y2), y2 = pmax(inst$y1, inst$y2),\n  z1 = pmin(inst$z1, inst$z2), z2 = pmax(inst$z1, inst$z2)\n)"
   },
   {
     "objectID": "year_2021/day_22/index.html#part-1",
     "href": "year_2021/day_22/index.html#part-1",
     "title": "2021 - Day 22",
     "section": "Part 1",
-    "text": "Part 1\n\n\nCode\nmini_inst <- inst\nmini_inst[, -1] <- mini_inst[, -1] + 51\nmini_board <- which(rowMeans(mini_inst[, -1] >= 1 & mini_inst[, -1] <= 101) == 1)\nswitches <- array(0, c(101, 101, 101))\n\nfor (i in mini_board) {\n  value <- as.numeric(mini_inst$switch[i] == \"on\")\n  switches[\n    seq(mini_inst$x1[i], mini_inst$x2[i]),\n    seq(mini_inst$y1[i], mini_inst$y2[i]),\n    seq(mini_inst$z1[i], mini_inst$z2[i])\n  ] <- value\n}\nsum(switches)\n\n\n[1] 600458"
+    "text": "Part 1\n\n\nCode\nmini_inst &lt;- inst\nmini_inst[, -1] &lt;- mini_inst[, -1] + 51\nmini_board &lt;- which(rowMeans(mini_inst[, -1] &gt;= 1 & mini_inst[, -1] &lt;= 101) == 1)\nswitches &lt;- array(0, c(101, 101, 101))\n\nfor (i in mini_board) {\n  value &lt;- as.numeric(mini_inst$switch[i] == \"on\")\n  switches[\n    seq(mini_inst$x1[i], mini_inst$x2[i]),\n    seq(mini_inst$y1[i], mini_inst$y2[i]),\n    seq(mini_inst$z1[i], mini_inst$z2[i])\n  ] &lt;- value\n}\nsum(switches)\n\n\n[1] 600458"
   },
   {
     "objectID": "year_2021/day_22/index.html#part-2",
     "href": "year_2021/day_22/index.html#part-2",
     "title": "2021 - Day 22",
     "section": "Part 2",
-    "text": "Part 2\n\n\nCode\nx <- sort(unique(c(inst$x1, inst$x2 + 1)))\ny <- sort(unique(c(inst$y1, inst$y2 + 1)))\nz <- sort(unique(c(inst$z1, inst$z2 + 1)))\nlocs <- array(0, lengths(list(x, y, z)))\n\nfor (i in seq(nrow(inst))) {\n  x_range <- seq(which(inst$x1[i] == x), which(inst$x2[i] + 1 == x) - 1)\n  y_range <- seq(which(inst$y1[i] == y), which(inst$y2[i] + 1 == y) - 1)\n  z_range <- seq(which(inst$z1[i] == z), which(inst$z2[i] + 1 == z) - 1)\n  locs[as.matrix(expand.grid(x_range, y_range, z_range))] <- as.numeric(inst$switch[i] == \"on\")\n}\n\non_points <- which(locs == 1, arr.ind = TRUE)\non_points2 <- on_points + 1\n\nsum(\n  (x[on_points2[, 1]] - x[on_points[, 1]]) *\n    (y[on_points2[, 2]] - y[on_points[, 2]]) *\n    (z[on_points2[, 3]] - z[on_points[, 3]])\n)\n\n\n[1] 1.334275e+15"
+    "text": "Part 2\n\n\nCode\nx &lt;- sort(unique(c(inst$x1, inst$x2 + 1)))\ny &lt;- sort(unique(c(inst$y1, inst$y2 + 1)))\nz &lt;- sort(unique(c(inst$z1, inst$z2 + 1)))\nlocs &lt;- array(0, lengths(list(x, y, z)))\n\nfor (i in seq(nrow(inst))) {\n  x_range &lt;- seq(which(inst$x1[i] == x), which(inst$x2[i] + 1 == x) - 1)\n  y_range &lt;- seq(which(inst$y1[i] == y), which(inst$y2[i] + 1 == y) - 1)\n  z_range &lt;- seq(which(inst$z1[i] == z), which(inst$z2[i] + 1 == z) - 1)\n  locs[as.matrix(expand.grid(x_range, y_range, z_range))] &lt;- as.numeric(inst$switch[i] == \"on\")\n}\n\non_points &lt;- which(locs == 1, arr.ind = TRUE)\non_points2 &lt;- on_points + 1\n\nsum(\n  (x[on_points2[, 1]] - x[on_points[, 1]]) *\n    (y[on_points2[, 2]] - y[on_points[, 2]]) *\n    (z[on_points2[, 3]] - z[on_points[, 3]])\n)"
   },
   {
     "objectID": "year_2021/day_22/index.html#part-2---attempt-2",
     "href": "year_2021/day_22/index.html#part-2---attempt-2",
     "title": "2021 - Day 22",
     "section": "Part 2 - Attempt 2",
-    "text": "Part 2 - Attempt 2\n\n\nCode\nfindNCubes <- function(x) sum(apply(abs(x[, c(\"x2\", \"y2\", \"z2\")] - x[, c(\"x1\", \"y1\", \"z1\")]) + 1, 1, prod))\n# c1 Current cube, c2 previous cube\nexcludeOverlap <- function(c1, c2) {\n  # No Overlap\n  if (any(c1[, c(\"x1\", \"y1\", \"z1\")] > c2[, c(\"x2\", \"y2\", \"z2\")]) |\n      any(c1[, c(\"x2\", \"y2\", \"z2\")] < c2[, c(\"x1\", \"y1\", \"z1\")])) {\n    c1\n  # Full Outer Overlap\n  } else if (all(c1[, c(\"x1\", \"y1\", \"z1\")] >= c2[, c(\"x1\", \"y1\", \"z1\")] &\n                 c1[, c(\"x2\", \"y2\", \"z2\")] <= c2[, c(\"x2\", \"y2\", \"z2\")])) {\n    NULL\n    # Partial Outer Overlap\n  } else {\n    x_extra <- y_extra <- z_extra <- NULL\n    x1 <- c1$x1\n    x2 <- c1$x2\n    y1 <- c1$y1\n    y2 <- c1$y2\n    z1 <- c1$z1\n    z2 <- c1$z2\n\n    if (c1$x1 < c2$x1 && c1$x2 > c2$x2) {\n      x_extra <- data.frame(x1 = c(x1, c2$x2 + 1), x2 = c(c2$x1, x2 + 1), y1 = y1, y2 = y2, z1 = z1, z2 = z2)\n      x1 <- c2$x1\n      x2 <- c2$x2\n    }\n    if (c1$y1 < c2$y1 && c1$y2 > c2$y2) {\n      y_extra <- data.frame(x1 = x1, x2 = x2, y1 = c(y1, c2$y2 + 1), y2 = c(c2$y1, y2 + 1), z1 = z1, z2 = z2)\n      y1 <- c2$y1\n      y2 <- c2$y2\n    }\n    if (c1$z1 < c2$z1 && c1$z2 > c2$z2) {\n      z_extra <- data.frame(x1 = x1, x2 = x2, y1 = y1, y2 = y2, z1 = c(c1$z1, c2$z2 + 1), z2 = c(c2$z1 - 1, c1$z2))\n      z1 <- c2$z1\n      z2 <- c2$z2\n    }\n\n    # Partial Inner Overlap\n    x_min <- max(x1, c2$x1)\n    x_max <- min(x2, c2$x2)\n    y_min <- max(y1, c2$y1)\n    y_max <- min(y2, c2$y2)\n\n    rbind(\n      if (x1 >= c2$x1 && x2 > c2$x2) data.frame(x1 = c2$x2 + 1, x2 = x2, y1 = y1, y2 = y2, z1 = z1, z2 = z2),\n      if (y1 >= c2$y1 && y2 > c2$y2) data.frame(x1 = x_min, x2 = x_max, y1 = c2$y2 + 1, y2 = y2, z1 = z1, z2 = z2),\n      if (z1 >= c2$z1 && z2 > c2$z2) data.frame(x1 = x_min, x2 = x_max, y1 = y_min, y2 = y_max, z1 = c2$z2 + 1, z2 = z2),\n      if (x2 <= c2$x2 && x1 < c2$x1) data.frame(x1 = x1, x2 = c2$x1 - 1, y1 = y1, y2 = y2, z1 = z1, z2 = z2),\n      if (y2 <= c2$y2 && y1 < c2$y1) data.frame(x1 = x_min, x2 = x_max, y1 = y1, y2 = c2$y1 - 1, z1 = z1, z2 = z2),\n      if (z2 <= c2$z2 && z1 < c2$z1) data.frame(x1 = x_min, x2 = x_max, y1 = y_min, y2 = y_max, z1 = z1, z2 = c2$z1 - 1),\n      x_extra,\n      y_extra,\n      z_extra\n    )\n  }\n}\n\non_cubes <- inst[1, -1]\nfor (i in seq(2, nrow(inst))) {\n  print(i)\n  curr_cube <- inst[i, -1]\n\n  if (inst$switch[i] == \"on\") {\n\n    for (j in seq(nrow(on_cubes))) {\n      new_spaces <- NULL\n      for (k in seq(nrow(curr_cube))) {\n        new_spaces <- rbind(new_spaces, excludeOverlap(curr_cube[k, ], on_cubes[j, ]))\n      }\n      curr_cube <- new_spaces\n      if (is.null(curr_cube)) {\n        break\n      }\n    }\n    on_cubes <- rbind(on_cubes, curr_cube)\n\n  } else {\n    new_spaces <- NULL\n    for (j in seq(nrow(on_cubes))) {\n      new_spaces <- rbind(new_spaces, excludeOverlap(c1 = on_cubes[j, ], c2 = inst[i, ]))\n    }\n    on_cubes <- new_spaces\n  }\n}\n\nsum(switches)\nfindNCubes(on_cubes)"
+    "text": "Part 2 - Attempt 2\n\n\nCode\nfindNCubes &lt;- function(x) sum(apply(abs(x[, c(\"x2\", \"y2\", \"z2\")] - x[, c(\"x1\", \"y1\", \"z1\")]) + 1, 1, prod))\n# c1 Current cube, c2 previous cube\nexcludeOverlap &lt;- function(c1, c2) {\n  # No Overlap\n  if (any(c1[, c(\"x1\", \"y1\", \"z1\")] &gt; c2[, c(\"x2\", \"y2\", \"z2\")]) |\n      any(c1[, c(\"x2\", \"y2\", \"z2\")] &lt; c2[, c(\"x1\", \"y1\", \"z1\")])) {\n    c1\n  # Full Outer Overlap\n  } else if (all(c1[, c(\"x1\", \"y1\", \"z1\")] &gt;= c2[, c(\"x1\", \"y1\", \"z1\")] &\n                 c1[, c(\"x2\", \"y2\", \"z2\")] &lt;= c2[, c(\"x2\", \"y2\", \"z2\")])) {\n    NULL\n    # Partial Outer Overlap\n  } else {\n    x_extra &lt;- y_extra &lt;- z_extra &lt;- NULL\n    x1 &lt;- c1$x1\n    x2 &lt;- c1$x2\n    y1 &lt;- c1$y1\n    y2 &lt;- c1$y2\n    z1 &lt;- c1$z1\n    z2 &lt;- c1$z2\n\n    if (c1$x1 &lt; c2$x1 && c1$x2 &gt; c2$x2) {\n      x_extra &lt;- data.frame(x1 = c(x1, c2$x2 + 1), x2 = c(c2$x1, x2 + 1), y1 = y1, y2 = y2, z1 = z1, z2 = z2)\n      x1 &lt;- c2$x1\n      x2 &lt;- c2$x2\n    }\n    if (c1$y1 &lt; c2$y1 && c1$y2 &gt; c2$y2) {\n      y_extra &lt;- data.frame(x1 = x1, x2 = x2, y1 = c(y1, c2$y2 + 1), y2 = c(c2$y1, y2 + 1), z1 = z1, z2 = z2)\n      y1 &lt;- c2$y1\n      y2 &lt;- c2$y2\n    }\n    if (c1$z1 &lt; c2$z1 && c1$z2 &gt; c2$z2) {\n      z_extra &lt;- data.frame(x1 = x1, x2 = x2, y1 = y1, y2 = y2, z1 = c(c1$z1, c2$z2 + 1), z2 = c(c2$z1 - 1, c1$z2))\n      z1 &lt;- c2$z1\n      z2 &lt;- c2$z2\n    }\n\n    # Partial Inner Overlap\n    x_min &lt;- max(x1, c2$x1)\n    x_max &lt;- min(x2, c2$x2)\n    y_min &lt;- max(y1, c2$y1)\n    y_max &lt;- min(y2, c2$y2)\n\n    rbind(\n      if (x1 &gt;= c2$x1 && x2 &gt; c2$x2) data.frame(x1 = c2$x2 + 1, x2 = x2, y1 = y1, y2 = y2, z1 = z1, z2 = z2),\n      if (y1 &gt;= c2$y1 && y2 &gt; c2$y2) data.frame(x1 = x_min, x2 = x_max, y1 = c2$y2 + 1, y2 = y2, z1 = z1, z2 = z2),\n      if (z1 &gt;= c2$z1 && z2 &gt; c2$z2) data.frame(x1 = x_min, x2 = x_max, y1 = y_min, y2 = y_max, z1 = c2$z2 + 1, z2 = z2),\n      if (x2 &lt;= c2$x2 && x1 &lt; c2$x1) data.frame(x1 = x1, x2 = c2$x1 - 1, y1 = y1, y2 = y2, z1 = z1, z2 = z2),\n      if (y2 &lt;= c2$y2 && y1 &lt; c2$y1) data.frame(x1 = x_min, x2 = x_max, y1 = y1, y2 = c2$y1 - 1, z1 = z1, z2 = z2),\n      if (z2 &lt;= c2$z2 && z1 &lt; c2$z1) data.frame(x1 = x_min, x2 = x_max, y1 = y_min, y2 = y_max, z1 = z1, z2 = c2$z1 - 1),\n      x_extra,\n      y_extra,\n      z_extra\n    )\n  }\n}\n\non_cubes &lt;- inst[1, -1]\nfor (i in seq(2, nrow(inst))) {\n  print(i)\n  curr_cube &lt;- inst[i, -1]\n\n  if (inst$switch[i] == \"on\") {\n\n    for (j in seq(nrow(on_cubes))) {\n      new_spaces &lt;- NULL\n      for (k in seq(nrow(curr_cube))) {\n        new_spaces &lt;- rbind(new_spaces, excludeOverlap(curr_cube[k, ], on_cubes[j, ]))\n      }\n      curr_cube &lt;- new_spaces\n      if (is.null(curr_cube)) {\n        break\n      }\n    }\n    on_cubes &lt;- rbind(on_cubes, curr_cube)\n\n  } else {\n    new_spaces &lt;- NULL\n    for (j in seq(nrow(on_cubes))) {\n      new_spaces &lt;- rbind(new_spaces, excludeOverlap(c1 = on_cubes[j, ], c2 = inst[i, ]))\n    }\n    on_cubes &lt;- new_spaces\n  }\n}\n\nsum(switches)\nfindNCubes(on_cubes)"
   },
   {
     "objectID": "year_2021/day_23/index.html",
@@ -954,308 +954,308 @@
   {
     "objectID": "year_xxxx/day_04/index.html#part-1",
     "href": "year_xxxx/day_04/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_04/index.html#part-2",
     "href": "year_xxxx/day_04/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_05/index.html#part-1",
     "href": "year_xxxx/day_05/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_05/index.html#part-2",
     "href": "year_xxxx/day_05/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_06/index.html#part-1",
     "href": "year_xxxx/day_06/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_06/index.html#part-2",
     "href": "year_xxxx/day_06/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_07/index.html#part-1",
     "href": "year_xxxx/day_07/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_07/index.html#part-2",
     "href": "year_xxxx/day_07/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_08/index.html#part-1",
     "href": "year_xxxx/day_08/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_08/index.html#part-2",
     "href": "year_xxxx/day_08/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_09/index.html#part-1",
     "href": "year_xxxx/day_09/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_09/index.html#part-2",
     "href": "year_xxxx/day_09/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_10/index.html#part-1",
     "href": "year_xxxx/day_10/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_10/index.html#part-2",
     "href": "year_xxxx/day_10/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_11/index.html#part-1",
     "href": "year_xxxx/day_11/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_11/index.html#part-2",
     "href": "year_xxxx/day_11/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_12/index.html#part-1",
     "href": "year_xxxx/day_12/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_12/index.html#part-2",
     "href": "year_xxxx/day_12/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_13/index.html#part-1",
     "href": "year_xxxx/day_13/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_13/index.html#part-2",
     "href": "year_xxxx/day_13/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_14/index.html#part-1",
     "href": "year_xxxx/day_14/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_14/index.html#part-2",
     "href": "year_xxxx/day_14/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_15/index.html#part-1",
     "href": "year_xxxx/day_15/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_15/index.html#part-2",
     "href": "year_xxxx/day_15/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_16/index.html#part-1",
     "href": "year_xxxx/day_16/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_16/index.html#part-2",
     "href": "year_xxxx/day_16/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_17/index.html#part-1",
     "href": "year_xxxx/day_17/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_17/index.html#part-2",
     "href": "year_xxxx/day_17/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_18/index.html#part-1",
     "href": "year_xxxx/day_18/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_18/index.html#part-2",
     "href": "year_xxxx/day_18/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_19/index.html#part-1",
     "href": "year_xxxx/day_19/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_19/index.html#part-2",
     "href": "year_xxxx/day_19/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_20/index.html#part-1",
     "href": "year_xxxx/day_20/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_20/index.html#part-2",
     "href": "year_xxxx/day_20/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_21/index.html#part-1",
     "href": "year_xxxx/day_21/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_21/index.html#part-2",
     "href": "year_xxxx/day_21/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_22/index.html#part-1",
     "href": "year_xxxx/day_22/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_22/index.html#part-2",
     "href": "year_xxxx/day_22/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_23/index.html#part-1",
     "href": "year_xxxx/day_23/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_23/index.html#part-2",
     "href": "year_xxxx/day_23/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_24/index.html#part-1",
     "href": "year_xxxx/day_24/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_24/index.html#part-2",
     "href": "year_xxxx/day_24/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
   {
     "objectID": "year_xxxx/day_25/index.html#part-1",
     "href": "year_xxxx/day_25/index.html#part-1",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 1",
     "text": "Part 1"
   },
   {
     "objectID": "year_xxxx/day_25/index.html#part-2",
     "href": "year_xxxx/day_25/index.html#part-2",
-    "title": "Advent of Code",
+    "title": "",
     "section": "Part 2",
     "text": "Part 2"
   },
@@ -2077,5 +2077,992 @@
     "title": "2023 - Day 3: Gear Ratios",
     "section": "Set-Up",
     "text": "Set-Up\n\n\nCode\nschema_lines &lt;- readLines(\"input.txt\")\nschema &lt;- do.call(rbind, strsplit(schema_lines, \"\"))\ndims &lt;- dim(schema)"
+  },
+  {
+    "objectID": "year_2021/day_22/index.html#set-up",
+    "href": "year_2021/day_22/index.html#set-up",
+    "title": "2021 - Day 22",
+    "section": "",
+    "text": "Code\ninstructions &lt;- readLines(\"input.txt\")\nstr(instructions)\n\n\n chr [1:420] \"on x=-17..30,y=-5..41,z=-33..14\" ...\n\n\nCode\ninst &lt;- as.data.frame(do.call(rbind, regmatches(instructions, gregexpr(\"on|off|(-|)\\\\d+\", instructions))))\nnames(inst) &lt;- c(\"switch\", \"x1\", \"x2\", \"y1\", \"y2\", \"z1\", \"z2\")\ninst[, -1] &lt;- sapply(inst[, -1], as.numeric)\ninst[, -1] &lt;- cbind(\n  x1 = pmin(inst$x1, inst$x2), x2 = pmax(inst$x1, inst$x2),\n  y1 = pmin(inst$y1, inst$y2), y2 = pmax(inst$y1, inst$y2),\n  z1 = pmin(inst$z1, inst$z2), z2 = pmax(inst$z1, inst$z2)\n)"
+  },
+  {
+    "objectID": "year_xxxx/day_24/index.html",
+    "href": "year_xxxx/day_24/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_24/index.html#set-up",
+    "href": "year_xxxx/day_24/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_22/index.html",
+    "href": "year_xxxx/day_22/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_22/index.html#set-up",
+    "href": "year_xxxx/day_22/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_20/index.html",
+    "href": "year_xxxx/day_20/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_20/index.html#set-up",
+    "href": "year_xxxx/day_20/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_18/index.html",
+    "href": "year_xxxx/day_18/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_18/index.html#set-up",
+    "href": "year_xxxx/day_18/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_16/index.html",
+    "href": "year_xxxx/day_16/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_16/index.html#set-up",
+    "href": "year_xxxx/day_16/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_14/index.html",
+    "href": "year_xxxx/day_14/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_14/index.html#set-up",
+    "href": "year_xxxx/day_14/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_12/index.html",
+    "href": "year_xxxx/day_12/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_12/index.html#set-up",
+    "href": "year_xxxx/day_12/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_10/index.html",
+    "href": "year_xxxx/day_10/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_10/index.html#set-up",
+    "href": "year_xxxx/day_10/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_08/index.html",
+    "href": "year_xxxx/day_08/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_08/index.html#set-up",
+    "href": "year_xxxx/day_08/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_06/index.html",
+    "href": "year_xxxx/day_06/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_06/index.html#set-up",
+    "href": "year_xxxx/day_06/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_04/index.html",
+    "href": "year_xxxx/day_04/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_04/index.html#set-up",
+    "href": "year_xxxx/day_04/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_25/index.html",
+    "href": "year_2024/day_25/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_25/index.html#set-up",
+    "href": "year_2024/day_25/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_25/index.html#part-1",
+    "href": "year_2024/day_25/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_25/index.html#part-2",
+    "href": "year_2024/day_25/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_23/index.html",
+    "href": "year_2024/day_23/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_23/index.html#set-up",
+    "href": "year_2024/day_23/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_23/index.html#part-1",
+    "href": "year_2024/day_23/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_23/index.html#part-2",
+    "href": "year_2024/day_23/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_21/index.html",
+    "href": "year_2024/day_21/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_21/index.html#set-up",
+    "href": "year_2024/day_21/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_21/index.html#part-1",
+    "href": "year_2024/day_21/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_21/index.html#part-2",
+    "href": "year_2024/day_21/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_19/index.html",
+    "href": "year_2024/day_19/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_19/index.html#set-up",
+    "href": "year_2024/day_19/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_19/index.html#part-1",
+    "href": "year_2024/day_19/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_19/index.html#part-2",
+    "href": "year_2024/day_19/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_17/index.html",
+    "href": "year_2024/day_17/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_17/index.html#set-up",
+    "href": "year_2024/day_17/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_17/index.html#part-1",
+    "href": "year_2024/day_17/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_17/index.html#part-2",
+    "href": "year_2024/day_17/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_15/index.html",
+    "href": "year_2024/day_15/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_15/index.html#set-up",
+    "href": "year_2024/day_15/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_15/index.html#part-1",
+    "href": "year_2024/day_15/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_15/index.html#part-2",
+    "href": "year_2024/day_15/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_13/index.html",
+    "href": "year_2024/day_13/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_13/index.html#set-up",
+    "href": "year_2024/day_13/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_13/index.html#part-1",
+    "href": "year_2024/day_13/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_13/index.html#part-2",
+    "href": "year_2024/day_13/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_11/index.html",
+    "href": "year_2024/day_11/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_11/index.html#set-up",
+    "href": "year_2024/day_11/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_11/index.html#part-1",
+    "href": "year_2024/day_11/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_11/index.html#part-2",
+    "href": "year_2024/day_11/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_09/index.html",
+    "href": "year_2024/day_09/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_09/index.html#set-up",
+    "href": "year_2024/day_09/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_09/index.html#part-1",
+    "href": "year_2024/day_09/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_09/index.html#part-2",
+    "href": "year_2024/day_09/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_07/index.html",
+    "href": "year_2024/day_07/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_07/index.html#set-up",
+    "href": "year_2024/day_07/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_07/index.html#part-1",
+    "href": "year_2024/day_07/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_07/index.html#part-2",
+    "href": "year_2024/day_07/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_05/index.html",
+    "href": "year_2024/day_05/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_05/index.html#set-up",
+    "href": "year_2024/day_05/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_05/index.html#part-1",
+    "href": "year_2024/day_05/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_05/index.html#part-2",
+    "href": "year_2024/day_05/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_03/index.html#part-1",
+    "href": "year_2024/day_03/index.html#part-1",
+    "title": "xxxx - Day 3",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_03/index.html#part-2",
+    "href": "year_2024/day_03/index.html#part-2",
+    "title": "xxxx - Day 3",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_01/index.html",
+    "href": "year_2024/day_01/index.html",
+    "title": "2024 - Day 1: Historian Hysteria",
+    "section": "",
+    "text": "You haven’t even left yet and the group of Elvish Senior Historians has already hit a problem: their list of locations to check is currently empty. Eventually, someone decides that the best place to check first would be the Chief Historian’s office.\nUpon pouring into the office, everyone confirms that the Chief Historian is indeed nowhere to be found. Instead, the Elves discover an assortment of notes and lists of historically significant locations! This seems to be the planning the Chief Historian was doing before he left. Perhaps these notes can be used to determine which locations to search?\nThroughout the Chief’s office, the historically significant locations are listed not by name but by a unique number called the location ID. To make sure they don’t miss anything, The Historians split into two groups, each searching the office and trying to create their own complete list of location IDs.\nThere’s just one problem: by holding the two lists up side by side (your puzzle input), it quickly becomes clear that the lists aren’t very similar. Maybe you can help The Historians reconcile their lists?"
+  },
+  {
+    "objectID": "year_2024/day_01/index.html#set-up",
+    "href": "year_2024/day_01/index.html#set-up",
+    "title": "2024 - Day 1: Historian Hysteria",
+    "section": "Set-Up",
+    "text": "Set-Up\n\n\nCode\ninput &lt;- read.table(\"input.txt\")"
+  },
+  {
+    "objectID": "year_2024/day_01/index.html#part-1",
+    "href": "year_2024/day_01/index.html#part-1",
+    "title": "2024 - Day 1: Historian Hysteria",
+    "section": "Part 1",
+    "text": "Part 1\n\nMaybe the lists are only off by a small amount! To find out, pair up the numbers and measure how far apart they are. Pair up the smallest number in the left list with the smallest number in the right list, then the second-smallest left number with the second-smallest right number, and so on.\nYour actual left and right lists contain many location IDs. What is the total distance between your lists?\n\n\n\nCode\n(sort(input$V1) - sort(input$V2)) |&gt; abs() |&gt; sum()\n\n\n[1] 1110981"
+  },
+  {
+    "objectID": "year_2024/day_01/index.html#part-2",
+    "href": "year_2024/day_01/index.html#part-2",
+    "title": "2024 - Day 1: Historian Hysteria",
+    "section": "Part 2",
+    "text": "Part 2\n\nYour analysis only confirmed what everyone feared: the two lists of location IDs are indeed very different.\nOr are they?\nThe Historians can’t agree on which group made the mistakes or how to read most of the Chief’s handwriting, but in the commotion you notice an interesting detail: a lot of location IDs appear in both lists! Maybe the other numbers aren’t location IDs at all but rather misinterpreted handwriting.\nThis time, you’ll need to figure out exactly how often each number from the left list appears in the right list. Calculate a total similarity score by adding up each number in the left list after multiplying it by the number of times that number appears in the right list.\nOnce again consider your left and right lists. What is their similarity score?\n\n\n\nCode\n(sapply(input$V1, \\(x) sum(x == input$V2)) * input$V1) |&gt; sum()\n\n\n[1] 24869388"
+  },
+  {
+    "objectID": "year_2024/day_02/index.html#part-1",
+    "href": "year_2024/day_02/index.html#part-1",
+    "title": "xxxx - Day 2",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_02/index.html#part-2",
+    "href": "year_2024/day_02/index.html#part-2",
+    "title": "xxxx - Day 2",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_04/index.html",
+    "href": "year_2024/day_04/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_04/index.html#set-up",
+    "href": "year_2024/day_04/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_04/index.html#part-1",
+    "href": "year_2024/day_04/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_04/index.html#part-2",
+    "href": "year_2024/day_04/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_06/index.html",
+    "href": "year_2024/day_06/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_06/index.html#set-up",
+    "href": "year_2024/day_06/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_06/index.html#part-1",
+    "href": "year_2024/day_06/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_06/index.html#part-2",
+    "href": "year_2024/day_06/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_08/index.html",
+    "href": "year_2024/day_08/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_08/index.html#set-up",
+    "href": "year_2024/day_08/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_08/index.html#part-1",
+    "href": "year_2024/day_08/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_08/index.html#part-2",
+    "href": "year_2024/day_08/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_10/index.html",
+    "href": "year_2024/day_10/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_10/index.html#set-up",
+    "href": "year_2024/day_10/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_10/index.html#part-1",
+    "href": "year_2024/day_10/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_10/index.html#part-2",
+    "href": "year_2024/day_10/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_12/index.html",
+    "href": "year_2024/day_12/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_12/index.html#set-up",
+    "href": "year_2024/day_12/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_12/index.html#part-1",
+    "href": "year_2024/day_12/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_12/index.html#part-2",
+    "href": "year_2024/day_12/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_14/index.html",
+    "href": "year_2024/day_14/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_14/index.html#set-up",
+    "href": "year_2024/day_14/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_14/index.html#part-1",
+    "href": "year_2024/day_14/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_14/index.html#part-2",
+    "href": "year_2024/day_14/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_16/index.html",
+    "href": "year_2024/day_16/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_16/index.html#set-up",
+    "href": "year_2024/day_16/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_16/index.html#part-1",
+    "href": "year_2024/day_16/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_16/index.html#part-2",
+    "href": "year_2024/day_16/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_18/index.html",
+    "href": "year_2024/day_18/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_18/index.html#set-up",
+    "href": "year_2024/day_18/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_18/index.html#part-1",
+    "href": "year_2024/day_18/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_18/index.html#part-2",
+    "href": "year_2024/day_18/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_20/index.html",
+    "href": "year_2024/day_20/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_20/index.html#set-up",
+    "href": "year_2024/day_20/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_20/index.html#part-1",
+    "href": "year_2024/day_20/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_20/index.html#part-2",
+    "href": "year_2024/day_20/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_22/index.html",
+    "href": "year_2024/day_22/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_22/index.html#set-up",
+    "href": "year_2024/day_22/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_22/index.html#part-1",
+    "href": "year_2024/day_22/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_22/index.html#part-2",
+    "href": "year_2024/day_22/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_2024/day_24/index.html",
+    "href": "year_2024/day_24/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_2024/day_24/index.html#set-up",
+    "href": "year_2024/day_24/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_2024/day_24/index.html#part-1",
+    "href": "year_2024/day_24/index.html#part-1",
+    "title": "",
+    "section": "Part 1",
+    "text": "Part 1"
+  },
+  {
+    "objectID": "year_2024/day_24/index.html#part-2",
+    "href": "year_2024/day_24/index.html#part-2",
+    "title": "",
+    "section": "Part 2",
+    "text": "Part 2"
+  },
+  {
+    "objectID": "year_xxxx/day_05/index.html",
+    "href": "year_xxxx/day_05/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_05/index.html#set-up",
+    "href": "year_xxxx/day_05/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_07/index.html",
+    "href": "year_xxxx/day_07/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_07/index.html#set-up",
+    "href": "year_xxxx/day_07/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_09/index.html",
+    "href": "year_xxxx/day_09/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_09/index.html#set-up",
+    "href": "year_xxxx/day_09/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_11/index.html",
+    "href": "year_xxxx/day_11/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_11/index.html#set-up",
+    "href": "year_xxxx/day_11/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_13/index.html",
+    "href": "year_xxxx/day_13/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_13/index.html#set-up",
+    "href": "year_xxxx/day_13/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_15/index.html",
+    "href": "year_xxxx/day_15/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_15/index.html#set-up",
+    "href": "year_xxxx/day_15/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_17/index.html",
+    "href": "year_xxxx/day_17/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_17/index.html#set-up",
+    "href": "year_xxxx/day_17/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_19/index.html",
+    "href": "year_xxxx/day_19/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_19/index.html#set-up",
+    "href": "year_xxxx/day_19/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_21/index.html",
+    "href": "year_xxxx/day_21/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_21/index.html#set-up",
+    "href": "year_xxxx/day_21/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_23/index.html",
+    "href": "year_xxxx/day_23/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_23/index.html#set-up",
+    "href": "year_xxxx/day_23/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
+  },
+  {
+    "objectID": "year_xxxx/day_25/index.html",
+    "href": "year_xxxx/day_25/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "year_xxxx/day_25/index.html#set-up",
+    "href": "year_xxxx/day_25/index.html#set-up",
+    "title": "",
+    "section": "Set-Up",
+    "text": "Set-Up"
   }
 ]

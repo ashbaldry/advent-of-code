@@ -91,7 +91,7 @@ sumFish(fish_sum)
 
 ## Part 2
 
-```{r part_2}
+```{r part_2, eval=FALSE}
 combinations <- cbind(rep(snailfish, each = 100), rep(snailfish, times = 100))
 combinations <- combinations[combinations[, 1] != combinations[, 2], ]
 combinations_str <- paste0("[", combinations[, 1], ",", combinations[, 2], "]")

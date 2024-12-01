@@ -1,0 +1,15 @@
+{
+  "hash": "4484b6194c93e0d56a3435977d218757",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"xxxx - Day 3\"\nformat:\n  html:\n    code-fold: show\n    code-tools: true\n    code-block-bg: true\n    code-block-border-left: \"#AB63BD\"\n---\n\n\n\n\n## Set-Up\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
