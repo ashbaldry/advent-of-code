@@ -1,0 +1,24 @@
+---
+title: "xxxx - Day 3"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+    code-block-bg: true
+    code-block-border-left: "#AB63BD"
+---
+
+## Set-Up
+
+```{r setup}
+```
+
+## Part 1
+
+```{r part_1}
+```
+
+## Part 2
+
+```{r part_2}
+```

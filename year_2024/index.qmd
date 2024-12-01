@@ -1,0 +1,8 @@
+---
+title: "2024"
+---
+
+```{r, echo=FALSE, warning=FALSE}
+source("../_rhelp/aoc_table.R")
+create_aoc_year_table("days.yml", "results.txt", 2024)
+```
