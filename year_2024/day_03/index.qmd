@@ -1,5 +1,5 @@
 ---
-title: "xxxx - Day 3"
+title: "2024 - Day 3: Mull It Over"
 format:
   html:
     code-fold: show
