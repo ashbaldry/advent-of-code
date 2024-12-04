@@ -1,4 +1,5 @@
 ---
+title: "2024 - Day 4: Ceres Search"
 format:
   html:
     code-fold: show
@@ -7,17 +8,69 @@ format:
     code-block-border-left: "#AB63BD"
 ---
 
+> "Looks like the Chief's not here. Next!" One of The Historians pulls out a device and pushes the only button on it. After a brief flash, you recognize the interior of the Ceres monitoring station!
+
 ## Set-Up
 
+> As the search for the Chief continues, a small Elf who lives on the station tugs on your shirt; she'd like to know if you could help her with her word search (your puzzle input). She only has to find one word: XMAS.
+> 
+> This word search allows words to be horizontal, vertical, diagonal, written backwards, or even overlapping other words. It's a little unusual, though, as you don't merely need to find one instance of XMAS - you need to find all of them.
+
 ```{r setup}
+input <- readLines("input.txt") |> strsplit("") |> do.call(what = rbind)
+collapse <- \(...) sapply(list(...), paste, collapse = "")
+input[1:10, 1:10]
 ```
 
 ## Part 1
 
+> Take a look at the little Elf's word search. How many times does XMAS appear?
+
+Knowing it was a square matrix, could've just used one of the dimensions, but essentially going for each cell and looking 4 to the right, down, up-right and down-right for "XMAS" or "SAMX" to avoid having to look in 8 directions for "XMAS" in each cell.
+
 ```{r part_1}
+input_size <- dim(input)
+check_cell <- \(i, j) {
+  max_col <- min(3, input_size[2] - j)
+  max_row <- min(3, input_size[1] - i)
+  max_dim <- min(max_col, max_row)
+
+  strings <- collapse(
+    input[i, j + 0:max_col],
+    input[i + 0:max_row, j],
+    input[cbind(i + 0:max_dim, j + 0:max_dim)],
+    input[cbind(i + 0:max_dim, j + max_dim:0)]
+  )
+
+  sum(strings %in% c("XMAS", "SAMX"))
+}
+
+sapply(seq(input_size[2L]), \(j) sapply(seq(input_size[1L]), check_cell, j = j)) |> sum()
 ```
 
 ## Part 2
 
+> The Elf looks quizzically at you. Did you misunderstand the assignment?
+>
+> Looking for the instructions, you flip over the word search to find that this isn't actually an XMAS puzzle; it's an X-MAS puzzle in which you're supposed to find two MAS in the shape of an X.
+>
+> Flip the word search from the instructions back over to the word search side and try again. How many times does an X-MAS appear?
+
+Simplified the conditions from part one to only look at diagonals using the top left as the start of the "X" meant that would only ever consider each "A" once.
+
 ```{r part_2}
+check_cell_2 <- \(i, j) {
+  max_col <- min(2, input_size[2] - j)
+  max_row <- min(2, input_size[1] - i)
+  max_dim <- min(max_col, max_row)
+
+  strings <- collapse(
+    input[cbind(i + 0:max_dim, j + 0:max_dim)],
+    input[cbind(i + 0:max_dim, j + max_dim:0)]
+  )
+
+  all(strings %in% c("MAS", "SAM"))
+}
+
+sapply(seq(input_size[2L]), \(j) sapply(seq(input_size[1L]), check_cell_2, j = j)) |> sum()
 ```
