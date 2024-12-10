@@ -2522,30 +2522,30 @@
   {
     "objectID": "year_2024/day_05/index.html",
     "href": "year_2024/day_05/index.html",
-    "title": "",
+    "title": "2024 - Day 5: Print Queue",
     "section": "",
-    "text": "Code"
+    "text": "Satisfied with their search on Ceres, the squadron of scholars suggests subsequently scanning the stationery stacks of sub-basement 17.\nThe North Pole printing department is busier than ever this close to Christmas, and while The Historians continue their search of this historically significant facility, an Elf operating a very familiar printer beckons you over.\nThe Elf must recognize you, because they waste no time explaining that the new sleigh launch safety manual updates won’t print correctly. Failure to update the safety manuals would be dire indeed, so you offer your services.\nSafety protocols clearly indicate that new pages for the safety manuals must be printed in a very specific order. The notation X|Y means that if both page number X and page number Y are to be produced as part of an update, page number X must be printed at some point before page number Y.\nThe Elf has for you both the page ordering rules and the pages to produce in each update (your puzzle input), but can’t figure out whether each update has the pages in the right order.\n\nSplitting out the pages here for easier pasting in both parts.\n\n\nCode\ninput &lt;- readLines(\"input.txt\")\nempty_line &lt;- which(input == \"\")\n\nprompts &lt;- input[seq(empty_line - 1L)]\npages &lt;- strsplit(input[-seq(empty_line)], \",\")\n\nhead(prompts)\n\n\n[1] \"48|39\" \"26|97\" \"26|94\" \"76|66\" \"76|58\" \"76|88\"\n\n\nCode\nhead(pages)\n\n\n[[1]]\n[1] \"74\" \"57\" \"28\" \"17\" \"96\"\n\n[[2]]\n [1] \"26\" \"58\" \"55\" \"62\" \"76\" \"23\" \"66\" \"97\" \"45\" \"88\" \"94\" \"68\" \"16\" \"99\" \"79\"\n[16] \"87\" \"65\" \"42\" \"72\" \"78\" \"48\" \"35\" \"96\"\n\n[[3]]\n [1] \"62\" \"65\" \"48\" \"76\" \"45\" \"87\" \"26\" \"96\" \"78\" \"55\" \"72\" \"88\" \"58\" \"66\" \"16\"\n[16] \"42\" \"97\" \"94\" \"99\" \"81\" \"85\"\n\n[[4]]\n [1] \"17\" \"62\" \"38\" \"11\" \"69\" \"74\" \"46\" \"51\" \"68\" \"92\" \"89\" \"82\" \"12\" \"71\" \"36\"\n[16] \"79\" \"65\" \"93\" \"35\" \"57\" \"41\" \"28\" \"86\"\n\n[[5]]\n[1] \"62\" \"87\" \"88\" \"66\" \"16\" \"97\" \"85\"\n\n[[6]]\n[1] \"11\" \"89\" \"17\" \"87\" \"62\" \"55\" \"69\" \"65\" \"76\""
   },
   {
     "objectID": "year_2024/day_05/index.html#set-up",
     "href": "year_2024/day_05/index.html#set-up",
-    "title": "",
-    "section": "Set-Up",
-    "text": "Set-Up"
+    "title": "2024 - Day 5: Print Queue",
+    "section": "",
+    "text": "Satisfied with their search on Ceres, the squadron of scholars suggests subsequently scanning the stationery stacks of sub-basement 17.\nThe North Pole printing department is busier than ever this close to Christmas, and while The Historians continue their search of this historically significant facility, an Elf operating a very familiar printer beckons you over.\nThe Elf must recognize you, because they waste no time explaining that the new sleigh launch safety manual updates won’t print correctly. Failure to update the safety manuals would be dire indeed, so you offer your services.\nSafety protocols clearly indicate that new pages for the safety manuals must be printed in a very specific order. The notation X|Y means that if both page number X and page number Y are to be produced as part of an update, page number X must be printed at some point before page number Y.\nThe Elf has for you both the page ordering rules and the pages to produce in each update (your puzzle input), but can’t figure out whether each update has the pages in the right order.\n\nSplitting out the pages here for easier pasting in both parts.\n\n\nCode\ninput &lt;- readLines(\"input.txt\")\nempty_line &lt;- which(input == \"\")\n\nprompts &lt;- input[seq(empty_line - 1L)]\npages &lt;- strsplit(input[-seq(empty_line)], \",\")\n\nhead(prompts)\n\n\n[1] \"48|39\" \"26|97\" \"26|94\" \"76|66\" \"76|58\" \"76|88\"\n\n\nCode\nhead(pages)\n\n\n[[1]]\n[1] \"74\" \"57\" \"28\" \"17\" \"96\"\n\n[[2]]\n [1] \"26\" \"58\" \"55\" \"62\" \"76\" \"23\" \"66\" \"97\" \"45\" \"88\" \"94\" \"68\" \"16\" \"99\" \"79\"\n[16] \"87\" \"65\" \"42\" \"72\" \"78\" \"48\" \"35\" \"96\"\n\n[[3]]\n [1] \"62\" \"65\" \"48\" \"76\" \"45\" \"87\" \"26\" \"96\" \"78\" \"55\" \"72\" \"88\" \"58\" \"66\" \"16\"\n[16] \"42\" \"97\" \"94\" \"99\" \"81\" \"85\"\n\n[[4]]\n [1] \"17\" \"62\" \"38\" \"11\" \"69\" \"74\" \"46\" \"51\" \"68\" \"92\" \"89\" \"82\" \"12\" \"71\" \"36\"\n[16] \"79\" \"65\" \"93\" \"35\" \"57\" \"41\" \"28\" \"86\"\n\n[[5]]\n[1] \"62\" \"87\" \"88\" \"66\" \"16\" \"97\" \"85\"\n\n[[6]]\n[1] \"11\" \"89\" \"17\" \"87\" \"62\" \"55\" \"69\" \"65\" \"76\""
   },
   {
     "objectID": "year_2024/day_05/index.html#part-1",
     "href": "year_2024/day_05/index.html#part-1",
-    "title": "",
+    "title": "2024 - Day 5: Print Queue",
     "section": "Part 1",
-    "text": "Part 1"
+    "text": "Part 1\n\nDetermine which updates are already in the correct order. What do you get if you add up the middle page number from those correctly-ordered updates?\n\nVery fortunate my assumption held that all page combination existed in the prompts. Using head and tail cutting of the last and first element was easier than using some rollapply.\n\n\nCode\nmiddle_pages &lt;- as.numeric(sapply(pages, \\(x) x[ceiling(length(x) / 2L)]))\nvalid &lt;- sapply(pages, \\(x) all(paste0(head(x, -1L), \"|\", tail(x, -1L)) %in% prompts))\n\nsum(middle_pages[valid])\n\n\n[1] 7365"
   },
   {
     "objectID": "year_2024/day_05/index.html#part-2",
     "href": "year_2024/day_05/index.html#part-2",
-    "title": "",
+    "title": "2024 - Day 5: Print Queue",
     "section": "Part 2",
-    "text": "Part 2"
+    "text": "Part 2\n\nWhile the Elves get to work printing the correctly-ordered updates, you have a little time to fix the rest of them.\nFor each of the incorrectly-ordered updates, use the page ordering rules to put the page numbers in the right order.\nFind the updates which are not in the correct order. What do you get if you add up the middle page numbers after correctly ordering just those updates?\n\nTook a while to understand what was being asked here, in the end did some sorting. Not the most efficient, but managed to get the correct answer after realising only needed the invalid pages fot the sum\n\n\nCode\ninvalid_pages &lt;- lapply(pages[!valid], \\(x) {\n  y &lt;- x[1L]; x &lt;- x[-1L]\n  while (length(x)) {\n    for (i in rev(seq_along(x))) {\n      if (any(paste0(y, \"|\", x[i]) %in% prompts) && any(paste0(x[i], \"|\", y) %in% prompts)) {\n        y &lt;- append(y, x[i], tail(which(paste0(y, \"|\", x[i]) %in% prompts), 1L)); x &lt;- x[-i]\n      } else if (any(prompts == paste0(tail(y, 1L), \"|\", x[i]))) {\n        y &lt;- c(y, x[i]); x &lt;- x[-i]\n      } else if (any(prompts == paste0(x[i], \"|\", head(y, 1L)))) {\n        y &lt;- c(x[i], y); x &lt;- x[-i]\n      }\n    }\n  }\n  y\n})\n\nsum(as.numeric(sapply(invalid_pages, \\(x) x[ceiling(length(x) / 2L)])))\n\n\n[1] 5770"
   },
   {
     "objectID": "year_2024/day_03/index.html#part-1",
