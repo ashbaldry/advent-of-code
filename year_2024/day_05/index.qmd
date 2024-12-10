@@ -1,4 +1,5 @@
 ---
+title: "2024 - Day 5: Print Queue"
 format:
   html:
     code-fold: show
@@ -9,15 +10,68 @@ format:
 
 ## Set-Up
 
+> Satisfied with their search on Ceres, the squadron of scholars suggests subsequently scanning the stationery stacks of sub-basement 17.
+>
+> The North Pole printing department is busier than ever this close to Christmas, and while The Historians continue their search of this historically significant facility, an Elf operating a very familiar printer beckons you over.
+>
+> The Elf must recognize you, because they waste no time explaining that the new sleigh launch safety manual updates won't print correctly. Failure to update the safety manuals would be dire indeed, so you offer your services.
+>
+> Safety protocols clearly indicate that new pages for the safety manuals must be printed in a very specific order. The notation X|Y means that if both page number X and page number Y are to be produced as part of an update, page number X must be printed at some point before page number Y.
+>
+> The Elf has for you both the page ordering rules and the pages to produce in each update (your puzzle input), but can't figure out whether each update has the pages in the right order.
+
+Splitting out the pages here for easier pasting in both parts.
+
 ```{r setup}
+input <- readLines("input.txt")
+empty_line <- which(input == "")
+
+prompts <- input[seq(empty_line - 1L)]
+pages <- strsplit(input[-seq(empty_line)], ",")
+
+head(prompts)
+head(pages)
 ```
 
 ## Part 1
 
+> Determine which updates are already in the correct order. What do you get if you add up the middle page number from those correctly-ordered updates?
+
+Very fortunate my assumption held that all page combination existed in the prompts. Using `head` and `tail` cutting of the last and first element was easier than using some `rollapply`.
+
 ```{r part_1}
+middle_pages <- as.numeric(sapply(pages, \(x) x[ceiling(length(x) / 2L)]))
+valid <- sapply(pages, \(x) all(paste0(head(x, -1L), "|", tail(x, -1L)) %in% prompts))
+
+sum(middle_pages[valid])
 ```
 
 ## Part 2
 
+> While the Elves get to work printing the correctly-ordered updates, you have a little time to fix the rest of them.
+>
+> For each of the incorrectly-ordered updates, use the page ordering rules to put the page numbers in the right order.
+>
+> Find the updates which are not in the correct order. What do you get if you add up the middle page numbers after correctly ordering just those updates?
+
+Took a while to understand what was being asked here, in the end did some sorting. Not the most efficient, but managed to get the correct answer after realising only needed the invalid pages fot the sum
+
 ```{r part_2}
+invalid_pages <- lapply(pages[!valid], \(x) {
+  y <- x[1L]; x <- x[-1L]
+  while (length(x)) {
+    for (i in rev(seq_along(x))) {
+      if (any(paste0(y, "|", x[i]) %in% prompts) && any(paste0(x[i], "|", y) %in% prompts)) {
+        y <- append(y, x[i], tail(which(paste0(y, "|", x[i]) %in% prompts), 1L)); x <- x[-i]
+      } else if (any(prompts == paste0(tail(y, 1L), "|", x[i]))) {
+        y <- c(y, x[i]); x <- x[-i]
+      } else if (any(prompts == paste0(x[i], "|", head(y, 1L)))) {
+        y <- c(x[i], y); x <- x[-i]
+      }
+    }
+  }
+  y
+})
+
+sum(as.numeric(sapply(invalid_pages, \(x) x[ceiling(length(x) / 2L)])))
 ```
